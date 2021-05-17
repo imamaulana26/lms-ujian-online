@@ -40,7 +40,7 @@ switch ($ver) {
 			'hostname' => 'localhost',
 			'username' => 'root',
 			'password' => '',
-			'database' => '',
+			'database' => 'db_to',
 			'dbdriver' => 'mysqli'
 		);
 		break;
