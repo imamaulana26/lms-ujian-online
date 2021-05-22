@@ -38,7 +38,7 @@ class Test extends CI_Controller
 		$dateTime->modify("+{$batas_waktu} minutes");
 
 		$bank_soal = $this->db->get_where('tbl_soal', ['soal_modul_id' => $id])->result_array();
-		
+
 		$cek_log_soal = $this->db->get_where('tbl_log_soal', ['nis_user' => $_SESSION['username'], 'kd_modul' => $id]);
 
 		if ($cek_log_soal->num_rows() < 1) {
@@ -55,7 +55,43 @@ class Test extends CI_Controller
 
 			echo 'langsung redirect ke view kejakan soal';
 		} else {
-			echo 'lanjutkan pengerjaan soal';
+			$page = 'admin/v_soal';
+			$data['title'] = 'Testing';
+			$dturut_array = $cek_log_soal->row_array();
+			$unser_urut = unserialize($dturut_array['id_log_soal']);
+			$soal_acak = array();
+			foreach ($unser_urut as $key => $value) {
+				$soal_dumy = $bank_soal[$value];
+				array_push($soal_acak, $soal_dumy);
+			}
+			$data['soal_acak'] = $soal_acak;
+			// echo "bank soal = ";
+			// echo "<br>";
+			// var_dump($bank_soal);
+			// echo "soal sudah acak = ";
+			// echo "<br>";
+			// var_dump($soal_acak);
+			// echo "sistem acak array = ";
+
+			$this->session->set_userdata('soal', $soal_acak);
+			$this->load->view($page, $data);
 		}
+	}
+
+
+	public function get_nomor($no)
+	{
+		$soal = $_SESSION['soal'];
+
+		$data = array();
+
+		$data['soal_detail'] = $soal[$no - 1]['soal_detail'];
+		$data['soal_tipe'] = $soal[$no - 1]['soal_tipe'];
+		if ($soal[$no - 1]['soal_tipe'] == 1) {
+			$data['soal_jawaban'] = unserialize($soal[$no - 1]['soal_pg']);
+		}
+
+		echo json_encode($data);
+		exit;
 	}
 }
