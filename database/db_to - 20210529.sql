@@ -20,6 +20,9 @@ SET time_zone = "+00:00";
 --
 -- Database: `db_to`
 --
+drop database if exists `db_to`;
+create database `db_to`;
+use `db_to`;
 
 -- --------------------------------------------------------
 
