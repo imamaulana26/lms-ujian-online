@@ -17,6 +17,10 @@
 	<!-- Google Font: Source Sans Pro -->
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+
+
+
 
 	<!-- REQUIRED SCRIPTS -->
 
@@ -32,11 +36,21 @@
 	<script src="<?= base_url('assets/dist/') . 'js/demo.js' ?>"></script>
 	<script src="<?= base_url('assets/dist/') . 'js/pages/dashboard3.js' ?>"></script>
 
+	<!-- DataTables -->
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+
+	<!-- Sweetalert2 -->
+	<script src="<?= base_url('assets/front-end/plugins/sweetalert2/sweetalert2.min.js') ?>"></script>
+	<!-- CK editor JS -->
+	<script src="<?= base_url('assets/plugins/ckeditor/ckeditor.js') ?>"></script>
+	<!-- Ekko Lightbox -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.js" crossorigin="anonymous"></script>
+
 	<!-- Pages Script -->
 	<script>
 		$(document).ready(function() {
 			const url = '<?= $this->uri->segment(1); ?>';
-			
+
 			$('.nav-link').removeClass('active');
 			if (url == 'dashboard') {
 				$('#' + url).addClass('active');

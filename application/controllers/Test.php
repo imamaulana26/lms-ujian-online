@@ -66,6 +66,8 @@ class Test extends CI_Controller
 			}
 			$data['soal_acak'] = $soal_acak;
 
+			// var_dump($soal_acak); die;
+
 			/**
 			 * ------------------------------------------
 			 * Format Penyusunan Jawaban
@@ -157,7 +159,11 @@ class Test extends CI_Controller
 			// shuffle($rowfix);
 			// $data['rowfix'] = $rowfix;
 			// var_dump($rowfix);
-			// var_dump(serialize($data['soal_multiple']));
+			// $namasoal = $this->db->get_where('tbl_modul', ['id_modul' => $id])->row_array();
+			$data['nm_soal'] = $this->db->select('nm_mapel')->from('tbl_modul a')->join('tbl_pelajaran b', 'a.modul_pelajaran = b.id_pelajaran', 'left')->join('tbl_mapel c', 'b.kd_mapel = c.kd_mapel', 'left')->get()->row_array();
+
+
+			// var_dump($namasoal);
 			// die;
 
 			$this->session->set_userdata('soal', $soal_acak);
@@ -173,6 +179,7 @@ class Test extends CI_Controller
 		$soal = $this->session->userdata('soal');
 		$jawaban_siswa = $this->input->post();
 		$jawaban = array_values($jawaban_siswa['answer']);
+		// $soal1 = 'a:6:{i:0;i:0;i:1;i:1;i:2;i:2;i:3;i:3;i:4;i:4;i:5;i:5;}';
 		//end of statmn data
 
 		// penghitungan nilai
@@ -225,8 +232,11 @@ class Test extends CI_Controller
 
 		$nilai_fix = ($nilai / count($soal)) * 100;
 		// end of penghitungan nilai
-		var_dump($nilai);
-		var_dump($nilai_fix);
+		// var_dump($jawaban_siswa);
+		// var_dump($soal);
+		// var_dump(unserialize($soal1));
+		$nilai_bulat = round($nilai_fix, 2);
+		var_dump($soal);
 		die;
 	}
 

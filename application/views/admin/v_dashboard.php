@@ -16,12 +16,12 @@
 				<div class="container-fluid">
 					<div class="row mb-2">
 						<div class="col-sm-6">
-							<h1 class="m-0 text-dark">Dashboard v3</h1>
+							<h1 class="m-0 text-dark">Soal</h1>
 						</div><!-- /.col -->
 						<div class="col-sm-6">
 							<ol class="breadcrumb float-sm-right">
 								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item active">Dashboard v3</li>
+								<li class="breadcrumb-item active">Soal</li>
 							</ol>
 						</div><!-- /.col -->
 					</div><!-- /.row -->
@@ -33,248 +33,214 @@
 			<div class="content">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-lg-6">
+						<div class="col-lg">
 							<div class="card">
-								<div class="card-header border-0">
+								<!-- <div class="card-header border-0">
 									<div class="d-flex justify-content-between">
 										<h3 class="card-title">Online Store Visitors</h3>
 										<a href="javascript:void(0);">View Report</a>
 									</div>
-								</div>
+								</div> -->
 								<div class="card-body">
-									<div class="d-flex">
-										<p class="d-flex flex-column">
-											<span class="text-bold text-lg">820</span>
-											<span>Visitors Over Time</span>
-										</p>
-										<p class="ml-auto d-flex flex-column text-right">
-											<span class="text-success">
-												<i class="fas fa-arrow-up"></i> 12.5%
-											</span>
-											<span class="text-muted">Since last week</span>
-										</p>
+									<div class="pilih d-flex">
+										<div class="col-md-6 d-flex">
+											<div class="col-md-6">
+												<!-- Default dropright button -->
+												<select class="form-control" name="kelas" id="kelas">
+													<option value="" selected disabled>Pilih Kelas</option>
+													<?php foreach ($dtkelas as $kelas) {
+													?>
+														<option value="<?= $kelas['kelas_id'] ?>"><?= $kelas['kelas_nama'] ?></option>
+													<?php } ?>
+												</select>
+											</div>
+											<div class="col-md-6">
+												<!-- Default dropright button -->
+												<select class="form-control" name="idmapel" id="mapel">
+													<option value="" selected>Pilih Mapel</option>
+												</select>
+												<div id="loading" style="margin-top: 15px;"> <img src=" <?= site_url('assets/images/loading.gif') ?>" width="18"> <small>Loading...</small> </div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<button type="submit" class="btn btn-primary mb-2">Pilih</button>
+										</div>
 									</div>
-									<!-- /.d-flex -->
 
-									<div class="position-relative mb-4">
-										<canvas id="visitors-chart" height="200"></canvas>
-									</div>
-
-									<div class="d-flex flex-row justify-content-end">
-										<span class="mr-2">
-											<i class="fas fa-square text-primary"></i> This Week
-										</span>
-
-										<span>
-											<i class="fas fa-square text-gray"></i> Last Week
-										</span>
-									</div>
-								</div>
-							</div>
-							<!-- /.card -->
-
-							<div class="card">
-								<div class="card-header border-0">
-									<h3 class="card-title">Products</h3>
-									<div class="card-tools">
-										<a href="#" class="btn btn-tool btn-sm">
-											<i class="fas fa-download"></i>
-										</a>
-										<a href="#" class="btn btn-tool btn-sm">
-											<i class="fas fa-bars"></i>
-										</a>
-									</div>
-								</div>
-								<div class="card-body table-responsive p-0">
-									<table class="table table-striped table-valign-middle">
-										<thead>
-											<tr>
-												<th>Product</th>
-												<th>Price</th>
-												<th>Sales</th>
-												<th>More</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>
-													<img src="<?= base_url('assets/dist/') . 'img/default-150x150.png' ?>" alt="Product 1" class="img-circle img-size-32 mr-2">
-													Some Product
-												</td>
-												<td>$13 USD</td>
-												<td>
-													<small class="text-success mr-1">
-														<i class="fas fa-arrow-up"></i>
-														12%
-													</small>
-													12,000 Sold
-												</td>
-												<td>
-													<a href="#" class="text-muted">
-														<i class="fas fa-search"></i>
-													</a>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<img src="<?= base_url('assets/dist/') . 'img/default-150x150.png' ?>" alt="Product 1" class="img-circle img-size-32 mr-2">
-													Another Product
-												</td>
-												<td>$29 USD</td>
-												<td>
-													<small class="text-warning mr-1">
-														<i class="fas fa-arrow-down"></i>
-														0.5%
-													</small>
-													123,234 Sold
-												</td>
-												<td>
-													<a href="#" class="text-muted">
-														<i class="fas fa-search"></i>
-													</a>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<img src="<?= base_url('assets/dist/') . 'img/default-150x150.png' ?>" alt="Product 1" class="img-circle img-size-32 mr-2">
-													Amazing Product
-												</td>
-												<td>$1,230 USD</td>
-												<td>
-													<small class="text-danger mr-1">
-														<i class="fas fa-arrow-down"></i>
-														3%
-													</small>
-													198 Sold
-												</td>
-												<td>
-													<a href="#" class="text-muted">
-														<i class="fas fa-search"></i>
-													</a>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<img src="<?= base_url('assets/dist/') . 'img/default-150x150.png' ?>" alt="Product 1" class="img-circle img-size-32 mr-2">
-													Perfect Item
-													<span class="badge bg-danger">NEW</span>
-												</td>
-												<td>$199 USD</td>
-												<td>
-													<small class="text-success mr-1">
-														<i class="fas fa-arrow-up"></i>
-														63%
-													</small>
-													87 Sold
-												</td>
-												<td>
-													<a href="#" class="text-muted">
-														<i class="fas fa-search"></i>
-													</a>
-												</td>
-											</tr>
-										</tbody>
-									</table>
 								</div>
 							</div>
 							<!-- /.card -->
 						</div>
-						<!-- /.col-md-6 -->
-						<div class="col-lg-6">
-							<div class="card">
-								<div class="card-header border-0">
-									<div class="d-flex justify-content-between">
-										<h3 class="card-title">Sales</h3>
-										<a href="javascript:void(0);">View Report</a>
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="d-flex">
-										<p class="d-flex flex-column">
-											<span class="text-bold text-lg">$18,230.00</span>
-											<span>Sales Over Time</span>
-										</p>
-										<p class="ml-auto d-flex flex-column text-right">
-											<span class="text-success">
-												<i class="fas fa-arrow-up"></i> 33.1%
-											</span>
-											<span class="text-muted">Since last month</span>
-										</p>
-									</div>
-									<!-- /.d-flex -->
-
-									<div class="position-relative mb-4">
-										<canvas id="sales-chart" height="200"></canvas>
-									</div>
-
-									<div class="d-flex flex-row justify-content-end">
-										<span class="mr-2">
-											<i class="fas fa-square text-primary"></i> This year
-										</span>
-
-										<span>
-											<i class="fas fa-square text-gray"></i> Last year
-										</span>
-									</div>
-								</div>
-							</div>
-							<!-- /.card -->
-
-							<div class="card">
-								<div class="card-header border-0">
-									<h3 class="card-title">Online Store Overview</h3>
-									<div class="card-tools">
-										<a href="#" class="btn btn-sm btn-tool">
-											<i class="fas fa-download"></i>
-										</a>
-										<a href="#" class="btn btn-sm btn-tool">
-											<i class="fas fa-bars"></i>
-										</a>
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-										<p class="text-success text-xl">
-											<i class="ion ion-ios-refresh-empty"></i>
-										</p>
-										<p class="d-flex flex-column text-right">
-											<span class="font-weight-bold">
-												<i class="ion ion-android-arrow-up text-success"></i> 12%
-											</span>
-											<span class="text-muted">CONVERSION RATE</span>
-										</p>
-									</div>
-									<!-- /.d-flex -->
-									<div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-										<p class="text-warning text-xl">
-											<i class="ion ion-ios-cart-outline"></i>
-										</p>
-										<p class="d-flex flex-column text-right">
-											<span class="font-weight-bold">
-												<i class="ion ion-android-arrow-up text-warning"></i> 0.8%
-											</span>
-											<span class="text-muted">SALES RATE</span>
-										</p>
-									</div>
-									<!-- /.d-flex -->
-									<div class="d-flex justify-content-between align-items-center mb-0">
-										<p class="text-danger text-xl">
-											<i class="ion ion-ios-people-outline"></i>
-										</p>
-										<p class="d-flex flex-column text-right">
-											<span class="font-weight-bold">
-												<i class="ion ion-android-arrow-down text-danger"></i> 1%
-											</span>
-											<span class="text-muted">REGISTRATION RATE</span>
-										</p>
-									</div>
-									<!-- /.d-flex -->
-								</div>
-							</div>
-						</div>
-						<!-- /.col-md-6 -->
 					</div>
-					<!-- /.row -->
+					<!-- /.mengelola soal -->
+					<div class="row">
+						<div class="col-lg">
+							<div class="card">
+								<div class="card-header">
+									Mengelola Soal <label id="mapel"></label> - Soal Uji Coba
+								</div>
+								<div class="card-body">
+
+									<div class="form-group d-flex">
+										<label class="col-sm-2 control-label text-right">Soal</label>
+										<div class="col-md-10">
+											<textarea name="komentar" id="editorfr"></textarea>
+										</div>
+									</div>
+
+									<div class="form-group d-flex">
+										<label class="col-sm-2 control-label text-right">Lampiran</label>
+										<div class="col-md-6">
+											<input style="width: 100%;" type="text" placeholder=" Hanya Dapat Melampirkan Dari Google Drive">
+										</div>
+										<div class="col-md-2">
+											<select class="form-control" name="kelas">
+												<option value="" selected disabled>Pilih Type</option>
+												<option value="gambar">Gambar</option>
+												<option value="video">Video</option>
+												<option value="audio">Audio</option>
+											</select>
+										</div>
+									</div>
+
+									<div class="form-group d-flex">
+										<label class="col-sm-2 control-label text-right">Tipe Soal</label>
+										<div class="col-md-2">
+											<select class="form-control" name="kelas">
+												<option value="" selected disabled>Pilih Type</option>
+												<option value="1">Pilihan Ganda</option>
+												<option value="2">True / False</option>
+												<option value="3">Esay</option>
+												<option value="4">Jawaban Singkat</option>
+												<option value="5">Mencocokan Jawaban</option>
+											</select>
+										</div>
+										<button type="submit" class="btn btn-primary mb-2">Pilih</button>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- /.mengelola jawaban tipe soal pilgan-->
+					<div class="row">
+						<div class="col-lg">
+							<div class="card">
+								<div class="card-header">
+									Mengelola Jawaban Matematika Untuk Tipe Soal Pilihan Ganda
+								</div>
+								<div class="card-body">
+									<?php
+									$n = range('a', 'd');
+									for ($i = 0; $i < 4; $i++) {
+									?>
+										<div class="form-group d-flex">
+											<label class="col-sm-2 control-label text-right">Pilihan <?= strtoupper($n[$i]) ?></label>
+											<div class="col-md-4">
+												<input style="width: 100%;" type="text">
+											</div>
+											<label class="control-label text-right">Lampiran</label>
+											<div class="col-md-2">
+												<input style="width: 100%;" type="text" placeholder=" Hanya Dapat Melampirkan Dari Google Drive">
+											</div>
+											<div class="col-md-2">
+												<select class="form-control" name="kelas">
+													<option value="" selected disabled>Pilih Type</option>
+													<option value="gambar">Gambar</option>
+													<option value="video">Video</option>
+													<option value="audio">Audio</option>
+												</select>
+											</div>
+										</div>
+									<?php } ?>
+									<div class="form-group d-flex">
+										<label class="col-sm-2 control-label text-right">Kunci Jawaban</label>
+										<div class="col-md-4">
+											<select class="form-control" name="kelas">
+												<option value="" selected disabled>Pilih Kunci</option>
+												<option value="A">A</option>
+												<option value="B">B</option>
+												<option value="C">C</option>
+												<option value="D">D</option>
+											</select>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- /.mengelola jawaban tipe soal True/False-->
+					<div class="row">
+						<div class="col-lg">
+							<div class="card">
+								<div class="card-header">
+									Mengelola Jawaban Matematika Untuk Tipe Soal True / False
+								</div>
+								<div class="card-body">
+									<div class="form-group d-flex">
+										<label class="col-sm-2 control-label text-right">Kunci Jawaban</label>
+										<div class="col-md-4">
+											<select class="form-control" name="kelas">
+												<option value="" selected disabled>Pilih Kunci</option>
+												<option value="true">True</option>
+												<option value="false">False</option>
+											</select>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- /.mengelola jawaban tipe soal Jawaban Singkat-->
+					<div class="row">
+						<div class="col-lg">
+							<div class="card">
+								<div class="card-header">
+									Mengelola Jawaban Matematika Untuk Tipe Soal jawaban Singkat
+								</div>
+								<div class="card-body">
+									<div class="form-group d-flex">
+										<label class="col-sm-2 control-label text-right">Kunci Jawaban</label>
+										<div class="col-md-4">
+											<input style="width: 100%;" type="text" placeholder="Tulisan Jawaban Singkat Maksimal 1kata">
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- /.mengelola jawaban tipe soal Jawaban Singkat-->
+					<div class="row">
+						<div class="col-lg">
+							<div class="card">
+								<div class="card-header">
+									Mengelola Jawaban Matematika Untuk Tipe Soal Mencocokan Jawaban
+								</div>
+								<div class="card-body">
+									<?php for ($i = 1; $i < 6; $i++) {
+									?>
+										<div class="form-group d-flex">
+											<label class="col-sm-2 control-label text-right">Row <?= $i ?></label>
+											<div class="col-md-4">
+												<input style="width: 100%;" type="text" placeholder="Row ke <?= $i ?>">
+											</div>
+											<label class="col-sm-1 control-label text-right">Col <?= $i ?></label>
+											<div class="col-md-4">
+												<input style="width: 100%;" type="text" placeholder="Jawaban untuk Row ke <?= $i ?>">
+											</div>
+										</div>
+									<?php } ?>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 				<!-- /.container-fluid -->
 			</div>
@@ -293,5 +259,38 @@
 	</div>
 	<!-- ./wrapper -->
 </body>
+
+<script>
+	$(document).ready(function() { // Ketika halaman sudah siap (sudah selesai di load)  // Kita sembunyikan dulu untuk loadingnya  
+		$("#loading").hide();
+		$("#kelas").change(function() { // Ketika user mengganti atau memilih data kelas    
+			$("#mapel").hide(); // Sembunyikan dulu combobox mapel nya    
+			$("#loading").show(); // Tampilkan loadingnya      
+			$.ajax({
+				type: "POST", // Method pengiriman data bisa dengan GET atau POST      
+				url: "<?= site_url('dashboard/get_mapel') ?>", // Isi dengan url/path file php yang dituju      
+				data: {
+					kelas: $("#kelas").val()
+				}, // data yang akan dikirim ke file yang dituju      
+				dataType: "json",
+				beforeSend: function(e) {
+					if (e && e.overrideMimeType) {
+						e.overrideMimeType("application/json;charset=UTF-8");
+					}
+				},
+				success: function(response) { // Ketika proses pengiriman berhasil        
+					$("#loading").hide(); // Sembunyikan loadingnya        // set isi dari combobox mapel        // lalu munculkan kembali combobox mapelnya        
+					$("#mapel").html(response.data_mapel).show();
+				},
+				error: function(xhr, ajaxOptions, thrownError) { // Ketika ada error        
+					alert(thrownError); // Munculkan alert error      
+				}
+			});
+		});
+
+		CKEDITOR.replace('editorfr');
+	});
+</script>
+
 
 </html>
