@@ -1,0 +1,160 @@
+<?php $this->load->view('admin/layouts/v_header'); ?>
+
+<style>
+    .box label {
+        display: flex;
+        height: 53px;
+        width: 100%;
+        align-items: center;
+        border: 1px solid lightgrey;
+        border-radius: 5px;
+        margin: 10px 0;
+        padding-left: 11px;
+        cursor: pointer;
+        transition: all 0.3s ease
+    }
+
+    label:hover {
+        background: #eee;
+        cursor: pointer;
+        border: 1px solid #aaa;
+        padding: 4px;
+    }
+
+    .box label .text {
+        color: #333;
+        font-size: 18px;
+        font-weight: 400;
+        padding-left: 10px;
+        transition: color 0.3s ease
+    }
+
+    .box input[type="radio"] {
+        display: none
+    }
+</style>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand font-weight-bold" href="">Computer Basted-Test</a>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#"><?= $_SESSION['nm_user'] ?> <i class="fa fa-fw fa-user-circle"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-md-10 offset-1">
+                <h2 class="mb-3">Mata Pelajaran : tulis nama mata pelajaran</h2>
+
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="font-weight-bold">
+                                    Soal Nomor <span class="badge badge-primary" id="nomor"></span>
+                                </h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="soal mb-3">
+                                    <!-- Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem optio incidunt eum vero soluta magni sed, temporibus nesciunt non, ipsam eaque natus quisquam nemo. Natus, repellat enim. Ex, quam? Est! -->
+                                </div>
+
+                                <div class="jawaban">
+                                    <div class="box">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam odio cumque ducimus! Ipsa voluptatum consequuntur sunt voluptate ducimus culpa laborum beatae ipsum nostrum, amet est accusantium optio molestiae suscipit voluptatem.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="d-flex justify-content-between bd-highlight">
+                                    <a href="#" class="btn btn-info btn-prev">Sebelumnya</a>
+                                    <a href="#" class="btn btn-primary btn-next">Selanjutnya</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title font-weight-bold">Daftar Soal</h5>
+                            </div>
+                            <div class="card-body">
+                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum consequatur non, explicabo aliquid minima fugiat autem perferendis animi nihil, dolorem cum, facere quia amet aspernatur! Alias quia aut rem repudiandae?
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h2>Data sementara</h2>
+                    <?php
+
+                    $datasementara = array(
+                        "2" => "a",
+                        "4" => "true",
+                        "5" => "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reiciendis obcaecati nam quia incidunt nemo ullam eligendi debitis beatae suscipit sequi minus aut repudiandae magni non, at, praesentium quod nostrum quibusdam?"
+                    );
+
+
+                    ?>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">soal nomor</th>
+                                <th scope="col">Jawaban Siswa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php for ($f = 0; $f < count($soal_acak); $f++) : ?>
+                                <tr>
+                                    <td><?= $f + 1 ?></td>
+                                    <td>x</td>
+                                </tr>
+                            <?php endfor; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <?php
+                echo '<pre>';
+                var_dump($datasementara);
+                echo '</pre>';
+                ?>
+            </div>
+        </div>
+        <?php
+        $datajawabanserialize = array(
+            "2" => "a",
+            "4" => "true",
+            "5" => "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reiciendis obcaecati nam quia incidunt nemo ullam eligendi debitis beatae suscipit sequi minus aut repudiandae magni non, at, praesentium quod nostrum quibusdam?"
+        );
+
+        //nama file
+        $namaFile = 'dumyjawaban.txt';
+        //lokasi penyimpanan
+        $pathFile = "assets/filesiswa/" . $_SESSION['username'] . "/";
+        //membuat file
+        $file = fopen($pathFile . $namaFile, 'w');
+        // isi konten file
+        $konten = serialize($datajawabanserialize);
+        //menulis file
+        fwrite($file, $konten);
+        fclose($file);
+
+        //membaca file
+        $data = file_get_contents($pathFile . $namaFile);
+
+        // mengembalikan data serialize
+        // var_dump(unserialize($data));
+
+        ?>
+    </div>
+</body>
+
+</html>

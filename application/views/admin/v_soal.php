@@ -99,7 +99,7 @@
     <div class="container-fluid mt-5">
         <div class="row">
             <div class="col-md-10 offset-1">
-                <h2 class="mb-3">Mata Pelajaran : tulis nama mata pelajaran</h2>
+                <h2 class="mb-3">Mata Pelajaran : <?= $nm_soal['nm_mapel']; ?></h2>
 
                 <div class="row">
                     <div class="col-md-10">
@@ -113,7 +113,6 @@
                             <div class="card-body">
                                 <div class="box">
                                     <!-- content  -->
-
                                     <?php $id = 1;
                                     foreach ($soal_acak as $key => $value) {
 
@@ -146,25 +145,24 @@
                                             </div>
                                             <div class="jawaban">
                                                 <form method="post" action="<?= site_url('test/check_form') ?>">
-                                                    <?php if ($value['soal_tipe'] == 1) {
+                                                    <?php if ($value['soal_tipe'] == 1) { //Pilihan ganda
                                                         $pg = unserialize($value['soal_pg']);
                                                         shuffle($pg);
                                                         $n = range('a', 'd');
                                                         foreach ($pg as $key1 => $jwbn) {
                                                             $uid = $key1 + 1;
                                                     ?>
-
                                                             <div class="box">
                                                                 <input type="radio" id="radio<?= $value['soal_id'] . $uid ?>" name="answer[<?= $value['soal_id'] ?>][jwb]" value="<?= $n[$key1] ?>">
                                                                 <label for="radio<?= $value['soal_id'] . $uid ?>"><?= $jwbn['jawaban'] ?></label>
                                                             </div>
                                                         <?php } ?>
-                                                        <input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
-                                                        <input type="text" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
+                                                        <input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
+                                                        <input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
                                                     <?php
-                                                    } elseif ($value['soal_tipe'] == 2) {
+                                                    } elseif ($value['soal_tipe'] == 2) { //True or false
                                                     ?>
-                                                        <input type="text" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
+                                                        <input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
                                                         <input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
                                                         <div class="box">
                                                             <input type="radio" id="radiotrue" name="answer[<?= $value['soal_id'] ?>][jwb]" value="true">
@@ -174,20 +172,21 @@
                                                             <input type="radio" id="radiofalse" name="answer[<?= $value['soal_id'] ?>][jwb]" value="false">
                                                             <label for="radiofalse">False</label>
                                                         </div>
-                                                    <?php } elseif ($value['soal_tipe'] == 3) {
+                                                    <?php } elseif ($value['soal_tipe'] == 3) { //Esay
                                                     ?>
-                                                        <input type="text" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
+                                                        <input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
                                                         <input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
                                                         <div class="box">
                                                             <textarea class="form-control" id="type3" rows="3" name="answer[<?= $value['soal_id'] ?>][jwb]"></textarea>
                                                         </div>
-                                                    <?php  } elseif ($value['soal_tipe'] == 4) {
+                                                    <?php  } elseif ($value['soal_tipe'] == 4) { //Jawaban singkat
                                                     ?>
-                                                        <input type="text" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
+                                                        <input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
                                                         <input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
                                                         <input type="text" name="answer[<?= $value['soal_id'] ?>][jwb]">
-                                                    <?php } elseif ($value['soal_tipe'] == 5) { ?>
-                                                        <input type="text" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
+                                                    <?php } elseif ($value['soal_tipe'] == 5) {  //Mencocokan Jawaban
+                                                    ?>
+                                                        <input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
                                                         <input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
                                                         <?php
                                                         $dtmulti = unserialize($value['soal_kunci']);
@@ -262,7 +261,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <h2>Data sementara</h2>
+                <!-- <h2>Data sementara</h2>
                 <?php
                 var_dump($_SESSION['username']);
                 $datasementara = array(
@@ -270,54 +269,36 @@
                     "4" => "true",
                     "5" => "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reiciendis obcaecati nam quia incidunt nemo ullam eligendi debitis beatae suscipit sequi minus aut repudiandae magni non, at, praesentium quod nostrum quibusdam?"
                 );
-
-
-                ?>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">soal nomor</th>
-                            <th scope="col">Jawaban Siswa</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php for ($f = 0; $f < count($soal_acak); $f++) : ?>
-                            <tr>
-                                <td><?= $f + 1 ?></td>
-                                <td>x</td>
-                            </tr>
-                        <?php endfor; ?>
-                    </tbody>
-                </table>
+                ?> -->
             </div>
             <?php
-            echo '<pre>';
-            var_dump($datasementara);
-            echo '</pre>';
+            // echo '<pre>';
+            // var_dump($datasementara);
+            // echo '</pre>';
             ?>
         </div>
     </div>
     <?php
-    $datajawabanserialize = array(
-        "2" => "a",
-        "4" => "true",
-        "5" => "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reiciendis obcaecati nam quia incidunt nemo ullam eligendi debitis beatae suscipit sequi minus aut repudiandae magni non, at, praesentium quod nostrum quibusdam?"
-    );
+    // $datajawabanserialize = array(
+    //     "2" => "a",
+    //     "4" => "true",
+    //     "5" => "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reiciendis obcaecati nam quia incidunt nemo ullam eligendi debitis beatae suscipit sequi minus aut repudiandae magni non, at, praesentium quod nostrum quibusdam?"
+    // );
 
     //nama file
-    $namaFile = 'dumyjawaban.txt';
-    //lokasi penyimpanan
-    $pathFile = "assets/filesiswa/" . $_SESSION['username'] . "/";
-    //membuat file
-    $file = fopen($pathFile . $namaFile, 'w');
-    // isi konten file
-    $konten = serialize($datajawabanserialize);
-    //menulis file
-    fwrite($file, $konten);
-    fclose($file);
+    // $namaFile = 'dumyjawaban.txt';
+    // //lokasi penyimpanan
+    // $pathFile = "assets/filesiswa/" . $_SESSION['username'] . "/";
+    // //membuat file
+    // $file = fopen($pathFile . $namaFile, 'w');
+    // // isi konten file
+    // $konten = serialize($datajawabanserialize);
+    // //menulis file
+    // fwrite($file, $konten);
+    // fclose($file);
 
-    //membaca file
-    $data = file_get_contents($pathFile . $namaFile);
+    // //membaca file
+    // $data = file_get_contents($pathFile . $namaFile);
 
     // mengembalikan data serialize
     // var_dump(unserialize($data));
