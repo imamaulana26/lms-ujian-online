@@ -40,7 +40,7 @@
 	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 
 	<!-- Sweetalert2 -->
-	<script src="<?= base_url('assets/front-end/plugins/sweetalert2/sweetalert2.min.js') ?>"></script>
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<!-- CK editor JS -->
 	<script src="<?= base_url('assets/plugins/ckeditor/ckeditor.js') ?>"></script>
 	<!-- Ekko Lightbox -->
