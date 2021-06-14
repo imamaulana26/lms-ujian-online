@@ -53,4 +53,4 @@ $route['default_controller'] = 'dashboard/login';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['login'] = 'dashboard/login';
+$route['kelola-soal'] = 'kelola_soal';
