@@ -40,7 +40,7 @@
 					</a>
 					<ul class="nav nav-treeview">
 						<li class="nav-item">
-							<a href="<?= site_url('test') ?>" class="nav-link" id="test">
+							<a href="<?= site_url('kelola-soal') ?>" class="nav-link" id="kelola-soal">
 								<i class="far fa-circle nav-icon"></i>
 								<p>Kelola Soal</p>
 							</a>
