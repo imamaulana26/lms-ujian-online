@@ -60,12 +60,42 @@ class Kelola_module extends CI_Controller
 		WHERE a.id_modul = '" . $id . "' GROUP BY a.id_modul";
 		$result = $this->db->query($sql)->row_array();
 
-		echo json_encode($result); exit;
+		echo json_encode($result);
+		exit;
 	}
 
 	public function submit_module()
 	{
-		echo json_encode($_POST);
+		$check = $this->db->get_where('tbl_modul', [
+			'modul_pelajaran' => input('id_mapel'),
+			'modul_ub' => input('id_ub'),
+		])->num_rows();
+		if ($check > 0) {
+			echo json_encode(['jenis' => 'submit', 'status' => true, 'msg' => 'Data Sudah Ada']);
+		} else {
+			$this->db->insert('tbl_modul', [
+				'modul_pelajaran' => input('id_mapel'),
+				'modul_ub' => input('id_ub'),
+				'waktu_pengerjaan' => input('waktu_ujian')
+			]);
+			echo json_encode(['jenis' => 'submit', 'status' => false, 'msg' => 'Berhasil ditambahkan']);
+		}
+
+		exit;
+	}
+	public function edit_module()
+	{
+
+		// $this->db->insert('tbl_modul', [
+		// 	'modul_pelajaran' => input('id_mapel'),
+		// 	'modul_ub' => input('id_ub'),
+		// 	'waktu_pengerjaan' => input('waktu_ujian')
+		// ]);
+		$this->db->update('tbl_modul', ['waktu_pengerjaan' => input('waktu_ujian')], ['id_modul' => input('idmodul_update')]);
+
+		echo json_encode(['jenis' => 'update', 'msg' => 'Berhasil diupdate']);
+
+
 		exit;
 	}
 }

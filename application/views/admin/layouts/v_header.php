@@ -27,7 +27,7 @@
 	<!-- jQuery -->
 	<script src="<?= base_url('assets/plugins/') . 'jquery/jquery.min.js' ?>"></script>
 	<!-- Popper -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> -->
 	<!-- Bootstrap -->
 	<script src="<?= base_url('assets/plugins/') . 'bootstrap/js/bootstrap.bundle.min.js' ?>"></script>
 	<!-- AdminLTE -->
@@ -63,9 +63,9 @@
 			}
 		});
 
-		$(function() {
-			$('[data-toggle="tooltip"]').tooltip()
-		})
+		// $(function() {
+		// 	$('[data-toggle="tooltip"]').tooltip()
+		// })
 
 		function CheckNumeric() {
 			return event.keyCode >= 48 && event.keyCode <= 57;
