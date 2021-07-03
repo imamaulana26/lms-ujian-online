@@ -30,6 +30,31 @@ class Kelola_module extends CI_Controller
 		$this->load->view($page, $data);
 	}
 
+	public function soal($id)
+	{
+		$page = 'admin/v_kelola_soal';
+		$data['title'] = 'Halaman Kelola Module';
+		$data['breadcrumb'] = array(
+			'<li class="breadcrumb-item"><a href="' . site_url('dashboard') . '"><i class="fa fa-fw fa-desktop"></i> Dashboard</a></li>',
+			'<li class="breadcrumb-item"><a href="' . site_url('kelola-module') . '">Kelola Module</a></li>',
+			'<li class="breadcrumb-item active">Soal</li>'
+		);
+
+		$sql = "SELECT a.id_modul, e.kelas_nama, d.nm_mapel, a.modul_ub, a.waktu_pengerjaan, COUNT(b.soal_modul_id) as bank_soal FROM tbl_modul a
+		LEFT JOIN tbl_soal b
+		ON a.id_modul = b.soal_modul_id
+		LEFT JOIN tbl_pelajaran c
+		ON a.modul_pelajaran = c.id_pelajaran
+		LEFT JOIN tbl_mapel d
+		ON c.kd_mapel = d.kd_mapel
+		LEFT JOIN tbl_kelas e
+		ON c.id_kelas = e.kelas_id
+		WHERE a.id_modul = '" . $id . "' GROUP BY a.id_modul";
+		$data['module'] = $this->db->query($sql)->row_array();
+
+		$this->load->view($page, $data);
+	}
+
 	public function get_mapel()
 	{
 		$dtmapel = $this->db->select('b.nm_mapel, a.id_pelajaran')->from('tbl_pelajaran a')->where('id_kelas', input('id'))

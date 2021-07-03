@@ -67,9 +67,9 @@
 														<span class="text-success mx-1" onclick="edit('<?= $li['id_modul'] ?>')" data-toggle="tooltip" data-placement="top" title="Ubah Module" style="cursor: pointer;">
 															<i class="fa fa-md fa-edit"></i>
 														</span>
-														<a href="<?= site_url('kelola_soal') ?>"><span class="text-primary mx-1" onclick="kelola_soal('<?= $li['id_modul'] ?>')" data-toggle="tooltip" data-placement="top" title="Kelola Soal" style="cursor: pointer;">
-																<i class="fa fa-md fa-question-circle"></i></a>
-														</span>
+														<a class="text-primary mx-1" href="<?= site_url('kelola-module/soal/' . $li['id_modul']) ?>" data-toggle="tooltip" data-placement="top" title="Kelola Soal" style="cursor: pointer;">
+															<i class="fa fa-md fa-question-circle"></i>
+														</a>
 														<span class="text-danger mx-1" onclick="hapus('<?= $li['id_modul'] ?>')" data-toggle="tooltip" data-placement="top" title="Hapus Module" style="cursor: pointer;">
 															<i class="fa fa-md fa-trash"></i>
 														</span>
@@ -217,8 +217,6 @@
 
 		$.ajax({
 			url: url,
-			data: $("#form-module").serialize(),
-			type: 'POST',
 			dataType: 'JSON',
 			success: function(hasil) {
 				if (hasil.jenis == 'update') {

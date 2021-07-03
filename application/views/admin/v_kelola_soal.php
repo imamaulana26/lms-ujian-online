@@ -33,50 +33,8 @@
 			<!-- Main content -->
 			<div class="content">
 				<form class="form-soal" action="<?= site_url('kelola_soal/submit_soal') ?>" method="POST">
+					<input name="modul" type="hidden" value="<?= $this->uri->segment(3) ?>">
 					<div class="container-fluid">
-						<div class="row">
-							<div class="col-lg">
-								<div class="card">
-									<div class="card-header">
-										Pilih Soal Ujian untuk Kelas dan Mata Pelajaran
-									</div>
-									<div class="card-body">
-										<div class="pilih d-flex">
-											<div class="col-md-10 d-flex">
-												<div class="col-md-3">
-													<!-- Default dropright button -->
-													<select class="form-control" name="kelas" id="kelas">
-														<option value="" selected disabled>Pilih Kelas</option>
-														<?php foreach ($dtkelas as $kls) { ?>
-															<option value="<?= $kls['kelas_id'] ?>"><?= $kls['kelas_nama'] ?></option>
-														<?php } ?>
-													</select>
-												</div>
-												<div class="col-md-6">
-													<select class="form-control" name="id_mapel" id="id_mapel">
-														<option value="" selected disabled>Pilih Mata Pelajaran</option>
-													</select>
-												</div>
-												<div class="col-md-2">
-													<select class="form-control" name="id_ub" id="id_ub">
-														<option value="" selected disabled>Pilih UB</option>
-														<?php for ($i = 1; $i <= 12; $i++) : ?>
-															<option value="<?= $i ?>">UB-<?= $i ?></option>
-														<?php endfor; ?>
-													</select>
-												</div>
-												<div class="col-md-2">
-													<span class="btn btn-primary btn-action">Create</span>
-												</div>
-											</div>
-										</div>
-
-									</div>
-								</div>
-								<!-- /.card -->
-							</div>
-						</div>
-
 						<!-- /.mengelola soal -->
 						<section class="kelola-soal">
 							<div class="row">
@@ -87,11 +45,45 @@
 										</div>
 										<div class="card-body">
 											<div class="form-group row">
-												<label class="col-sm-2 col-form-label">Soal Ujian</label>
+												<label class="col-sm-2 col-form-label">Nama Kelas</label>
 												<div class="col-md-10">
-													<textarea name="soal_ujian" id="editorfr"></textarea>
+													<input type="text" readonly class="form-control-plaintext" value="<?= $module['kelas_nama'] ?>">
 												</div>
 											</div>
+
+											<div class="form-group row">
+												<label class="col-sm-2 col-form-label">Nama Pelajaran</label>
+												<div class="col-md-10">
+													<input type="text" readonly class="form-control-plaintext" value="<?= $module['nm_mapel'] ?>">
+												</div>
+											</div>
+
+											<div class="form-group row">
+												<label class="col-sm-2 col-form-label">Ulangan Bulanan</label>
+												<div class="col-md-10">
+													<input type="text" readonly class="form-control-plaintext" value="<?= 'UB ' . $module['modul_ub'] ?>">
+												</div>
+											</div>
+
+											<div class="form-group row">
+												<label class="col-sm-2 col-form-label">Waktu Ujian</label>
+												<div class="col-md-10">
+													<input type="text" readonly class="form-control-plaintext" value="<?= $module['waktu_pengerjaan'] . ' menit' ?>">
+												</div>
+											</div>
+
+											<div class="form-group row">
+												<label class="col-sm-2 col-form-label">Soal Ujian</label>
+												<div class="col-md-10">
+													<textarea class="form-control" name="soal_ujian" id="editorfr"></textarea>
+													<!-- <textarea class="form-control" name="soal_ujian" id="editorfr" rows="3"></textarea> -->
+													<!-- <textarea name="komentar" id="editorfr" rows="10" cols="45" placeholder="Type Here"></textarea> -->
+												</div>
+											</div>
+											<!-- <div class="form-group">
+												<label for="exampleFormControlTextarea1">Example textarea</label>
+												<textarea  class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+											</div> -->
 
 											<div class="form-group row">
 												<label class="col-sm-2 col-form-label">Lampiran</label>
@@ -188,13 +180,13 @@
 												<label class="col-sm-2 col-form-control">Kunci Jawaban</label>
 												<div class="col-sm-10">
 													<div class="form-check my-1">
-														<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
+														<input class="form-check-input" type="radio" name="tf" id="gridRadios1" value="true">
 														<label class="form-check-label" for="gridRadios1" style="cursor: pointer;">
 															True
 														</label>
 													</div>
 													<div class="form-check my-1">
-														<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+														<input class="form-check-input" type="radio" name="tf" id="gridRadios2" value="false">
 														<label class="form-check-label" for="gridRadios2" style="cursor: pointer;">
 															False
 														</label>
@@ -304,23 +296,8 @@
 </body>
 
 <script>
-	$(document).ready(function() { // Ketika halaman sudah siap (sudah selesai di load)  // Kita sembunyikan dulu untuk loadingnya  
-		$(".kelola-soal, .pilihan-ganda, .true-false, .jawaban-singkat, .multi-choices, .submit-soal").css('display', 'none');
-
-		// trigger on kelas dropdown
-		$('#kelas').on('change', function() {
-			$.ajax({
-				url: "<?= site_url('kelola_soal/get_mapel') ?>",
-				type: "POST",
-				data: {
-					id: $(this).val()
-				},
-				dataType: "JSON",
-				success: function(respon) {
-					$('#id_mapel').html(respon.data_mapel);
-				}
-			});
-		});
+	$(document).ready(function() {
+		$(".pilihan-ganda, .true-false, .jawaban-singkat, .multi-choices, .submit-soal").css('display', 'none');
 
 		// trigger on btn-create
 		$('.btn-action').on('click', function() {
@@ -369,20 +346,20 @@
 			$('.submit-soal').css('display', 'block');
 		});
 
-		$(function() {
-			$(".form-soal").submit(function() {
-				$.ajax({
-					url: $(this).attr("action"),
-					data: $(this).serialize(),
-					type: $(this).attr("method"),
-					dataType: 'JSON',
-					success: function(hasil) {
-						console.log(hasil);
-					}
-				})
-				return false;
-			});
-		});
+		// $(function() {
+		// 	$(".form-soal").submit(function() {
+		// 		$.ajax({
+		// 			url: $(this).attr("action"),
+		// 			data: $(this).serialize(),
+		// 			type: $(this).attr("method"),
+		// 			dataType: 'JSON',
+		// 			success: function(hasil) {
+		// 				console.log(hasil);
+		// 			}
+		// 		})
+		// 		return false;
+		// 	});
+		// });
 
 		// load library ckeditor
 		CKEDITOR.replace('editorfr');
