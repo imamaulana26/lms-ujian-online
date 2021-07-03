@@ -36,18 +36,14 @@
 						<td class="text-center"><?= ($key + 1) ?></td>
 						<td>UB- <?= $val['modul_ub']; ?></td>
 						<td><?= $val['nm_mapel']; ?></td>
-						<td><?= $val['time_start'] != null ? $val['time_start'] : '-' ?></td>
-						<td><?= $val['time_end'] != null ? $val['time_end'] : '-' ?></td>
-						<td><?= $val['batas_waktu_tes'] != null ? $val['batas_waktu_tes'] : '-' ?></td>
-						<td><?= $val['nilai'] != null ? $val['nilai'] : '0.00' ?></td>
+						<td>-</td>
+						<td>-</td>
+						<td>-</td>
+						<td>0.00</td>
 						<td class="text-center">
-							<?php if ($val['nilai'] != null) : ?>
-								<span class="badge badge-danger">Selesai</span>
-							<?php else : ?>
-								<a href="<?= site_url('dashboard/detail_soal/' . $val['id_modul']) ?>">
-									<span class="badge badge-success" style="cursor: pointer;">Kerjakan</span>
-								</a>
-							<?php endif; ?>
+							<a href="<?= site_url('dashboard/detail_soal/' . $val['id_modul']) ?>">
+								<span class="badge badge-success" style="cursor: pointer;">Kerjakan</span>
+							</a>
 						</td>
 					</tr>
 				<?php endforeach; ?>

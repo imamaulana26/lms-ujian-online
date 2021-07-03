@@ -11,17 +11,16 @@ class Dashboard extends CI_Controller
 
 		$this->load->view($page, $data);
 	}
-	
+
 	public function test()
 	{
 		$page = 'siswa/v_test';
 		$data['title'] = 'Halaman Test';
 
-		$data['list_ujian'] = $this->db->select('a.id_modul, c.nm_mapel, a.modul_ub, a.waktu_pengerjaan, d.batas_waktu_tes, d.time_start, d.time_end, d.nilai')->from('tbl_modul a')
+		$data['list_ujian'] = $this->db->select('a.id_modul, c.nm_mapel, a.modul_ub, a.waktu_pengerjaan')->from('tbl_modul a')
 			->join('tbl_pelajaran b', 'a.modul_pelajaran = b.id_pelajaran', 'left')
 			->join('tbl_mapel c', 'b.kd_mapel = c.kd_mapel', 'left')
-			->join('tbl_log_soal d', 'd.kd_modul = a.id_modul', 'left')
-			// ->where('nis_user', $this->session->userdata('username'))
+			->where('b.id_kelas', $_SESSION['kelas'])
 			->get()->result_array();
 
 		$this->load->view($page, $data);
@@ -73,6 +72,7 @@ class Dashboard extends CI_Controller
 			->join('tbl_log_soal e', 'e.kd_modul = a.id_modul', 'left')
 			->where(['a.id_modul' => $id])->get()->row_array();
 
+		// hitung selisih waktu yang tersisa
 		$date_now = new DateTime();
 		$tgl = new DateTime($data['soal']['batas_waktu_tes']);
 		$diff = $tgl->diff($date_now);

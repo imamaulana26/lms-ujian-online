@@ -4,21 +4,106 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Test extends CI_Controller
 {
 
+	// Catatan Dokumentasi
 	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
+	 * ------------------------------------------
+	 * Format Penyusunan Jawaban
+	 * ------------------------------------------
+	 * $pg = array();
+	 * $key = array(
+	 *	 'Sekolah Menengah Atas',
+	 *	 'Sekolah Menengah Bawah',
+	 *	 'Sekolah Menengah Kiri',
+	 *	 'Sekolah Menengah Kanan'
+	 *	);
+	 *	$n = range('a', 'd');
+	 *	for ($i = 0; $i < count($key); $i++) {
+	 *		$pg[$i]['kunci_jawaban'] = $n[$i];
+	 *		$pg[$i]['jawaban'] = $key[$i];
+	 * 
+	 * var_dump(serialize($pg));
+	 * die;
+	 *	}
 	 */
+
+	/**
+	 * ------------------------------------------
+	 * Format Penyusunan Array untuk mix soal
+	 * ------------------------------------------
+	 *$arr = array(
+	 *2, 3, 4
+	 *);
+	 * 
+	 * var_dump(serialize($pg));
+	 * die;
+	 *	}
+	 */
+
+	/** ------------------------------------------
+	 * Format Penyusunan Lampiran
+	 * ------------------------------------------
+	 * ---------------gambar---------------------
+	 * $arr = array(
+	 *'tipe' => 'gambar',
+	 *'link' => 'https://drive.google.com/file/d/1-uOP0BEMy5exY44tNoeIEEcN2rv0gO2Y/view?usp=sharing'
+	 * );
+	 *---------------audio---------------------
+	 * $arr = array(
+	 *'tipe' => 'audio',
+	 *'link' => 'https://drive.google.com/file/d/1-uOP0BEMy5exY44tNoeIEEcN2rv0gO2Y/view?usp=sharing'
+	 * );
+	 * var_dump(serialize($pg));
+	 * die;
+	 */
+
+	/** ------------------------------------------
+	 * Format Penyusunan soal multiple
+	 * ------------------------------------------
+	 * $data['soal_multiple'] = array(
+	 * array(
+	 * 'row' => 'apple',
+	 * 'column' => 'fruit'
+	 * ),
+	 * array(
+	 * 'row' => 'truck',
+	 * 'column' => 'vehicle'
+	 * ),
+	 * array(
+	 * 'row' => 'computer',
+	 * 'column' => 'tech'
+	 * ),
+	 * array(
+	 * 'row' => 'teacher',
+	 * 'column' => 'helper'
+	 * ),
+	 * array(
+	 * 'row' => 'cake',
+	 * 'column' => 'desert'
+	 * )
+	 * );
+	 */
+
+	/** ------------------------------------------
+	 * Format Penyusunan Lampiran Soal
+	 * ------------------------------------------
+	 * $arr = array(
+	 * 	'tipe' => 'video',
+	 * 	'link' => 'https://drive.google.com/file/d/1HJmcAcmVdiDp5WVx-XNroB5Fy82oTBrS/view?usp=sharing'
+	 * );
+	 */
+
+	/**
+	 * ------------------------------------------
+	 * Format Shuffle Penyusunan data multiple
+	 * ------------------------------------------
+	 * foreach ($data['soal_multiple'] as $value) {
+	 * 	$rowfix[] = $value['column'];
+	 * }
+	 * shuffle($rowfix);
+	 * $data['rowfix'] = $rowfix;
+	 * var_dump($rowfix);
+	 */
+
 	public function index()
 	{
 		$page = 'siswa/v_test';
@@ -27,8 +112,9 @@ class Test extends CI_Controller
 		$this->load->view($page, $data);
 	}
 
-	public function kerjakan()
+	public function check_log_soal()
 	{
+		$data = array();
 		$id = input('id_modul');
 		$batas_waktu = input('waktu_tes');
 		// jumlah soal yg ditampilkan
@@ -36,11 +122,14 @@ class Test extends CI_Controller
 
 		$dateTime = new DateTime();
 		$dateTime->modify("+{$batas_waktu} minutes");
-
-		$bank_soal = $this->db->get_where('tbl_soal', ['soal_modul_id' => $id])->result_array();
-
+		
+		$bank_soal = $this->db->get_where('tbl_soal', ['soal_modul_id' => $id])->result_array();		
 		$cek_log_soal = $this->db->get_where('tbl_log_soal', ['nis_user' => $_SESSION['username'], 'kd_modul' => $id]);
 
+		$data['nm_soal'] = $this->db->select('nm_mapel')->from('tbl_modul a')->join('tbl_pelajaran b', 'a.modul_pelajaran = b.id_pelajaran', 'left')->join('tbl_mapel c', 'b.kd_mapel = c.kd_mapel', 'left')->get()->row_array();
+		$data['id_modul'] = $id;
+
+		// check kondisi tbl_log_soal
 		if ($cek_log_soal->num_rows() < 1) {
 			$acak_soal = array_rand($bank_soal, $n_soal);
 
@@ -53,121 +142,43 @@ class Test extends CI_Controller
 			);
 			$this->db->insert('tbl_log_soal', $dt_insert);
 
-			// echo 'langsung redirect ke view kejakan soal';
-
-			// redirect('kerjakan', 'refresh');
-		} else {
-			$page = 'admin/v_soal';
-			$data['title'] = 'Testing';
-			$dturut_array = $cek_log_soal->row_array();
-			$unser_urut = unserialize($dturut_array['id_log_soal']);
 			$soal_acak = array();
-			foreach ($unser_urut as $key => $value) {
+			foreach ($acak_soal as $value) {
 				$soal_dumy = $bank_soal[$value];
 				array_push($soal_acak, $soal_dumy);
 			}
 			$data['soal_acak'] = $soal_acak;
 
-			// var_dump($soal_acak); die;
+		} else {
+			$dturut_array = $cek_log_soal->row_array();
+			$unser_urut = unserialize($dturut_array['id_log_soal']);
+			$soal_acak = array();
+			foreach ($unser_urut as $value) {
+				$soal_dumy = $bank_soal[$value];
+				array_push($soal_acak, $soal_dumy);
+			}
 
-			/**
-			 * ------------------------------------------
-			 * Format Penyusunan Jawaban
-			 * ------------------------------------------
-			 * $pg = array();
-			 * $key = array(
-			 *	 'Sekolah Menengah Atas',
-			 *	 'Sekolah Menengah Bawah',
-			 *	 'Sekolah Menengah Kiri',
-			 *	 'Sekolah Menengah Kanan'
-			 *	);
-			 *	$n = range('a', 'd');
-			 *	for ($i = 0; $i < count($key); $i++) {
-			 *		$pg[$i]['kunci_jawaban'] = $n[$i];
-			 *		$pg[$i]['jawaban'] = $key[$i];
-			 * 
-			 * var_dump(serialize($pg));
-			 * die;
-			 *	}
-			 */
-			/**
-			 * ------------------------------------------
-			 * Format Penyusunan Array untuk mix soal
-			 * ------------------------------------------
-			 *$arr = array(
-			 *2, 3, 4
-			 *);
-			 * 
-			 * var_dump(serialize($pg));
-			 * die;
-			 *	}
-			 */
-
-			/* ------------------------------------------
-			 * Format Penyusunan Lampiran
-			 * ------------------------------------------
-			 * ---------------gambar---------------------
-			 * $arr = array(
-			 *'tipe' => 'gambar',
-			 *'link' => 'https://drive.google.com/file/d/1-uOP0BEMy5exY44tNoeIEEcN2rv0gO2Y/view?usp=sharing'
-			 * );
-			 *---------------audio---------------------
-			 * $arr = array(
-			 *'tipe' => 'audio',
-			 *'link' => 'https://drive.google.com/file/d/1-uOP0BEMy5exY44tNoeIEEcN2rv0gO2Y/view?usp=sharing'
-			 * );
-			 * var_dump(serialize($pg));
-			 * die;
-			 */
-
-			/* ------------------------------------------
-			 * Format Penyusunan soal multiple
-			 * ------------------------------------------
-			* $data['soal_multiple'] = array(
-			* array(
-			* 'row' => 'apple',
-			* 'column' => 'fruit'
-			* ),
-			* array(
-			* 'row' => 'truck',
-			* 'column' => 'vehicle'
-			* ),
-			* array(
-			* 'row' => 'computer',
-			* 'column' => 'tech'
-			* ),
-			* array(
-			* 'row' => 'teacher',
-			* 'column' => 'helper'
-			* ),
-			* array(
-			* 'row' => 'cake',
-			* 'column' => 'desert'
-			* )
-			* );
-			 */
-
-			// $arr = array(
-			// 	'tipe' => 'video',
-			// 	'link' => 'https://drive.google.com/file/d/1HJmcAcmVdiDp5WVx-XNroB5Fy82oTBrS/view?usp=sharing'
-			// );
-
-			// var_dump(serialize($arr));
-			// die;
-
-			// foreach ($data['soal_multiple'] as $value) {
-			// 	$rowfix[] = $value['column'];
-			// }
-			// shuffle($rowfix);
-			// $data['rowfix'] = $rowfix;
-			// var_dump($rowfix);
-			// $namasoal = $this->db->get_where('tbl_modul', ['id_modul' => $id])->row_array();
-			$data['nm_soal'] = $this->db->select('nm_mapel')->from('tbl_modul a')->join('tbl_pelajaran b', 'a.modul_pelajaran = b.id_pelajaran', 'left')->join('tbl_mapel c', 'b.kd_mapel = c.kd_mapel', 'left')->get()->row_array();
-			$data['id_logsoal'] = $dturut_array['id_log'];
+			$data['soal_acak'] = $soal_acak;
 
 			$this->session->set_userdata('soal', $soal_acak);
-			$this->load->view($page, $data);
 		}
+
+		return $data;
+	}
+
+	public function kerjakan()
+	{
+		$page = 'admin/v_soal';
+		$data['title'] = 'Testing';
+
+		$log_soal = $this->check_log_soal();
+		$id_log = $this->db->get_where('tbl_log_soal', ['nis_user' => $_SESSION['username'], 'kd_modul' => $log_soal['id_modul']])->row_array();
+		
+		$data['nm_soal'] = $log_soal['nm_soal'];
+		$data['soal_acak'] = $log_soal['soal_acak'];
+		$data['id_logsoal'] = $id_log['id_log'];
+
+		$this->load->view($page, $data);
 	}
 
 	function check_form()
