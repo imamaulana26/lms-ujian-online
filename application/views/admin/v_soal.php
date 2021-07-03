@@ -145,6 +145,7 @@
                                             </div>
                                             <div class="jawaban">
                                                 <form method="post" action="<?= site_url('test/check_form') ?>">
+                                                    <input type="hidden" value="<?= $id_logsoal ?>" name="id_log">
                                                     <?php if ($value['soal_tipe'] == 1) { //Pilihan ganda
                                                         $pg = unserialize($value['soal_pg']);
                                                         shuffle($pg);
