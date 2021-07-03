@@ -25,6 +25,8 @@ class Auth extends CI_Controller
 			if ($dt_user['pengguna_level'] == 2) {
 				$sess['nm_user'] = $dt_user['pengguna_nama'];
 				$sess['username'] = $dt_user['pengguna_username'];
+				$kelas = $this->db->select('siswa_kelas_id')->from('tbl_siswa')->where('siswa_nis', $user)->get()->row_array();
+				$sess['kelas'] = $kelas['siswa_kelas_id'];
 				$this->session->set_userdata($sess);
 				redirect('dashboard/test');
 			} elseif ($dt_user['pengguna_level'] == 3) {
@@ -42,6 +44,8 @@ class Auth extends CI_Controller
 
 	public function logout()
 	{
-		
+		$this->session->sess_destroy();
+
+		redirect(base_url());
 	}
 }

@@ -52,6 +52,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $route['default_controller'] = 'auth';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+$route['logout'] = 'auth/logout';
 
 $route['module-soal'] = 'module_soal';
 $route['module-soal/soal/(:num)'] = 'module_soal/soal/$1';
