@@ -33,6 +33,7 @@
 			<!-- Main content -->
 			<div class="content">
 				<form class="form-soal" action="<?= site_url('kelola_soal/submit_soal') ?>" method="POST">
+					<input name="modul" type="hidden" value="<?= $this->uri->segment(3) ?>">
 					<div class="container-fluid">
 						<!-- /.mengelola soal -->
 						<section class="kelola-soal">
@@ -74,9 +75,15 @@
 											<div class="form-group row">
 												<label class="col-sm-2 col-form-label">Soal Ujian</label>
 												<div class="col-md-10">
-													<textarea name="soal_ujian" id="editorfr"></textarea>
+													<textarea class="form-control" name="soal_ujian" id="editorfr"></textarea>
+													<!-- <textarea class="form-control" name="soal_ujian" id="editorfr" rows="3"></textarea> -->
+													<!-- <textarea name="komentar" id="editorfr" rows="10" cols="45" placeholder="Type Here"></textarea> -->
 												</div>
 											</div>
+											<!-- <div class="form-group">
+												<label for="exampleFormControlTextarea1">Example textarea</label>
+												<textarea  class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+											</div> -->
 
 											<div class="form-group row">
 												<label class="col-sm-2 col-form-label">Lampiran</label>
@@ -173,13 +180,13 @@
 												<label class="col-sm-2 col-form-control">Kunci Jawaban</label>
 												<div class="col-sm-10">
 													<div class="form-check my-1">
-														<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
+														<input class="form-check-input" type="radio" name="tf" id="gridRadios1" value="true">
 														<label class="form-check-label" for="gridRadios1" style="cursor: pointer;">
 															True
 														</label>
 													</div>
 													<div class="form-check my-1">
-														<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+														<input class="form-check-input" type="radio" name="tf" id="gridRadios2" value="false">
 														<label class="form-check-label" for="gridRadios2" style="cursor: pointer;">
 															False
 														</label>
@@ -291,7 +298,7 @@
 <script>
 	$(document).ready(function() {
 		$(".pilihan-ganda, .true-false, .jawaban-singkat, .multi-choices, .submit-soal").css('display', 'none');
-		
+
 		// trigger on btn-create
 		$('.btn-action').on('click', function() {
 			if ($('.btn-action').text() == "Create") {
@@ -339,20 +346,20 @@
 			$('.submit-soal').css('display', 'block');
 		});
 
-		$(function() {
-			$(".form-soal").submit(function() {
-				$.ajax({
-					url: $(this).attr("action"),
-					data: $(this).serialize(),
-					type: $(this).attr("method"),
-					dataType: 'JSON',
-					success: function(hasil) {
-						console.log(hasil);
-					}
-				})
-				return false;
-			});
-		});
+		// $(function() {
+		// 	$(".form-soal").submit(function() {
+		// 		$.ajax({
+		// 			url: $(this).attr("action"),
+		// 			data: $(this).serialize(),
+		// 			type: $(this).attr("method"),
+		// 			dataType: 'JSON',
+		// 			success: function(hasil) {
+		// 				console.log(hasil);
+		// 			}
+		// 		})
+		// 		return false;
+		// 	});
+		// });
 
 		// load library ckeditor
 		CKEDITOR.replace('editorfr');

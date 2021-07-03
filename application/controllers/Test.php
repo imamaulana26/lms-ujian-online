@@ -21,7 +21,7 @@ class Test extends CI_Controller
 	 */
 	public function index()
 	{
-		$page = 'admin/v_test';
+		$page = 'siswa/v_test';
 		$data['title'] = 'Testing';
 
 		$this->load->view($page, $data);

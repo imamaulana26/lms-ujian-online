@@ -27,4 +27,79 @@ class Kelola_soal extends CI_Controller
 
 		$this->load->view($page, $data);
 	}
+
+	public function submit_soal()
+	{
+		var_dump(
+			$this->input->post()
+		);
+		$dt_temp_lamp = array();
+		$dt_soal = array(
+			'soal_modul_id' => input('modul'),
+			'soal_detail' => input('soal_ujian'),
+		);
+
+		//lampiran
+		if (!empty(input('lampiran_soal'))) {
+			$dt_lamp = array(
+				'tipe' => input('jns_lampiran'),
+				'link' => input('lampiran_soal')
+			);
+			// $dt_temp_lamp = serialize($dt_lamp);
+			$dt_temp_lamp = array(
+				'soal_lampiran' => serialize($dt_lamp)
+			);
+		}
+		// end of lampiran
+
+		// soal 
+		if (input('jns_soal') == 1) {
+			//true false
+			$dt_jenis = array(
+				'soal_tipe' => '2',
+				'soal_kunci' => input('tf'),
+			);
+			// $dt_fix = array_merge($dt_soal, $dt_jenis);
+		} elseif (input('jns_soal') == 0) {
+			//soal pg
+			$pg = array();
+			$key = array(
+				input('pilihan_a'),
+				input('pilihan_b'),
+				input('pilihan_c'),
+				input('pilihan_d')
+			);
+			$n = range('a', 'd');
+			for ($i = 0; $i < count($key); $i++) {
+				$pg[$i]['kunci_jawaban'] = $n[$i];
+				$pg[$i]['jawaban'] = $key[$i];
+			}
+
+			$dt_jenis = array(
+				'soal_tipe' => '1',
+				'soal_pg' => serialize($pg),
+				'soal_kunci' => 'a'
+			);
+		} elseif (input('jns_soal') == 2) {
+			//esay
+			$dt_jenis = array(
+				'soal_tipe' => '3',
+				'soal_kunci' => input('tf'),
+			);
+		}
+		// end of soal
+		$dt_fix = array_merge($dt_soal, $dt_jenis, $dt_temp_lamp);
+		// var_dump($dt_fix);
+
+		$test_soal = 'a:4:{i:0;a:2:{s:13:"kunci_jawaban";s:1:"a";s:7:"jawaban";s:21:"Sekolah Menengah Ata1";}i:1;a:2:{s:13:"kunci_jawaban";s:1:"b";s:7:"jawaban";s:22:"Sekolah Menengah Bawa1";}i:2;a:2:{s:13:"kunci_jawaban";s:1:"c";s:7:"jawaban";s:21:"Sekolah Menengah Kir1";}i:3;a:2:{s:13:"kunci_jawaban";s:1:"d";s:7:"jawaban";s:22:"Sekolah Menengah Kana1";}}';
+		var_dump(unserialize($test_soal));
+		var_dump($dt_fix);
+		die;
+		// $dt_soal = array(
+		// 	'soal_modul_id' => 'sadas',
+		// 	'soal_detail' => 'sadas',
+		// 	'soal_tipe' => 'sadas',
+		// );
+		die;
+	}
 }
