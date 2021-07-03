@@ -53,5 +53,5 @@ $route['default_controller'] = 'auth';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['kelola-module'] = 'kelola_module';
-$route['kelola-module/soal/(:num)'] = 'kelola_module/soal/$1';
+$route['module-soal'] = 'module_soal';
+$route['module-soal/soal/(:num)'] = 'module_soal/soal/$1';

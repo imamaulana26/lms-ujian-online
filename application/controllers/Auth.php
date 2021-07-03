@@ -26,7 +26,7 @@ class Auth extends CI_Controller
 				$sess['nm_user'] = $dt_user['pengguna_nama'];
 				$sess['username'] = $dt_user['pengguna_username'];
 				$this->session->set_userdata($sess);
-				redirect('test');
+				redirect('dashboard/test');
 			} elseif ($dt_user['pengguna_level'] == 3) {
 				$sess['nm_user'] = $dt_user['pengguna_nama'];
 				$sess['username'] = $dt_user['pengguna_username'];

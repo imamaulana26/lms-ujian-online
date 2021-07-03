@@ -40,9 +40,9 @@
 					</a>
 					<ul class="nav nav-treeview">
 						<li class="nav-item">
-							<a href="<?= site_url('kelola-module') ?>" class="nav-link" id="kelola-module">
+							<a href="<?= site_url('module-soal') ?>" class="nav-link" id="module-soal">
 								<i class="far fa-circle nav-icon"></i>
-								<p>Kelola Module</p>
+								<p>Module Soal</p>
 							</a>
 						</li>
 					</ul>

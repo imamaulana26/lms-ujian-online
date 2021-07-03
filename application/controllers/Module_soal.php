@@ -1,15 +1,15 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Kelola_module extends CI_Controller
+class Module_soal extends CI_Controller
 {
 	public function index()
 	{
-		$page = 'admin/v_kelola_module';
-		$data['title'] = 'Halaman Kelola Module';
+		$page = 'admin/v_module_soal';
+		$data['title'] = 'Halaman Module Soal';
 		$data['breadcrumb'] = array(
 			'<li class="breadcrumb-item"><a href="' . site_url('dashboard') . '"><i class="fa fa-fw fa-desktop"></i> Dashboard</a></li>',
-			'<li class="breadcrumb-item active">Kelola Module</li>'
+			'<li class="breadcrumb-item active">Module Soal</li>'
 		);
 
 		$sql = "SELECT a.id_modul, e.kelas_nama, d.nm_mapel, a.modul_ub, a.waktu_pengerjaan, COUNT(b.soal_modul_id) as bank_soal FROM tbl_modul a
@@ -33,11 +33,11 @@ class Kelola_module extends CI_Controller
 	public function soal($id)
 	{
 		$page = 'admin/v_kelola_soal';
-		$data['title'] = 'Halaman Kelola Module';
+		$data['title'] = 'Halaman Kelola Soal';
 		$data['breadcrumb'] = array(
 			'<li class="breadcrumb-item"><a href="' . site_url('dashboard') . '"><i class="fa fa-fw fa-desktop"></i> Dashboard</a></li>',
-			'<li class="breadcrumb-item"><a href="' . site_url('kelola-module') . '">Kelola Module</a></li>',
-			'<li class="breadcrumb-item active">Soal</li>'
+			'<li class="breadcrumb-item"><a href="' . site_url('kelola-module') . '">Module Soal</a></li>',
+			'<li class="breadcrumb-item active">Kelola Soal</li>'
 		);
 
 		$sql = "SELECT a.id_modul, e.kelas_nama, d.nm_mapel, a.modul_ub, a.waktu_pengerjaan, COUNT(b.soal_modul_id) as bank_soal FROM tbl_modul a
@@ -51,6 +51,8 @@ class Kelola_module extends CI_Controller
 		ON c.id_kelas = e.kelas_id
 		WHERE a.id_modul = '" . $id . "' GROUP BY a.id_modul";
 		$data['module'] = $this->db->query($sql)->row_array();
+
+		$data['bank_soal'] = $this->db->get_where('tbl_soal', ['soal_modul_id' => $id])->result_array();
 
 		$this->load->view($page, $data);
 	}
@@ -108,9 +110,9 @@ class Kelola_module extends CI_Controller
 
 		exit;
 	}
+
 	public function edit_module()
 	{
-
 		// $this->db->insert('tbl_modul', [
 		// 	'modul_pelajaran' => input('id_mapel'),
 		// 	'modul_ub' => input('id_ub'),
@@ -119,8 +121,6 @@ class Kelola_module extends CI_Controller
 		$this->db->update('tbl_modul', ['waktu_pengerjaan' => input('waktu_ujian')], ['id_modul' => input('idmodul_update')]);
 
 		echo json_encode(['jenis' => 'update', 'msg' => 'Berhasil diupdate']);
-
-
 		exit;
 	}
 }
