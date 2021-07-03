@@ -53,7 +53,9 @@ class Test extends CI_Controller
 			);
 			$this->db->insert('tbl_log_soal', $dt_insert);
 
-			echo 'langsung redirect ke view kejakan soal';
+			// echo 'langsung redirect ke view kejakan soal';
+
+			// redirect('kerjakan', 'refresh');
 		} else {
 			$page = 'admin/v_soal';
 			$data['title'] = 'Testing';
@@ -161,10 +163,7 @@ class Test extends CI_Controller
 			// var_dump($rowfix);
 			// $namasoal = $this->db->get_where('tbl_modul', ['id_modul' => $id])->row_array();
 			$data['nm_soal'] = $this->db->select('nm_mapel')->from('tbl_modul a')->join('tbl_pelajaran b', 'a.modul_pelajaran = b.id_pelajaran', 'left')->join('tbl_mapel c', 'b.kd_mapel = c.kd_mapel', 'left')->get()->row_array();
-
-
-			// var_dump($namasoal);
-			// die;
+			$data['id_logsoal'] = $dturut_array['id_log'];
 
 			$this->session->set_userdata('soal', $soal_acak);
 			$this->load->view($page, $data);
@@ -232,12 +231,27 @@ class Test extends CI_Controller
 
 		$nilai_fix = ($nilai / count($soal)) * 100;
 		// end of penghitungan nilai
-		// var_dump($jawaban_siswa);
-		// var_dump($soal);
+		$waktuselesai = date('Y-m-d H:i:s');
+		$where = array(
+			'id_log' => input('id_log')
+		);
+
 		// var_dump(unserialize($soal1));
 		$nilai_bulat = round($nilai_fix, 2);
-		var_dump($soal);
-		die;
+
+		$dt_update_siswa = array(
+			'log_jawaban_user' => serialize($jawaban),
+			'time_end' => $waktuselesai,
+			'nilai' => $nilai_bulat
+		);
+		$this->db->update('tbl_log_soal', $dt_update_siswa, $where);
+		// var_dump($jawaban);
+		// var_dump($soal);
+		// var_dump($waktuselesai);
+		// var_dump($nilai_bulat);
+
+		$this->session->sess_destroy('soal');
+		redirect('dashboard/test', 'refresh');
 	}
 
 

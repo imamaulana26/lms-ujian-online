@@ -58,7 +58,7 @@ class Dashboard extends CI_Controller
 			->join('tbl_pelajaran b', 'a.modul_pelajaran = b.id_pelajaran', 'left')
 			->join('tbl_mapel c', 'b.kd_mapel = c.kd_mapel', 'left')
 			->join('tbl_log_soal d', 'd.kd_modul = a.id_modul', 'left')
-			->where('nis_user', $this->session->userdata('username'))
+			// ->where('nis_user', $this->session->userdata('username'))
 			->get()->result_array();
 
 		$this->load->view($page, $data);
