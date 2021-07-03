@@ -72,6 +72,13 @@
 						</li>
 					</ul>
 				</li>
+
+				<li class="nav-item">
+					<a href="<?= site_url('logout') ?>" class="nav-link">
+						<i class="fa fa-fw fa-power-off nav-icon"></i>
+						<p>Logout</p>
+					</a>
+				</li>
 			</ul>
 		</nav>
 		<!-- /.sidebar-menu -->
