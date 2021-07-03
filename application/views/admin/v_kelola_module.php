@@ -90,12 +90,14 @@
 		<!-- /.content-wrapper -->
 
 		<!-- Modal -->
-		<form id="form-module">
+		<form id="form-module" method="POST">
+
 			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="exampleModalLabel">Modal Kelola Module</h5>
+							<input type="hidden" id="id_modul" name="idmodul_update">
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -162,6 +164,7 @@
 	var url = "";
 
 	$(document).ready(function() {
+		$('[data-toggle="tooltip"]').tooltip();
 		// trigger on kelas dropdown
 		$('#kelas').on('change', function() {
 			$.ajax({
@@ -200,6 +203,7 @@
 				$('#id_mapel').html('<option value="' + respon.id_pelajaran + '">' + respon.nm_mapel + '</option>').attr('disabled', true);
 				$('#id_ub').val(respon.modul_ub).attr('disabled', true);
 				$('#waktu_ujian').val(respon.waktu_pengerjaan);
+				$('#id_modul').val(respon.id_modul);
 			}
 		});
 	}
@@ -213,11 +217,55 @@
 
 		$.ajax({
 			url: url,
-			data: $('#form-module').serialize(),
-			type: "POST",
 			dataType: 'JSON',
 			success: function(hasil) {
-				console.log(hasil);
+				if (hasil.jenis == 'update') {
+					Swal.fire({
+						icon: 'success',
+						title: 'Sukses',
+						text: hasil.msg,
+						timer: 2000,
+						allowOutsideClick: false,
+						timerProgressBar: true,
+						showConfirmButton: false
+					}).then((result) => {
+						if (result.dismiss === Swal.DismissReason.timer) {
+							location.reload();
+						}
+					})
+				} else {
+					if (hasil.status == false) {
+						Swal.fire({
+							icon: 'success',
+							title: 'Sukses',
+							text: hasil.msg,
+							timer: 2000,
+							allowOutsideClick: false,
+							timerProgressBar: true,
+							showConfirmButton: false
+						}).then((result) => {
+							if (result.dismiss === Swal.DismissReason.timer) {
+								location.reload();
+							}
+						})
+					} else {
+						Swal.fire({
+							icon: 'warning',
+							title: 'Gagal',
+							text: hasil.msg,
+							timer: 2000,
+							allowOutsideClick: false,
+							timerProgressBar: true,
+							showConfirmButton: false
+						}).then((result) => {
+							if (result.dismiss === Swal.DismissReason.timer) {
+								location.reload();
+							}
+						})
+					}
+				}
+
+				// console.log(hasil);
 			}
 		});
 	}

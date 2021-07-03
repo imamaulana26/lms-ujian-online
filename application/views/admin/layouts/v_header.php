@@ -16,6 +16,8 @@
 	<link rel="stylesheet" href="<?= base_url('assets/dist/') . 'css/adminlte.min.css' ?>">
 	<!-- Google Font: Source Sans Pro -->
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+	<!-- toogle -->
+	<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 
@@ -27,9 +29,11 @@
 	<!-- jQuery -->
 	<script src="<?= base_url('assets/plugins/') . 'jquery/jquery.min.js' ?>"></script>
 	<!-- Popper -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> -->
 	<!-- Bootstrap -->
 	<script src="<?= base_url('assets/plugins/') . 'bootstrap/js/bootstrap.bundle.min.js' ?>"></script>
+	<!-- toogle -->
+	<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 	<!-- AdminLTE -->
 	<script src="<?= base_url('assets/dist/') . 'js/adminlte.js' ?>"></script>
 
@@ -63,9 +67,9 @@
 			}
 		});
 
-		$(function() {
-			$('[data-toggle="tooltip"]').tooltip()
-		})
+		// $(function() {
+		// 	$('[data-toggle="tooltip"]').tooltip()
+		// })
 
 		function CheckNumeric() {
 			return event.keyCode >= 48 && event.keyCode <= 57;
