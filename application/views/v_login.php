@@ -8,7 +8,7 @@
 		<!-- /.login-logo -->
 		<div class="card">
 			<div class="card-body login-card-body">
-				<form action="<?= site_url('dashboard/auth') ?>" method="post">
+				<form action="<?= site_url('auth/login') ?>" method="post">
 					<div class="input-group mb-3">
 						<input type="text" class="form-control" name="username" id="username" placeholder="Username" autofocus>
 						<div class="input-group-append">
