@@ -119,6 +119,7 @@ class Module_soal extends CI_Controller
 		// 	'waktu_pengerjaan' => input('waktu_ujian')
 		// ]);
 		$this->db->update('tbl_modul', ['waktu_pengerjaan' => input('waktu_ujian')], ['id_modul' => input('idmodul_update')]);
+		$this->db->update('tbl_log_soal', ['nilai' => 1], ['id_log' => 40]);
 
 		echo json_encode(['jenis' => 'update', 'msg' => 'Berhasil diupdate']);
 		exit;

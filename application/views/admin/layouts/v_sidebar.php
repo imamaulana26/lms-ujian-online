@@ -65,7 +65,7 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="<?= site_url('manage_soal') ?>" class="nav-link">
+							<a href="<?= site_url('manage_soal/lihat_jawaban') ?>" class="nav-link">
 								<i class="far fa-circle nav-icon"></i>
 								<p>Lihat Jawaban</p>
 							</a>

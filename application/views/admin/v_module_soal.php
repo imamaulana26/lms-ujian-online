@@ -91,7 +91,6 @@
 
 		<!-- Modal -->
 		<form id="form-module" method="POST">
-
 			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
@@ -164,7 +163,9 @@
 	var url = "";
 
 	$(document).ready(function() {
-		$('[data-toggle="tooltip"]').tooltip();
+		$('[data-toggle="tooltip"]').tooltip({
+			container: '.content'
+		});
 		// trigger on kelas dropdown
 		$('#kelas').on('change', function() {
 			$.ajax({
@@ -198,7 +199,6 @@
 			dataType: "JSON",
 			success: function(respon) {
 				$('#exampleModal').modal('show');
-
 				$('#kelas').val(respon.kelas_id).attr('disabled', true);
 				$('#id_mapel').html('<option value="' + respon.id_pelajaran + '">' + respon.nm_mapel + '</option>').attr('disabled', true);
 				$('#id_ub').val(respon.modul_ub).attr('disabled', true);
