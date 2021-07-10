@@ -56,3 +56,5 @@ $route['logout'] = 'auth/logout';
 
 $route['module-soal'] = 'module_soal';
 $route['module-soal/soal/(:num)'] = 'module_soal/soal/$1';
+
+$route['management-soal/lihat-jawaban'] = 'manage_soal/index';
