@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 if (!function_exists('tgl_indo')) {
-    function date_indo($tgl)
+    function tgl_indo($tgl)
     {
         $ubah = gmdate($tgl, time() + 60 * 60 * 8);
         $pecah = explode("-", $ubah);
@@ -198,6 +198,6 @@ if (!function_exists('longdate_indo')) {
         } else if ($nama == "Saturday") {
             $nama_hari = "Sabtu";
         }
-        return $nama_hari . ',' . $tgl . ' ' . $bulan . ' ' . $thn;
+        return $nama_hari . ', ' . $tgl . ' ' . $bulan . ' ' . $thn;
     }
 }
