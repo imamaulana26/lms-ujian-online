@@ -122,8 +122,8 @@ class Test extends CI_Controller
 
 		$dateTime = new DateTime();
 		$dateTime->modify("+{$batas_waktu} minutes");
-		
-		$bank_soal = $this->db->get_where('tbl_soal', ['soal_modul_id' => $id])->result_array();		
+
+		$bank_soal = $this->db->get_where('tbl_soal', ['soal_modul_id' => $id])->result_array();
 		$cek_log_soal = $this->db->get_where('tbl_log_soal', ['nis_user' => $_SESSION['username'], 'kd_modul' => $id]);
 
 		$data['nm_soal'] = $this->db->select('nm_mapel')->from('tbl_modul a')->join('tbl_pelajaran b', 'a.modul_pelajaran = b.id_pelajaran', 'left')->join('tbl_mapel c', 'b.kd_mapel = c.kd_mapel', 'left')->get()->row_array();
@@ -148,7 +148,6 @@ class Test extends CI_Controller
 				array_push($soal_acak, $soal_dumy);
 			}
 			$data['soal_acak'] = $soal_acak;
-
 		} else {
 			$dturut_array = $cek_log_soal->row_array();
 			$unser_urut = unserialize($dturut_array['id_log_soal']);
@@ -173,7 +172,7 @@ class Test extends CI_Controller
 
 		$log_soal = $this->check_log_soal();
 		$id_log = $this->db->get_where('tbl_log_soal', ['nis_user' => $_SESSION['username'], 'kd_modul' => $log_soal['id_modul']])->row_array();
-		
+
 		$data['nm_soal'] = $log_soal['nm_soal'];
 		$data['soal_acak'] = $log_soal['soal_acak'];
 		$data['id_logsoal'] = $id_log['id_log'];
@@ -226,17 +225,26 @@ class Test extends CI_Controller
 
 		//penghitungan nilai tipe 5
 		if (($key3 = array_search(5, array_column($jawaban, 'tipe'))) !== false) {
+
 			if (($key4 = array_search(5, array_column($soal, 'soal_tipe'))) !== false) {
 				$kunci = unserialize($soal[$key4]['soal_kunci']);
 				foreach ($kunci as $value) {
-					if ($jawaban[$key3][$value['row']] == $value['column']) {
+					if ($jawaban[$key3]['jwb'][$value['row']] == $value['column']) {
 						$result++;
 					}
+					//membuat ulang struktur
+					$jawaban_reposisi[] =
+						array(
+							'row' => $value['row'],
+							'column' => $jawaban[$key3]['jwb'][$value['row']]
+						);
 				}
 				if ($result == 5) {
 					$nilai++;
 				}
 			}
+			//mengganti array jawaban
+			$jawaban[$key3]['jwb'] = $jawaban_reposisi;
 		}
 		// end of tipe 5
 
@@ -246,8 +254,6 @@ class Test extends CI_Controller
 		$where = array(
 			'id_log' => input('id_log')
 		);
-
-		// var_dump(unserialize($soal1));
 		$nilai_bulat = round($nilai_fix, 2);
 
 		$dt_update_siswa = array(
@@ -255,13 +261,9 @@ class Test extends CI_Controller
 			'time_end' => $waktuselesai,
 			'nilai' => $nilai_bulat
 		);
+		// var_dump($dt_update_siswa);
+		// die;
 		$this->db->update('tbl_log_soal', $dt_update_siswa, $where);
-		// var_dump($jawaban);
-		// var_dump($soal);
-		// var_dump($waktuselesai);
-		// var_dump($nilai_bulat);
-
-		$this->session->sess_destroy('soal');
 		redirect('dashboard/test', 'refresh');
 	}
 

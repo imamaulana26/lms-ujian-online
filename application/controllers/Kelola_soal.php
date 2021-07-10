@@ -27,12 +27,20 @@ class Kelola_soal extends CI_Controller
 
 		$this->load->view($page, $data);
 	}
+	function hapus_soal($id)
+	{
+		$this->db->delete('tbl_soal', ['soal_id' => $id]);
+		echo json_encode([
+			'msg' => 'Soal berhasil dihapus!'
+		]);
+		exit;
+	}
 
 	public function submit_soal()
 	{
-		var_dump(
-			$this->input->post()
-		);
+		// var_dump(
+		// 	$this->input->post()
+		// );
 		$dt_temp_lamp = array();
 		$dt_soal = array(
 			'soal_modul_id' => input('modul'),
@@ -45,7 +53,6 @@ class Kelola_soal extends CI_Controller
 				'tipe' => input('jns_lampiran'),
 				'link' => input('lampiran_soal')
 			);
-			// $dt_temp_lamp = serialize($dt_lamp);
 			$dt_temp_lamp = array(
 				'soal_lampiran' => serialize($dt_lamp)
 			);
@@ -59,7 +66,6 @@ class Kelola_soal extends CI_Controller
 				'soal_tipe' => '2',
 				'soal_kunci' => input('tf'),
 			);
-			// $dt_fix = array_merge($dt_soal, $dt_jenis);
 		} elseif (input('jns_soal') == 0) {
 			//soal pg
 			$pg = array();
@@ -86,20 +92,33 @@ class Kelola_soal extends CI_Controller
 				'soal_tipe' => '3',
 				'soal_kunci' => input('tf'),
 			);
+		} elseif (input('jns_soal') == 3) {
+			//jawaban singkat
+			$dt_jenis = array(
+				'soal_tipe' => '4',
+				'soal_kunci' => input('jawaban_singkat'),
+			);
+		} elseif (input('jns_soal') == 4) {
+			//dt jawaban mencocokan
+
+			for ($i = 0; $i < count($this->input->post('row')); $i++) {
+				$dt_jawaban[] = array(
+					'row' => $this->input->post('row')[$i],
+					'column' => $this->input->post('cols')[$i]
+				);
+			}
+			//end of dt
+
+			//jawaban mencocokan jawaban
+			$dt_jenis = array(
+				'soal_tipe' => '5',
+				'soal_kunci' => serialize($dt_jawaban),
+			);
 		}
 		// end of soal
 		$dt_fix = array_merge($dt_soal, $dt_jenis, $dt_temp_lamp);
-		// var_dump($dt_fix);
-
-		$test_soal = 'a:4:{i:0;a:2:{s:13:"kunci_jawaban";s:1:"a";s:7:"jawaban";s:21:"Sekolah Menengah Ata1";}i:1;a:2:{s:13:"kunci_jawaban";s:1:"b";s:7:"jawaban";s:22:"Sekolah Menengah Bawa1";}i:2;a:2:{s:13:"kunci_jawaban";s:1:"c";s:7:"jawaban";s:21:"Sekolah Menengah Kir1";}i:3;a:2:{s:13:"kunci_jawaban";s:1:"d";s:7:"jawaban";s:22:"Sekolah Menengah Kana1";}}';
-		var_dump(unserialize($test_soal));
-		var_dump($dt_fix);
-		die;
-		// $dt_soal = array(
-		// 	'soal_modul_id' => 'sadas',
-		// 	'soal_detail' => 'sadas',
-		// 	'soal_tipe' => 'sadas',
-		// );
-		die;
+		$this->db->insert('tbl_soal', $dt_fix);
+		$this->session->set_flashdata('msg', 'success');
+		echo "<script language=\"javascript\">window.history.back();</script>";
 	}
 }

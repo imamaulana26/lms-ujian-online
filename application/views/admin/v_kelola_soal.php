@@ -33,7 +33,7 @@
 			<!-- Main content -->
 			<div class="content">
 				<section id="section-kelola-soal">
-					<form class="form-soal" action="<?= site_url('kelola_soal/submit_soal') ?>" method="POST">
+					<form id="fm_soal" class="form-soal" action="<?= site_url('kelola_soal/submit_soal') ?>" method="POST">
 						<input name="modul" type="hidden" value="<?= $this->uri->segment(3) ?>">
 						<!-- /.mengelola soal -->
 						<div class="card">
@@ -210,18 +210,20 @@
 									Mengelola Jawaban <b>Mencocokan Jawaban</b>
 								</div>
 								<div class="card-body">
-									<?php for ($i = 1; $i < 6; $i++) { ?>
-										<div class="form-group row">
-											<label class="col-md-1 col-form-label">Baris <?= $i ?></label>
-											<div class="col-md-3">
-												<input type="text" class="form-control" name="row_<?= $i ?>" id="row_<?= $i ?>" placeholder="baris ke <?= $i ?>">
-											</div>
-											<label class="col-md-1 col-form-label">Kolom <?= $i ?></label>
-											<div class="col-md-3">
-												<input type="text" class="form-control" name="cols_<?= $i ?>" id="cols_<?= $i ?>" placeholder="Jawaban baris ke <?= $i ?>">
-											</div>
+									<div class="form-group row">
+										<label class="col-md-1 col-form-label">Baris 1</label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" name="row[]" id="row[]" placeholder="baris ke 1">
 										</div>
-									<?php } ?>
+										<label class="col-md-1 col-form-label">Kolom 1</label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" name="cols[]" id="cols[]" placeholder="Jawaban baris ke 1">
+										</div>
+										<div class="col-sm-1" id="add">
+											<span class="btn btn-default btn_add"><i class="fa fa-fw fa-plus"></i></span>
+										</div>
+									</div>
+									<div class="clone"></div>
 								</div>
 							</div>
 						</section>
@@ -256,11 +258,15 @@
 								</thead>
 								<tbody>
 									<?php $jns_soal = array(1 => 'Pilihan Ganda', 'True / False', 'Essay', 'Jawaban Singkat', 'Mencocokan Jawaban');
-									foreach ($bank_soal as $key => $val) : ?>
+									foreach ($bank_soal as $key => $val) :
+										$soal_id = $val['soal_id'];
+									?>
+
 										<tr>
 											<td><?= $key + 1 ?></td>
 											<td>
 												<?= $val['soal_detail'] ?><br>
+
 												<?php if (!empty($val['soal_lampiran'])) {
 													$sourcelink = $val['soal_lampiran'];
 													$unsersource = unserialize($sourcelink);
@@ -304,7 +310,8 @@
 													<i class="fa fa-md fa-edit"></i>
 												</a>
 												<span class="text-danger mx-1">
-													<i class="fa fa-md fa-trash"></i>
+													<!-- <i class="fa fa-md fa-trash"></i> -->
+													<a href="javascript:void(0)" style="color: #dc3545;" onclick="hapus_soal(<?= $soal_id ?>)"><i class="fa fa-md fa-trash"></i></a>
 												</span>
 											</td>
 										</tr>
@@ -404,5 +411,90 @@
 	});
 </script>
 
+<script>
+	var i = 0;
+	$('.btn_add').click(function() {
+		var html = '';
+		html += `<div class="form-group row">
+						<label class="col-md-1 col-form-label">Baris ` + (i + 2) + `</label>
+						<div class="col-md-3">
+						<input type="text" class="form-control" name="row[]" id="row[]" placeholder="baris ke ` + (i + 2) + `">
+						</div>
+						<label class="col-md-1 col-form-label">Kolom ` + (i + 2) + `</label>
+						<div class="col-md-3">
+						<input type="text" class="form-control" name="cols[]" id="cols[]" placeholder="Jawaban baris ke ` + (i + 2) + `">
+						</div>
+						<div class="col-sm-1">
+							<span class="btn btn-default btn_delete"><i class="fa fa-fw fa-minus"></i></span>
+						</div>
+					</div>`;
+
+		if (i < 4) {
+			$('.clone').append(html);
+			i++;
+		} else {
+			Swal.fire({
+				title: 'Oops!',
+				icon: 'warning',
+				text: 'Lampiran telah mencapai batas!'
+			});
+		}
+	});
+	$('#fm_soal').on('click', '.btn_delete', function() {
+		$(this).parent().parent().remove();
+		i--;
+	});
+
+	function hapus_soal(id) {
+		Swal.fire({
+			title: 'Hapus soal ini?',
+			text: "Apakah Anda Yakin ingin menghapus soal ini?",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Hapus',
+			allowOutsideClick: false,
+			cancelButtonText: 'Tidak'
+		}).then((result) => {
+			if (result.value) {
+				$.ajax({
+					url: "<?= site_url('kelola_soal/hapus_soal/') ?>" + id,
+					type: "POST",
+					dataType: "JSON",
+					success: function(res) {
+						Swal.fire({
+							icon: 'success',
+							title: 'Sukses',
+							text: 'Soal berhasil dihapus',
+							timer: 2000,
+							allowOutsideClick: false,
+							timerProgressBar: true,
+							showConfirmButton: false
+						}).then((result) => {
+							if (result.dismiss === Swal.DismissReason.timer) {
+								location.reload();
+							}
+						})
+					}
+				});
+			}
+		})
+	}
+</script>
+
+<!-- start flashdata -->
+<?php if ($this->session->flashdata('msg') == 'success') : ?>
+	<script type="text/javascript">
+		Swal.fire({
+			title: 'Success',
+			text: 'Soal Berhasil Ditambahkan',
+			icon: 'success',
+		});
+	</script>
+<?php else : ?>
+
+<?php endif; ?>
+<!-- end of flashdata -->
 
 </html>

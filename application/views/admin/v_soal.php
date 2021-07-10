@@ -145,7 +145,7 @@
                                             </div>
                                             <div class="jawaban">
                                                 <form method="post" action="<?= site_url('test/check_form') ?>">
-                                                    <input type="hidden" value="<?= $id_logsoal ?>" name="id_log">
+                                                    <input type="text" value="<?= $id_logsoal ?>" name="id_log">
                                                     <?php if ($value['soal_tipe'] == 1) { //Pilihan ganda
                                                         $pg = unserialize($value['soal_pg']);
                                                         shuffle($pg);
@@ -158,13 +158,13 @@
                                                                 <label for="radio<?= $value['soal_id'] . $uid ?>"><?= $jwbn['jawaban'] ?></label>
                                                             </div>
                                                         <?php } ?>
-                                                        <input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
+                                                        <input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
                                                         <input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
                                                     <?php
                                                     } elseif ($value['soal_tipe'] == 2) { //True or false
                                                     ?>
                                                         <input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
-                                                        <input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
+                                                        <input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
                                                         <div class="box">
                                                             <input type="radio" id="radiotrue" name="answer[<?= $value['soal_id'] ?>][jwb]" value="true">
                                                             <label for="radiotrue">True</label>
@@ -176,19 +176,19 @@
                                                     <?php } elseif ($value['soal_tipe'] == 3) { //Esay
                                                     ?>
                                                         <input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
-                                                        <input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
+                                                        <input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
                                                         <div class="box">
                                                             <textarea class="form-control" id="type3" rows="3" name="answer[<?= $value['soal_id'] ?>][jwb]"></textarea>
                                                         </div>
                                                     <?php  } elseif ($value['soal_tipe'] == 4) { //Jawaban singkat
                                                     ?>
                                                         <input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
-                                                        <input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
+                                                        <input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
                                                         <input type="text" name="answer[<?= $value['soal_id'] ?>][jwb]">
                                                     <?php } elseif ($value['soal_tipe'] == 5) {  //Mencocokan Jawaban
                                                     ?>
                                                         <input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
-                                                        <input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
+                                                        <input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
                                                         <?php
                                                         $dtmulti = unserialize($value['soal_kunci']);
                                                         foreach ($dtmulti as $dtpecah) {
@@ -217,7 +217,7 @@
                                                                             <th><?= $value3 ?></th>
                                                                             <?php for ($i = 0; $i < count($rowfix); $i++) {
                                                                             ?>
-                                                                                <td><input type="radio" name="answer[<?= $value['soal_id'] ?>][<?= $value3 ?>]" value="<?= $colfix[$i] ?>" />
+                                                                                <td><input type="radio" name="answer[<?= $value['soal_id'] ?>][jwb][<?= $value3 ?>]" value="<?= $colfix[$i] ?>" />
                                                                                 </td>
                                                                             <?php } ?>
                                                                         </tr>
@@ -307,6 +307,7 @@
     ?>
     </div>
 </body>
+
 
 <script>
     var currentTab = 1;
