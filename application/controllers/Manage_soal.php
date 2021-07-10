@@ -25,6 +25,7 @@ class Manage_soal extends CI_Controller
             ->get()->result_array();
         $this->load->view($page, $data);
     }
+
     function jawaban_siswa($id)
     {
         $page = 'admin/v_jawaban_siswa';
@@ -82,18 +83,16 @@ class Manage_soal extends CI_Controller
         // echo json_encode(['jenis' => 'submit', 'status' => false, 'msg' => 'Berhasil ditambahkan']);
         exit;
     }
+
     function update_nilai()
     {
-        // $result = $this->db->update(
-        //     'tbl_log_soal',
-        //     ['nilai' => input('nilai_update')],
-        //     ['id_log' => input('idlog_update')]
-        // );
+        $this->db->update(
+            'tbl_log_soal',
+            ['nilai' => input('nilai_update')],
+            ['id_log' => input('idlog_update')]
+        );
 
-        $result = $this->input->post();
-
-        // echo json_encode(['jenis' => 'update', 'msg' => 'Berhasil diupdate']);
-        echo json_encode($result);
+        echo json_encode(['jenis' => 'update', 'msg' => 'Berhasil diupdate']);
         exit;
     }
 }
