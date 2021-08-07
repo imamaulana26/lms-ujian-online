@@ -55,6 +55,9 @@ $route['translate_uri_dashes'] = FALSE;
 $route['logout'] = 'auth/logout';
 
 $route['module-soal'] = 'module_soal';
+$route['manage-quis'] = 'manage_quis';
 $route['module-soal/soal/(:num)'] = 'module_soal/soal/$1';
+$route['manage-quis/peserta/(:num)/online'] = 'manage_quis/peserta/$1/oc';
+$route['manage-quis/soal/(:num)'] = 'manage_quis/soal/$1';
 
 $route['management-soal/lihat-jawaban'] = 'manage_soal/index';
