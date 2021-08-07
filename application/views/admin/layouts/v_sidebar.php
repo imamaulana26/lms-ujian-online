@@ -74,6 +74,13 @@
 				</li>
 
 				<li class="nav-item">
+					<a href="<?= site_url('manage-quis') ?>" class="nav-link">
+						<i class="nav-icon fas fa-copy"></i>
+						<p>Manage Quis</p>
+					</a>
+				</li>
+
+				<li class="nav-item">
 					<a href="<?= site_url('logout') ?>" class="nav-link">
 						<i class="fa fa-fw fa-power-off nav-icon"></i>
 						<p>Logout</p>
