@@ -18,8 +18,10 @@
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 	<!-- toogle -->
 	<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
-
+	<!-- datatable -->
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+	<!-- SELECT 2 -->
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 
 
@@ -47,6 +49,8 @@
 
 	<!-- Sweetalert2 -->
 	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<!-- select 2 -->
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 	<!-- CK editor JS -->
 	<script src="<?= base_url('assets/plugins/ckeditor/ckeditor.js') ?>"></script>
 	<!-- Ekko Lightbox -->
