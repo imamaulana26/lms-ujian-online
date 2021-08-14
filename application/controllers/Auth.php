@@ -30,7 +30,7 @@ class Auth extends CI_Controller
 				$sess['online_class'] = $kelas['oc'];
 				$sess['komunitas_class'] = $kelas['kc'];
 				$this->session->set_userdata($sess);
-				redirect('dashboard/test');
+				redirect('siswa/dashboard');
 			} elseif ($dt_user['pengguna_level'] == 3) {
 				$sess['nm_user'] = $dt_user['pengguna_nama'];
 				$sess['username'] = $dt_user['pengguna_username'];
