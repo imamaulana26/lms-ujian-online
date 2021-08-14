@@ -99,8 +99,14 @@
 	<div class="container-fluid mt-5">
 		<div class="row">
 			<div class="col-md-10 offset-1">
-				<h2 class="mb-3">Mata Pelajaran : <?= $nm_soal['nm_mapel']; ?></h2>
+				<div class="d-flex">
+					<div class="col-md-6">
+						<h5>Mata Pelajaran : <?= $nm_soal['nm_mapel']; ?></h5>
+					</div>
+					<div class="col-md-6">Waktu : <label id="waktu"></label>
+					</div>
 
+				</div>
 				<div class="row">
 					<div class="col-md-10">
 						<form method="post" action="<?= site_url('siswa/test/check_form') ?>">
@@ -300,8 +306,8 @@
 	$("#content1").show();
 	$('#nav-content1').removeClass('btn-default').addClass('btn-primary');
 
-	$('.btn-submit').addClass('d-none');
-	$('.btn-prev').addClass('d-none');
+	$('.btn-submit').addClass('invisible');
+	$('.btn-prev').addClass('invisible');
 
 	$('input, textarea').on('change', function() {
 		if ($(this).val() != "") {
@@ -310,6 +316,12 @@
 				'background-color': '#28a745',
 				'border-color': '#28a745',
 				'box-shadow': 'none'
+			});
+		} else {
+			$('#nav-content' + currentTab).css({
+				'color': '#444',
+				'background-color': '#f8f9fa',
+				'border-color': '#ddd'
 			});
 		}
 		show_btn_submit();
@@ -330,9 +342,9 @@
 
 	function show_btn_submit() {
 		if ($('input:invalid, textarea:invalid').length > 0) {
-			$('.btn-submit').addClass('d-none');
+			$('.btn-submit').addClass('invisible');
 		} else {
-			$('.btn-submit').removeClass('d-none');
+			$('.btn-submit').removeClass('invisible');
 		}
 	}
 
@@ -370,15 +382,47 @@
 
 	function toggle_btn_navigasi() {
 		if (currentTab == <?= count($soal_acak) ?>) {
-			$('.btn-next').addClass('d-none');
-			$('.btn-prev').removeClass('d-none');
+			$('.btn-next').addClass('invisible');
+			$('.btn-prev').removeClass('invisible');
 		} else if (currentTab == 1) {
-			$('.btn-prev').addClass('d-none');
+			$('.btn-prev').addClass('invisible');
 		} else {
-			$('.btn-next').removeClass('d-none');
-			$('.btn-prev').removeClass('d-none');
+			$('.btn-next').removeClass('invisible');
+			$('.btn-prev').removeClass('invisible');
 		}
 	}
+</script>
+
+
+<script>
+	// Set the date we're counting down to
+	var countDownDate = new Date("Aug 14 2021 23:05:35").getTime();
+	// console.log(new Date($.now()));
+
+	// Update the count down every 1 second
+	var x = setInterval(function() {
+
+		// ambil waktu hari ini
+		var now = new Date().getTime();
+
+		// hitung rentang waktu
+		var distance = countDownDate - now;
+
+		// hitung waktu
+		var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+		// tampilkan waktu
+		document.getElementById("waktu").innerHTML = hours + "h " +
+			minutes + "m " + seconds + "s ";
+
+		// waktu selesai
+		if (distance < 0) {
+			clearInterval(x);
+			document.getElementById("waktu").innerHTML = "WAKTU ANDA SELESAI";
+		}
+	}, 1000);
 </script>
 
 </html>
