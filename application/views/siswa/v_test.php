@@ -15,7 +15,8 @@
 		</div>
 	</nav>
 
-	<div class="container mt-5">
+	<div class="container my-3">
+		<label>List Ujian Bulanan Siswa</label>
 		<table class="table table-bordered table-hover">
 			<thead>
 				<tr>
@@ -24,13 +25,12 @@
 					<th>Mata Pelajaran</th>
 					<th>Tgl. Test Mulai</th>
 					<th>Tgl. Test Selesai</th>
-					<th>Batas Waktu Pengerjaan</th>
+					<th>Waktu Pengerjaan</th>
 					<th>Nilai</th>
 					<th class="text-center">Action</th>
 				</tr>
 			</thead>
 			<tbody>
-				<!-- <?= var_dump($list_ujian); ?> -->
 				<?php foreach ($list_ujian as $key => $val) : ?>
 					<tr>
 						<td class="text-center"><?= ($key + 1) ?></td>
@@ -44,7 +44,7 @@
 							<?php if ($val['nilai'] != null) : ?>
 								<span class="badge badge-danger">Selesai</span>
 							<?php else : ?>
-								<a href="<?= site_url('dashboard/detail_soal/' . $val['id_modul']) ?>">
+								<a href="<?= site_url('siswa/dashboard/detail_soal/' . $val['id_modul']) ?>">
 									<span class="badge badge-success" style="cursor: pointer;">Kerjakan</span>
 								</a>
 							<?php endif; ?>
@@ -53,6 +53,41 @@
 				<?php endforeach; ?>
 			</tbody>
 		</table>
+
+		<label>Program Quis Siswa</label>
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th class="text-center">#</th>
+					<th>Jenis Quis</th>
+					<th>Mata Pelajaran</th>
+					<th>Tgl. Test Mulai</th>
+					<th>Tgl. Test Selesai</th>
+					<th>Waktu Pengerjaan</th>
+					<th>Nilai</th>
+					<th class="text-center">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($list_quis as $key => $val) { ?>
+					<tr>
+						<td class="text-center"><?= $key + 1; ?></td>
+						<td><?= $val['jns_program']; ?></td>
+						<td><?= $val['nm_mapel']; ?></td>
+						<td>-</td>
+						<td>-</td>
+						<td><?= $val['waktu_pengerjaan']; ?> menit</td>
+						<td>-</td>
+						<td class="text-center">
+							<a href="#">
+								<span class="badge badge-success" style="cursor: pointer;">Kerjakan</span>
+							</a>
+						</td>
+					</tr>
+				<?php } ?>
+			</tbody>
+		</table>
 	</div>
 </body>
+
 </html>
