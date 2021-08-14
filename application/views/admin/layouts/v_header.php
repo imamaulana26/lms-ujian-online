@@ -40,9 +40,9 @@
 	<script src="<?= base_url('assets/dist/') . 'js/adminlte.js' ?>"></script>
 
 	<!-- OPTIONAL SCRIPTS -->
-	<script src="<?= base_url('assets/plugins/') . 'chart.js/Chart.min.js' ?>"></script>
-	<script src="<?= base_url('assets/dist/') . 'js/demo.js' ?>"></script>
-	<script src="<?= base_url('assets/dist/') . 'js/pages/dashboard3.js' ?>"></script>
+	<!-- <script src="<?= base_url('assets/plugins/') . 'chart.js/Chart.min.js' ?>"></script> -->
+	<!-- <script src="<?= base_url('assets/dist/') . 'js/demo.js' ?>"></script> -->
+	<!-- <script src="<?= base_url('assets/dist/') . 'js/pages/dashboard3.js' ?>"></script> -->
 
 	<!-- DataTables -->
 	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
