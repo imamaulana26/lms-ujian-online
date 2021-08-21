@@ -147,6 +147,7 @@ class Test extends CI_Controller
 				$soal_dumy = $bank_soal[$value];
 				array_push($soal_acak, $soal_dumy);
 			}
+
 			$data['soal_acak'] = $soal_acak;
 		} else {
 			$dturut_array = $cek_log_soal->row_array();
@@ -173,6 +174,7 @@ class Test extends CI_Controller
 		$log_soal = $this->check_log_soal();
 		$id_log = $this->db->get_where('tbl_log_soal', ['nis_user' => $_SESSION['username'], 'kd_modul' => $log_soal['id_modul']])->row_array();
 
+		$data['bts_waktu'] = date('F d Y H:i:s', strtotime($id_log['batas_waktu_tes']));
 		$data['nm_soal'] = $log_soal['nm_soal'];
 		$data['soal_acak'] = $log_soal['soal_acak'];
 		$data['id_logsoal'] = $id_log['id_log'];
@@ -185,6 +187,7 @@ class Test extends CI_Controller
 		//statmn data
 		$result = 0;
 		$nilai = 0;
+		$essay = 0;
 		$soal = $this->session->userdata('soal');
 		$jawaban_siswa = $this->input->post();
 		$jawaban = array_values($jawaban_siswa['answer']);
@@ -209,6 +212,13 @@ class Test extends CI_Controller
 						if ($value1['jwb'] === $soal[$key2]['soal_kunci']) {
 							$nilai++;
 						}
+					}
+				}
+			} elseif ($value1['tipe'] == 3) {
+				//soal tipe esay
+				if (!empty($value1['jwb'])) {
+					if (($key2 = array_search(3, array_column($soal, 'soal_tipe'))) !== false) {
+						$essay = 1;
 					}
 				}
 			} elseif ($value1['tipe'] == 4) {
@@ -259,12 +269,12 @@ class Test extends CI_Controller
 		$dt_update_siswa = array(
 			'log_jawaban_user' => serialize($jawaban),
 			'time_end' => $waktuselesai,
+			'log_essay' => $essay,
 			'nilai' => $nilai_bulat
 		);
-		// var_dump($dt_update_siswa);
-		// die;
+
 		$this->db->update('tbl_log_soal', $dt_update_siswa, $where);
-		redirect('dashboard/test', 'refresh');
+		redirect('siswa/dashboard/test', 'refresh');
 	}
 
 

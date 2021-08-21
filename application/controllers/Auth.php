@@ -37,7 +37,7 @@ class Auth extends CI_Controller
 
 				$this->session->set_userdata($sess);
 
-				redirect('dashboard');
+				redirect('guru/dashboard');
 			}
 		} else {
 			echo 'password salah';

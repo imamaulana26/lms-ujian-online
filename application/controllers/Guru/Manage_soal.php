@@ -73,7 +73,7 @@ class Manage_soal extends CI_Controller
 			->join('tbl_pelajaran c', 'b.modul_pelajaran = c.id_pelajaran', 'left')
 			->join('tbl_mapel d', 'c.kd_mapel = d.kd_mapel', 'left')
 			->join('tbl_siswa e', 'a.nis_user = e.siswa_nis', 'left')
-			->where(['b.modul_pelajaran' => input('modul_pelajaran')])
+			->where(['b.modul_pelajaran' => input('modul_pelajaran'), 'a.log_jawaban_user !=' => null])
 			->get()->result_array();
 
 		$list = array();
@@ -87,7 +87,7 @@ class Manage_soal extends CI_Controller
 			$row[] = $val['nilai'];
 			$row[] = longdate_indo($exp[0]) . ' - ' . date_format(date_create($exp[1]), 'h:i a');
 
-			$action = "<a href='" . site_url('manage_soal/jawaban_siswa/' . $val['id_log']) . "'><span class='badge badge-info'>Lihat Jawaban</span></a>";
+			$action = "<a href='" . site_url('guru/manage_soal/jawaban_siswa/' . $val['id_log']) . "'><span class='badge badge-info'>Lihat Jawaban</span></a>";
 
 			$row[] = $action;
 

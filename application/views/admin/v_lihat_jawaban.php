@@ -88,24 +88,6 @@
 											</tr>
 										</thead>
 										<tbody>
-											<!-- <?php foreach ($jawaban as $key => $value) :
-														$exp = explode(' ', $value['time_end']);
-													?>
-												<tr>
-													<td><?= $key + 1; ?></td>
-													<td><?= $value['siswa_nama'] ?></td>
-													<td><?= 'UB Ke-' . $value['modul_ub'] ?></td>
-													<td><?= $value['nilai'] ?></td>
-													<td>
-														<?= longdate_indo($exp[0]) . ' - ' . date_format(date_create($exp[1]), 'h:i a') ?>
-													</td>
-													<td class="text-center">
-														<a href="<?= site_url('manage_soal/jawaban_siswa/') . $value['id_log'] ?>">
-															<span class="badge badge-info">Lihat Jawaban</span>
-														</a>
-													</td>
-												</tr>
-											<?php endforeach; ?> -->
 										</tbody>
 									</table>
 								</div>
@@ -127,7 +109,7 @@
 
 <script>
 	$(document).ready(function() { // Ketika halaman sudah siap (sudah selesai di load)  // Kita sembunyikan dulu untuk loadingnya
-		CKEDITOR.replace('editorfr');
+		// CKEDITOR.replace('editorfr');
 
 		$("#loading").hide();
 
@@ -136,7 +118,7 @@
 			$("#loading").show(); // Tampilkan loadingnya      
 			$.ajax({
 				type: "POST", // Method pengiriman data bisa dengan GET atau POST      
-				url: "<?= site_url('dashboard/get_mapel') ?>", // Isi dengan url/path file php yang dituju      
+				url: "<?= site_url('guru/dashboard/get_mapel') ?>", // Isi dengan url/path file php yang dituju      
 				data: {
 					kelas: $("#kelas").val()
 				}, // data yang akan dikirim ke file yang dituju      
@@ -164,7 +146,7 @@
 			header.html('<h4>Hasil Jawaban ' + $('#kelas option:selected').text() + ' - ' + $('#mapel option:selected').text() + '</h4>');
 
 			$.ajax({
-				url: "<?= site_url('manage_soal/lihat_jawaban') ?>",
+				url: "<?= site_url('guru/manage_soal/lihat_jawaban') ?>",
 				type: "POST",
 				data: {
 					modul_pelajaran: $('#mapel').val()
