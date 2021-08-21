@@ -117,8 +117,7 @@ class Test extends CI_Controller
 		$data = array();
 		$id = input('id_modul');
 		$batas_waktu = input('waktu_tes');
-		// jumlah soal yg ditampilkan
-		$n_soal = 4;
+		$n_soal = 4; // jumlah soal yg ditampilkan tidak boleh melebihi jumlah bank soal
 
 		$dateTime = new DateTime();
 		$dateTime->modify("+{$batas_waktu} minutes");
