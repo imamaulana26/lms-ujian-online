@@ -143,7 +143,7 @@
 											</div>
 
 											<div class="jawaban">
-												<!-- <input type="text" value="<?= $id_logsoal ?>" name="id_log"> -->
+												<input type="hidden" value="<?= $id_logsoal ?>" name="id_log">
 												<?php // Pilihan ganda
 												if ($value['soal_tipe'] == 1) :
 													$pg = unserialize($value['soal_pg']);
@@ -156,11 +156,11 @@
 															<label for="radio<?= $value['soal_id'] . $uid ?>"><?= $jwbn['jawaban'] ?></label>
 														</div>
 													<?php endforeach; ?>
-													<!-- <input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]"> -->
+													<input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
 													<input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
 												<?php // True or false
 												elseif ($value['soal_tipe'] == 2) : ?>
-													<!-- <input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]"> -->
+													<input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
 													<input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
 													<div class="box">
 														<input type="radio" id="radiotrue" name="answer[<?= $value['soal_id'] ?>][jwb]" value="true" required>
@@ -172,19 +172,19 @@
 													</div>
 												<?php // Esay
 												elseif ($value['soal_tipe'] == 3) : ?>
-													<!-- <input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]"> -->
+													<input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
 													<input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
 													<div class="box">
 														<textarea class="form-control" id="type3" rows="3" name="answer[<?= $value['soal_id'] ?>][jwb]" required></textarea>
 													</div>
 												<?php // Jawaban singkat
 												elseif ($value['soal_tipe'] == 4) : ?>
-													<!-- <input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]"> -->
+													<input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
 													<input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
 													<input type="text" name="answer[<?= $value['soal_id'] ?>][jwb]" required>
 												<?php // Mencocokan Jawaban 
 												elseif ($value['soal_tipe'] == 5) : ?>
-													<!-- <input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]"> -->
+													<input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
 													<input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
 
 													<?php $dtmulti = unserialize($value['soal_kunci']);
@@ -396,7 +396,8 @@
 
 <script>
 	// Set the date we're counting down to
-	var countDownDate = new Date("Aug 14 2021 23:05:35").getTime();
+	// var countDownDate = new Date("August 20 2021 17:25:37").getTime();
+	var countDownDate = new Date("<?= $bts_waktu ?>").getTime();
 	// console.log(new Date($.now()));
 
 	// Update the count down every 1 second

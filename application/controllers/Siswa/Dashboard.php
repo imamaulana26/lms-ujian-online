@@ -88,7 +88,9 @@ class Dashboard extends CI_Controller
 		$tgl = new DateTime($data['soal']['batas_waktu_tes']);
 		$diff = $tgl->diff($date_now);
 		$data['sisa_waktu'] = $diff->i;
-
+		// $waktu = new Date($data['soal']['batas_waktu_tes']);
+		// $myDateTime = DateTime::createFromFormat('Y-m-d', $dateString);
+		$data['batas_waktu'] = $tgl->format('F d Y H:i:s');
 		$this->load->view($page, $data);
 	}
 }
