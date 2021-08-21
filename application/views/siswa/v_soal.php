@@ -1,6 +1,11 @@
 <?php $this->load->view('admin/layouts/v_header'); ?>
 
 <style>
+	.btn-nav{
+		width: 35px !important;
+		margin: 0.15rem;
+	}
+
 	.box label {
 		display: flex;
 		height: 53px;
@@ -99,22 +104,20 @@
 	<div class="container-fluid mt-5">
 		<div class="row">
 			<div class="col-md-10 offset-1">
-				<div class="d-flex">
+				<div class="d-flex mb-2">
 					<div class="col-md-6">
-						<h5>Mata Pelajaran : <?= $nm_soal['nm_mapel']; ?></h5>
+						Soal Nomor <span class="font-weight-bold" id="nomor"></span>
 					</div>
-					<div class="col-md-6">Waktu : <label id="waktu"></label>
+					<div class="col-md-6">
+						Sisa Waktu : <span class="font-weight-bold" id="waktu"></span>
 					</div>
-
 				</div>
 				<div class="row">
 					<div class="col-md-10">
 						<form method="post" action="<?= site_url('siswa/test/check_form') ?>">
 							<div class="card">
 								<div class="card-header">
-									<h5 class="font-weight-bold">
-										Soal Nomor <span id="nomor"></span>
-									</h5>
+									Mata pelajaran : <?= $nm_soal['nm_mapel']; ?>
 								</div>
 								<div class="card-body">
 									<!-- content  -->
@@ -156,11 +159,11 @@
 															<label for="radio<?= $value['soal_id'] . $uid ?>"><?= $jwbn['jawaban'] ?></label>
 														</div>
 													<?php endforeach; ?>
-													<input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
+													<input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
 													<input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
 												<?php // True or false
 												elseif ($value['soal_tipe'] == 2) : ?>
-													<input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
+													<input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
 													<input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
 													<div class="box">
 														<input type="radio" id="radiotrue" name="answer[<?= $value['soal_id'] ?>][jwb]" value="true" required>
@@ -172,19 +175,19 @@
 													</div>
 												<?php // Esay
 												elseif ($value['soal_tipe'] == 3) : ?>
-													<input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
+													<input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
 													<input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
 													<div class="box">
 														<textarea class="form-control" id="type3" rows="3" name="answer[<?= $value['soal_id'] ?>][jwb]" required></textarea>
 													</div>
 												<?php // Jawaban singkat
 												elseif ($value['soal_tipe'] == 4) : ?>
-													<input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
+													<input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
 													<input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
 													<input type="text" name="answer[<?= $value['soal_id'] ?>][jwb]" required>
 												<?php // Mencocokan Jawaban 
 												elseif ($value['soal_tipe'] == 5) : ?>
-													<input type="text" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
+													<input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
 													<input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
 
 													<?php $dtmulti = unserialize($value['soal_kunci']);
@@ -228,8 +231,8 @@
 								</div>
 								<div class="card-footer">
 									<div class="bd-highlight text-center">
-										<span class="btn btn-primary btn-prev" style="float: left;" onclick="prev()">Sebelumnya</span>
-										<span class="btn btn-primary btn-next" style="float: right;" onclick="next()">Selanjutnya</span>
+										<span class="btn btn-sm btn-primary btn-prev" style="float: left;" onclick="prev()"><i class="fa fa-chevron-circle-left"></i> Soal Sebelumnya</span>
+										<span class="btn btn-sm btn-primary btn-next" style="float: right;" onclick="next()">Soal Selanjutnya <i class="fa fa-chevron-circle-right"></i></span>
 										<button type="submit" class="btn btn-success btn-submit">Submit</button>
 									</div>
 								</div>
@@ -245,7 +248,7 @@
 							<div class="card-body">
 								<nav class="multiTabs">
 									<?php for ($i = 0; $i < count($soal_acak); $i++) : ?>
-										<a class="btn btn-default m-1" href="javascript:void(0)" data-trigger='content<?= $i + 1 ?>' id="nav-content<?= $i + 1 ?>"><?= $i + 1 ?></a>
+										<a class="btn btn-sm btn-default btn-nav" href="javascript:void(0)" data-trigger='content<?= $i + 1 ?>' id="nav-content<?= $i + 1 ?>"><?= $i + 1 ?></a>
 									<?php endfor; ?>
 								</nav>
 							</div>
@@ -255,13 +258,13 @@
 				<div class="col-md-6">
 					<!-- <h2>Data sementara</h2>
                 <?php
-				var_dump($_SESSION['username']);
-				$datasementara = array(
-					"2" => "a",
-					"4" => "true",
-					"5" => "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reiciendis obcaecati nam quia incidunt nemo ullam eligendi debitis beatae suscipit sequi minus aut repudiandae magni non, at, praesentium quod nostrum quibusdam?"
-				);
-				?> -->
+						var_dump($_SESSION['username']);
+						$datasementara = array(
+							"2" => "a",
+							"4" => "true",
+							"5" => "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reiciendis obcaecati nam quia incidunt nemo ullam eligendi debitis beatae suscipit sequi minus aut repudiandae magni non, at, praesentium quod nostrum quibusdam?"
+						);
+						?> -->
 				</div>
 				<?php
 				// echo '<pre>';
@@ -330,7 +333,7 @@
 	$(document).on('click', 'nav.multiTabs>a', function() {
 		var TabId = $(this).attr('data-trigger');
 		$('div#' + TabId + ' ').show();
-		$('a.btn.m-1').removeClass('btn-primary').addClass('btn-default');
+		$('.btn-nav').removeClass('btn-primary').addClass('btn-default');
 		$('#nav-' + TabId).removeClass('btn-default').addClass('btn-primary');
 
 		currentTab = parseInt(TabId.replace("content", ""));
@@ -355,7 +358,7 @@
 			currentTab++;
 			$('#nomor').text(currentTab);
 
-			$('a.btn.m-1').removeClass('btn-primary').addClass('btn-default');
+			$('.btn-nav').removeClass('btn-primary').addClass('btn-default');
 			$('#nav-content' + currentTab).removeClass('btn-default').addClass('btn-primary');
 			$("#content" + (currentTab)).show();
 		}
@@ -365,14 +368,14 @@
 
 	function prev() {
 		if (currentTab > 1) {
-			// $('a.btn.m-1').removeClass('btn-primary').addClass('btn-default');
+			// $('.btn-nav').removeClass('btn-primary').addClass('btn-default');
 			// $('#nav-content' + currentTab--).removeClass('btn-default').addClass('btn-primary');
 
 			$(".tabcontent").hide();
 			currentTab--;
 			$('#nomor').text(currentTab);
 
-			$('a.btn.m-1').removeClass('btn-primary').addClass('btn-default');
+			$('.btn-nav').removeClass('btn-primary').addClass('btn-default');
 			$('#nav-content' + currentTab).removeClass('btn-default').addClass('btn-primary');
 			$("#content" + (currentTab)).show();
 		}
@@ -386,6 +389,7 @@
 			$('.btn-prev').removeClass('invisible');
 		} else if (currentTab == 1) {
 			$('.btn-prev').addClass('invisible');
+			$('.btn-next').removeClass('invisible');
 		} else {
 			$('.btn-next').removeClass('invisible');
 			$('.btn-prev').removeClass('invisible');
@@ -398,7 +402,7 @@
 	// Set the date we're counting down to
 	// var countDownDate = new Date("August 20 2021 17:25:37").getTime();
 	var countDownDate = new Date("<?= $bts_waktu ?>").getTime();
-	// console.log(new Date($.now()));
+	console.log('<?= $bts_waktu ?>');
 
 	// Update the count down every 1 second
 	var x = setInterval(function() {
@@ -415,13 +419,13 @@
 		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
 		// tampilkan waktu
-		document.getElementById("waktu").innerHTML = hours + "h " +
-			minutes + "m " + seconds + "s ";
+		document.getElementById("waktu").innerHTML = ('0' + hours).slice(-2) + ":" +
+			('0' + minutes).slice(-2) + ":" + ('0' + seconds).slice(-2);
 
 		// waktu selesai
 		if (distance < 0) {
 			clearInterval(x);
-			document.getElementById("waktu").innerHTML = "WAKTU ANDA SELESAI";
+			document.getElementById("waktu").innerHTML = "Waktu Telah Selesai";
 		}
 	}, 1000);
 </script>
