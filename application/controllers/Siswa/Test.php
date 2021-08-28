@@ -216,9 +216,8 @@ class Test extends CI_Controller
 		$data['nm_soal'] = $log_soal['nm_soal'];
 		$data['soal_acak'] = $log_soal['soal_acak'];
 		$data['id_logsoal'] = $id_log['id_log'];
-		// var_dump($data['soal_acak']);
-		// die;
-
+		$data['kd_modul'] = $log_soal['id_modul'];
+		
 		$this->load->view($page, $data);
 	}
 

@@ -1,7 +1,7 @@
 <?php $this->load->view('admin/layouts/v_header'); ?>
 
 <style>
-	.btn-nav{
+	.btn-nav {
 		width: 35px !important;
 		margin: 0.15rem;
 	}
@@ -170,20 +170,18 @@
 														<thead>
 															<tr>
 																<th>Pernyataan</th>
-																<th>Benar</th>
-																<th>Salah</th>
+																<th class="text-center" width="7%">Benar</th>
+																<th class="text-center" width="7%">Salah</th>
 															</tr>
 														</thead>
 														<tbody>
 															<?php $dtjawab = unserialize($value['soal_kunci']);
-															?>
-															<?php foreach ($dtjawab as $key1 => $value1) {
-															?>
+															foreach ($dtjawab as $key1 => $value1) { ?>
 																<tr>
 																	<td><?= $value1['pernyataan'] ?></td>
-																	<td class="text-center"><input type="radio" id="radiotrue" name="answer[<?= $value['soal_id'] ?>][jwb][<?= $key1 ?>]" value="true" required>
+																	<td class="text-center"><input type="radio" name="answer[<?= $value['soal_id'] ?>][jwb][<?= $key1 ?>]" value="true" required>
 																	</td>
-																	<td class="text-center"><input type="radio" id="radiofalse" name="answer[<?= $value['soal_id'] ?>][jwb][<?= $key1 ?>]" value="false" required>
+																	<td class="text-center"><input type="radio" name="answer[<?= $value['soal_id'] ?>][jwb][<?= $key1 ?>]" value="false" required>
 																	</td>
 																</tr>
 
@@ -245,14 +243,12 @@
 												elseif ($value['soal_tipe'] == 6) : ?>
 													<input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
 													<input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
-													<?php
-													$dtpgkompleks = unserialize($value['soal_pg']);
-													?>
-													<?php foreach ($dtpgkompleks as $key4 => $value4) {
-													?>
+													<input type="radio" name="<?= $value['soal_id'] ?>" class="d-none" id="<?= $value['soal_id'] ?>" required>
+													<?php $dtpgkompleks = unserialize($value['soal_pg']);
+													foreach ($dtpgkompleks as $key4 => $value4) { ?>
 														<div class="box">
-															<input name="answer[<?= $value['soal_id'] ?>][jwb][<?= $key4 ?>]" type="checkbox" id="<?= $value4['pilihan'] ?>" value="<?= $value4['pilihan'] ?>">
-															<label class="form-check-label" for="<?= $value4['pilihan'] ?>"><?= $value4['ket'] ?></label>
+															<input type="checkbox" name="answer[<?= $value['soal_id'] ?>][jwb][<?= $key4 ?>]" id="<?= $value4['pilihan'] . $value['soal_id'] ?>" onclick="document.getElementById('<?= $value['soal_id'] ?>').click();" value="<?= $value4['pilihan'] ?>">
+															<label class="form-check-label" for="<?= $value4['pilihan'] . $value['soal_id'] ?>"><?= $value4['ket'] ?></label>
 														</div>
 													<?php } ?>
 												<?php endif; ?>
@@ -288,22 +284,6 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-6">
-					<!-- <h2>Data sementara</h2>
-                <?php
-						var_dump($_SESSION['username']);
-						$datasementara = array(
-							"2" => "a",
-							"4" => "true",
-							"5" => "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reiciendis obcaecati nam quia incidunt nemo ullam eligendi debitis beatae suscipit sequi minus aut repudiandae magni non, at, praesentium quod nostrum quibusdam?"
-						);
-						?> -->
-				</div>
-				<?php
-				// echo '<pre>';
-				// var_dump($datasementara);
-				// echo '</pre>';
-				?>
 			</div>
 		</div>
 	</div>
@@ -351,7 +331,9 @@
 	});
 
 	function show_btn_submit() {
-		if ($('input:invalid, textarea:invalid').length > 0) {
+		var validasi = $('input[type=text]:invalid, input[type=radio]:invalid, textarea:invalid').length;
+
+		if (validasi > 0) {
 			$('.btn-submit').addClass('invisible');
 		} else {
 			$('.btn-submit').removeClass('invisible');
@@ -360,7 +342,6 @@
 
 	function next() {
 		if (currentTab < <?= count($soal_acak) ?>) {
-			// console.log("Current Tab: " + currentTab);
 			$(".tabcontent").hide();
 			currentTab++;
 			$('#nomor').text(currentTab);
@@ -375,9 +356,6 @@
 
 	function prev() {
 		if (currentTab > 1) {
-			// $('.btn-nav').removeClass('btn-primary').addClass('btn-default');
-			// $('#nav-content' + currentTab--).removeClass('btn-default').addClass('btn-primary');
-
 			$(".tabcontent").hide();
 			currentTab--;
 			$('#nomor').text(currentTab);
@@ -409,7 +387,6 @@
 	// Set the date we're counting down to
 	// var countDownDate = new Date("August 20 2021 17:25:37").getTime();
 	var countDownDate = new Date("<?= $bts_waktu ?>").getTime();
-	console.log('<?= $bts_waktu ?>');
 
 	// Update the count down every 1 second
 	var x = setInterval(function() {
@@ -431,8 +408,8 @@
 
 		// waktu selesai
 		if (distance < 0) {
+			window.location.href = '<?= site_url('siswa/dashboard/detail_soal/' . $kd_modul) ?>';
 			clearInterval(x);
-			document.getElementById("waktu").innerHTML = "Waktu Telah Selesai";
 		}
 	}, 1000);
 </script>
