@@ -42,29 +42,38 @@
 										<a href="javascript:void(0);">View Report</a>
 									</div>
 								</div> -->
-								<div class="card-body">
-									<div class="pilih d-flex">
-										<div class="col-md-6 d-flex">
-											<div class="col-md-4">
-												<!-- Default dropright button -->
-												<select class="form-control" name="kelas" id="kelas">
-													<option value="" selected disabled>Pilih Kelas</option>
-													<?php foreach ($dt_kelas as $kls) : ?>
-														<option value="<?= $kls['kelas_id'] ?>"><?= $kls['kelas_nama'] ?></option>
-													<?php endforeach ?>
-												</select>
-											</div>
-											<div class="col-md-8">
-												<!-- Default dropright button -->
-												<select class="form-control" name="idmapel" id="mapel">
-													<option value="" selected>Pilih Mapel</option>
-												</select>
-												<div id="loading" style="margin-top: 15px;"> <img src=" <?= site_url('assets/images/loading.gif') ?>" width="18"> <small>Loading...</small> </div>
-											</div>
-										</div>
-										<span class="btn btn-info btn-show">Tampilkan</span>
-									</div>
+								<div class="card-body  d-flex">
+									<div class="col-md-8">
+										<label>Filter Kelas</label>
+										<div class="pilih d-flex">
+											<div class="col-md-6 d-flex">
+												<div class="col-md-4">
+													<!-- Default dropright button -->
+													<select class="form-control" name="kelas" id="kelas">
+														<option value="" selected disabled>Pilih Kelas</option>
+														<?php foreach ($dt_kelas as $kls) : ?>
+															<option value="<?= $kls['kelas_id'] ?>"><?= $kls['kelas_nama'] ?></option>
+														<?php endforeach ?>
+													</select>
+												</div>
+												<div class="col-md-8">
+													<!-- Default dropright button -->
+													<select class="form-control" name="idmapel" id="mapel">
+														<option value="" selected>Pilih Mapel</option>
+													</select>
+													<div id="loading" style="margin-top: 15px;"> <img src=" <?= site_url('assets/images/loading.gif') ?>" width="18"> <small>Loading...</small> </div>
+												</div>
 
+											</div>
+											<span class="btn btn-info btn-show">Tampilkan</span>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<label>Filter Kategori</label>
+										<br>
+										<span class="btn btn-info float-right " id="tdk_selesai">Tidak Selesai</span>
+										<span class="btn btn-info float-right mr-2" id="essay">Essay</span>
+									</div>
 								</div>
 							</div>
 							<!-- /.card -->
@@ -168,6 +177,98 @@
 				}
 			});
 		});
+
+		//tampilkan essay button
+		$('#essay').on('click', function() {
+			let header = $('.card-header');
+
+			header.removeClass('d-none');
+			header.html('<h4>List Siswa Yang Mempunyai Jawaban Essay</h4>');
+
+			$.ajax({
+				url: "<?= site_url('guru/manage_soal/lihat_jawaban_essay') ?>",
+				type: "POST",
+				dataType: "JSON",
+				success: function(hasil) {
+					console.log(hasil);
+
+					var html = "";
+					for (let i = 0; i < hasil.length; i++) {
+						html += "<tr>";
+						for (let n = 0; n < hasil[i].length; n++) {
+							html += "<td>" + hasil[i][n] + "</td>";
+						}
+						html += "</tr>";
+					}
+
+					$('#table_id > tbody').html(html);
+				}
+			});
+		});
+
+		//tampilkan tidak selsai button
+		$('#tdk_selesai').on('click', function() {
+			let header = $('.card-header');
+
+			header.removeClass('d-none');
+			header.html('<h4>List Siswa Yang Melewati Batas Waktu</h4>');
+
+			$.ajax({
+				url: "<?= site_url('guru/manage_soal/lihat_jawaban_null') ?>",
+				type: "POST",
+				dataType: "JSON",
+				success: function(hasil) {
+					console.log(hasil);
+
+					var html = "";
+					for (let i = 0; i < hasil.length; i++) {
+						html += "<tr>";
+						for (let n = 0; n < hasil[i].length; n++) {
+							html += "<td>" + hasil[i][n] + "</td>";
+						}
+						html += "</tr>";
+					}
+
+					$('#table_id > tbody').html(html);
+				}
+			});
+		});
+	});
+
+	//alert reset
+	$('#table_id>tbody').on('click', '#reset', function() {
+		const id_reset = $(this).data('reset');
+
+		Swal.fire({
+			title: 'Apakah Anda Yakin?',
+			text: "Siswa Yang Di reset Akan Mengerjakan Ulang",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#d33',
+			allowOutsideClick: false,
+			confirmButtonText: 'Ya, Lanjutkan'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				$.ajax({
+					url: "<?= site_url('guru/manage_soal/reset_jawaban/') ?>" + id_reset,
+					type: "POST",
+					dataType: "JSON",
+					success: function(hasil) {
+						Swal.fire({
+							position: 'Center',
+							icon: 'success',
+							title: 'Murid Berhasil Di Reset',
+							showConfirmButton: false,
+							allowOutsideClick: false,
+							timer: 1500
+						}).then(function() {
+							window.location.reload();
+						})
+					}
+				});
+
+			}
+		})
 	});
 </script>
 

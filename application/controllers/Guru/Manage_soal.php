@@ -87,6 +87,39 @@ class Manage_soal extends CI_Controller
 			$row[] = $val['nilai'];
 			$row[] = longdate_indo($exp[0]) . ' - ' . date_format(date_create($exp[1]), 'h:i a');
 
+			$action = "<a href='" . site_url('guru/manage_soal/jawaban_siswa/' . $val['id_log']) . "'><span class='badge badge-info'>Lihat Jawaban</span></a><span id='reset' class='badge badge-danger ml-1' style='cursor:pointer' data-reset='" . $val['id_log'] . "'>Reset</span>";
+
+			$row[] = $action;
+
+			$list[] = $row;
+		}
+
+		echo json_encode($list);
+		exit;
+	}
+
+	//jika murid mendapatkan soal esay
+	public function lihat_jawaban_essay()
+	{
+		$hasil = $this->db->select('a.time_end, a.nilai, a.id_log, e.siswa_nama, b.modul_ub ')->from('tbl_log_soal a')
+			->join('tbl_modul b', 'a.kd_modul = b.id_modul', 'left')
+			->join('tbl_pelajaran c', 'b.modul_pelajaran = c.id_pelajaran', 'left')
+			->join('tbl_mapel d', 'c.kd_mapel = d.kd_mapel', 'left')
+			->join('tbl_siswa e', 'a.nis_user = e.siswa_nis', 'left')
+			->where(['a.log_essay' => 1, 'a.log_jawaban_user !=' => null])
+			->get()->result_array();
+
+		$list = array();
+		foreach ($hasil as $key => $val) {
+			$row = array();
+			$exp = explode(' ', $val['time_end']);
+
+			$row[] = $key + 1;
+			$row[] = $val['siswa_nama'];
+			$row[] = 'UB Ke-' . $val['modul_ub'];
+			$row[] = $val['nilai'];
+			$row[] = longdate_indo($exp[0]) . ' - ' . date_format(date_create($exp[1]), 'h:i a');
+
 			$action = "<a href='" . site_url('guru/manage_soal/jawaban_siswa/' . $val['id_log']) . "'><span class='badge badge-info'>Lihat Jawaban</span></a>";
 
 			$row[] = $action;
@@ -98,6 +131,58 @@ class Manage_soal extends CI_Controller
 		exit;
 	}
 
+	//jika murid terkendala waktu ujian selesai
+	public function lihat_jawaban_null()
+	{
+		$hasil = $this->db->select('a.time_end, a.nilai, a.id_log, e.siswa_nama, b.modul_ub ')->from('tbl_log_soal a')
+			->join('tbl_modul b', 'a.kd_modul = b.id_modul', 'left')
+			->join('tbl_pelajaran c', 'b.modul_pelajaran = c.id_pelajaran', 'left')
+			->join('tbl_mapel d', 'c.kd_mapel = d.kd_mapel', 'left')
+			->join('tbl_siswa e', 'a.nis_user = e.siswa_nis', 'left')
+			->where(['a.log_jawaban_user' => null])
+			->get()->result_array();
+
+		$list = array();
+		foreach ($hasil as $key => $val) {
+			$row = array();
+			$exp = explode(' ', $val['time_end']);
+
+			$row[] = $key + 1;
+			$row[] = $val['siswa_nama'];
+			$row[] = 'UB Ke-' . $val['modul_ub'];
+			$row[] = $val['nilai'];
+			$row[] = longdate_indo($exp[0]) . ' - ' . date_format(date_create($exp[1]), 'h:i a');
+
+			// $action = "<a href='" . site_url('guru/manage_soal/reset_jawaban/' . $val['id_log']) . "'><span class='badge badge-danger'>Reset</span></a>";
+			$action = "<span class='badge badge-info'>Lihat Jawaban</span></a><span id='reset' class='badge badge-danger' style='cursor:pointer' data-reset='" . $val['id_log'] . "'>Reset</span>";
+
+			$row[] = $action;
+
+			$list[] = $row;
+		}
+
+		echo json_encode($list);
+		exit;
+	}
+
+	//reset jawaban siswa
+	public function reset_jawaban($id)
+	{
+		$this->db->delete('tbl_log_soal', ['id_log' => $id]);
+		echo json_encode('success');
+		exit;
+	}
+
+	function update_nilai()
+	{
+		$this->db->update(
+			'tbl_log_soal',
+			['nilai' => input('nilai')],
+			['id_log' => input('id_log')]
+		);
+		echo json_encode('success');
+		exit;
+	}
 	function get_dtnilai($id)
 	{
 		$result = $this->db->select('d.nm_mapel,a.id_log,a.nilai,b.modul_ub')->from('tbl_log_soal a')
@@ -110,15 +195,15 @@ class Manage_soal extends CI_Controller
 		exit;
 	}
 
-	function update_nilai()
-	{
-		$this->db->update(
-			'tbl_log_soal',
-			['nilai' => input('nilai_update')],
-			['id_log' => input('idlog_update')]
-		);
+	// function update_nilai()
+	// {
+	// 	$this->db->update(
+	// 		'tbl_log_soal',
+	// 		['nilai' => input('nilai_update')],
+	// 		['id_log' => input('idlog_update')]
+	// 	);
 
-		echo json_encode(['jenis' => 'update', 'msg' => 'Berhasil diupdate']);
-		exit;
-	}
+	// 	echo json_encode(['jenis' => 'update', 'msg' => 'Berhasil diupdate']);
+	// 	exit;
+	// }
 }

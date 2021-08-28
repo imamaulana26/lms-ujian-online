@@ -33,7 +33,7 @@
 			<!-- Main content -->
 			<div class="content">
 				<section id="section-kelola-soal">
-					<form id="fm_soal" class="form-soal" action="<?= site_url('kelola_soal/submit_soal') ?>" method="POST">
+					<form id="fm_soal" class="form-soal" action="<?= site_url('guru/kelola_soal/submit_soal') ?>" method="POST">
 						<input name="modul" type="hidden" value="<?= $this->uri->segment(3) ?>">
 						<!-- /.mengelola soal -->
 						<div class="card">
@@ -157,7 +157,6 @@
 								</div>
 							</div>
 						</section>
-
 						<!-- /.mengelola jawaban tipe soal True/False -->
 						<section class="true-false">
 							<div class="card">
@@ -166,22 +165,25 @@
 								</div>
 								<div class="card-body">
 									<div class="form-group row">
-										<label class="col-sm-2 col-form-control">Kunci Jawaban</label>
-										<div class="col-sm-10">
-											<div class="form-check my-1">
-												<input class="form-check-input" type="radio" name="tf" id="gridRadios1" value="true">
-												<label class="form-check-label" for="gridRadios1" style="cursor: pointer;">
-													True
-												</label>
-											</div>
-											<div class="form-check my-1">
-												<input class="form-check-input" type="radio" name="tf" id="gridRadios2" value="false">
-												<label class="form-check-label" for="gridRadios2" style="cursor: pointer;">
-													False
-												</label>
-											</div>
+										<label class="col-md-1 col-form-label">Pernyataan Ke-1</label>
+										<div class="col-md-6">
+											<input type="text" class="form-control" name="truefalse[0][pernyataan]" id="pernyataan[]" placeholder="Pernyataan Ke-1">
+										</div>
+										<label class="col-md-1 col-form-label">Benar / Salah</label>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="radio" name="truefalse[0][jwb]jawaban1" id="inlineRadio1" value="true">
+											<label class="form-check-label" for="inlineRadio1">Benar</label>
+										</div>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="radio" name="truefalse[0][jwb]jawaban1" id="inlineRadio2" value="false">
+											<label class="form-check-label" for="inlineRadio2">Salah</label>
+										</div>
+										<div class="col-sm-1" id="add">
+											<span class="btn btn-default btn_add_tf"><i class="fa fa-fw fa-plus"></i></span>
 										</div>
 									</div>
+
+									<div class="clone_tf"></div>
 								</div>
 							</div>
 						</section>
@@ -294,9 +296,17 @@
 													} ?>
 												<?php endif; ?>
 
-												<?php if ($val['soal_tipe'] == 2 || $val['soal_tipe'] == 4) : ?>
+												<?php if ($val['soal_tipe'] == 2) : ?>
+													<?php foreach (unserialize($val['soal_kunci']) as $key1 => $val1) : ?>
+														<label><?= $val1['pernyataan'] . ' : ' . $val1['jwb']; ?></label><br>
+													<?php endforeach; ?>
+													<!-- <label><?= strtoupper($val['soal_kunci']); ?></label> -->
+												<?php endif; ?>
+
+												<?php if ($val['soal_tipe'] == 4) : ?>
 													<label><?= strtoupper($val['soal_kunci']); ?></label>
 												<?php endif; ?>
+
 
 												<?php if ($val['soal_tipe'] == 5) : ?>
 													<?php foreach (unserialize($val['soal_kunci']) as $key => $val) : ?>
@@ -413,6 +423,7 @@
 
 <script>
 	var i = 0;
+	var j = 0;
 	$('.btn_add').click(function() {
 		var html = '';
 		html += `<div class="form-group row">
@@ -436,14 +447,57 @@
 			Swal.fire({
 				title: 'Oops!',
 				icon: 'warning',
-				text: 'Lampiran telah mencapai batas!'
+				text: 'Kamu Melewati Batas Kolom!'
 			});
 		}
 	});
+
 	$('#fm_soal').on('click', '.btn_delete', function() {
 		$(this).parent().parent().remove();
 		i--;
 	});
+
+	//button add true / false
+	$('.btn_add_tf').click(function() {
+		var html = '';
+		html += `<div class="form-group row">
+						<label class="col-md-1 col-form-label">Pernyataan Ke- ` + (j + 2) + `</label>
+						<div class="col-md-6">
+						<input type="text" class="form-control" name="truefalse[` + (j + 1) + `][pernyataan]" id="pernyataan[][]" placeholder="Pernyataan Ke- ` + (j + 2) + `">
+						</div>
+
+						<label class="col-md-1 col-form-label">Benar / Salah</label>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="truefalse[` + (j + 1) + `][jwb]jawaban` + (j + 2) + `" id="inlineRadio1" value="true">
+							<label class="form-check-label" for="inlineRadio1">Benar</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="truefalse[` + (j + 1) + `][jwb]jawaban` + (j + 2) + `" id="inlineRadio2" value="false">
+							<label class="form-check-label" for="inlineRadio2">Salah</label>
+						</div>
+
+						<div class="col-sm-1">
+							<span class="btn btn-default btn_delete_tf"><i class="fa fa-fw fa-minus"></i></span>
+						</div>
+					</div>`;
+
+		if (j < 4) {
+			$('.clone_tf').append(html);
+			j++;
+		} else {
+			Swal.fire({
+				title: 'Oops!',
+				icon: 'warning',
+				text: 'Lampiran telah mencapai batas!'
+			});
+		}
+	});
+	$('#fm_soal').on('click', '.btn_delete_tf', function() {
+		$(this).parent().parent().remove();
+		j--;
+	});
+	//end button add true / false
+
 
 	function hapus_soal(id) {
 		Swal.fire({

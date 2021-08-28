@@ -104,6 +104,31 @@ class Test extends CI_Controller
 	 * var_dump($rowfix);
 	 */
 
+	/**
+	 * ------------------------------------------
+	 * Format Shuffle Penyusunan Pilgan Bercabang
+	 * ------------------------------------------
+	 *$dt_dummy = array(
+	 *	array(
+	 *		'pilihan' => 'a',
+	 *		'ket' => 'Lorem ipsum dolor sit! a'
+	 *	),
+	 *  array(
+	 *		'pilihan' => 'b',
+	 *		'ket' => 'Lorem ipsum dolor sit! b'
+	 *	),
+	 *  array(
+	 *		'pilihan' => 'c',
+	 *		'ket' => 'Lorem ipsum dolor sit! c'
+	 *	),
+	 *	array(
+	 *		'pilihan' => 'd',
+	 *		'ket' => 'Lorem ipsum dolor sit! d'
+	 *	 )
+	 * );
+	 */
+
+
 	public function index()
 	{
 		$page = 'siswa/v_test';
@@ -158,8 +183,22 @@ class Test extends CI_Controller
 				array_push($soal_acak, $soal_dumy);
 			}
 
+
 			$data['soal_acak'] = $soal_acak;
 
+			// $dt_dummy = array(
+			// 	array(
+			// 		'pernyataan' => 'Pernyataan pertama',
+			// 		'jwb' => 'true'
+			// 	),
+			// 	array(
+			// 		'pernyataan' => 'Pernyataan kedua',
+			// 		'jwb' => 'false'
+			// 	)
+			// );
+			// var_dump(serialize($dt_dummy));
+			// var_dump($soal_acak);
+			// die;
 			$this->session->set_userdata('soal', $soal_acak);
 		}
 
@@ -178,6 +217,8 @@ class Test extends CI_Controller
 		$data['nm_soal'] = $log_soal['nm_soal'];
 		$data['soal_acak'] = $log_soal['soal_acak'];
 		$data['id_logsoal'] = $id_log['id_log'];
+		// var_dump($data['soal_acak']);
+		// die;
 
 		$this->load->view($page, $data);
 	}
@@ -185,13 +226,16 @@ class Test extends CI_Controller
 	function check_form()
 	{
 		//statmn data
-		$result = 0;
+
 		$nilai = 0;
 		$essay = 0;
 		$soal = $this->session->userdata('soal');
 		$jawaban_siswa = $this->input->post();
 		$jawaban = array_values($jawaban_siswa['answer']);
+
 		// $soal1 = 'a:6:{i:0;i:0;i:1;i:1;i:2;i:2;i:3;i:3;i:4;i:4;i:5;i:5;}';
+
+
 		//end of statmn data
 
 		// penghitungan nilai
@@ -199,64 +243,89 @@ class Test extends CI_Controller
 			if ($value1['tipe'] == 1) {
 				//soal tipe jawaban Pilgan
 				if (!empty($value1['jwb'])) {
-					if (($key2 = array_search(1, array_column($soal, 'soal_tipe'))) !== false) {
+					if (($key2 = array_search($value1['id'], array_column($soal, 'soal_id'))) !== false) {
 						if ($value1['jwb'] === $soal[$key2]['soal_kunci']) {
 							$nilai++;
 						}
 					}
 				}
 			} elseif ($value1['tipe'] == 2) {
-				//soal tipe true-false
+				//soal tipe true false
 				if (!empty($value1['jwb'])) {
-					if (($key2 = array_search(2, array_column($soal, 'soal_tipe'))) !== false) {
-						if ($value1['jwb'] === $soal[$key2]['soal_kunci']) {
+					if (($key2 = array_search($value1['id'], array_column($soal, 'soal_id'))) !== false) {
+						$kuncijwbtf = array_column(unserialize($soal[$key2]['soal_kunci']), 'jwb');
+						if ($value1['jwb'] === $kuncijwbtf) {
 							$nilai++;
 						}
 					}
 				}
 			} elseif ($value1['tipe'] == 3) {
 				//soal tipe esay
-				if (!empty($value1['jwb'])) {
-					if (($key2 = array_search(3, array_column($soal, 'soal_tipe'))) !== false) {
-						$essay = 1;
-					}
-				}
+				// if (!empty($value1['jwb'])) {
+				// 	if (($key2 = array_search($value1['id'], array_column($soal, 'soal_id'))) !== false) {
+				// 		$essay = 1;
+				// 	}
+				// }
+				$essay = 1;
 			} elseif ($value1['tipe'] == 4) {
 				//soal tipe jawaban singkat
 				if (!empty($value1['jwb'])) {
-					if (($key2 = array_search(4, array_column($soal, 'soal_tipe'))) !== false) {
+					if (($key2 = array_search($value1['id'], array_column($soal, 'soal_id'))) !== false) {
 						if ($value1['jwb'] === $soal[$key2]['soal_kunci']) {
 							$nilai++;
 						}
 					}
 				}
-			}
-		}
-
-		//penghitungan nilai tipe 5
-		if (($key3 = array_search(5, array_column($jawaban, 'tipe'))) !== false) {
-
-			if (($key4 = array_search(5, array_column($soal, 'soal_tipe'))) !== false) {
-				$kunci = unserialize($soal[$key4]['soal_kunci']);
-				foreach ($kunci as $value) {
-					if ($jawaban[$key3]['jwb'][$value['row']] == $value['column']) {
-						$result++;
+			} elseif ($value1['tipe'] == 5) {
+				// soal tipe mencocokan jawaban
+				if (($key2 = array_search($value1['id'], array_column($soal, 'soal_id'))) !== false) {
+					echo 'data dari database =';
+					var_dump(unserialize($soal[$key2]['soal_kunci']));
+					echo 'data yang sudah di restruktur =';
+					$kncjawab = array_column(unserialize($soal[$key2]['soal_kunci']), 'column', 'row');
+					var_dump($kncjawab);
+					if ($kncjawab === $value1['jwb']) {
+						$nilai++;
 					}
-					//membuat ulang struktur
-					$jawaban_reposisi[] =
-						array(
-							'row' => $value['row'],
-							'column' => $jawaban[$key3]['jwb'][$value['row']]
-						);
 				}
-				if ($result == 5) {
-					$nilai++;
+			} elseif ($value1['tipe'] == 6) {
+				//soal tipe pilgan kompleks
+				if (($key2 = array_search($value1['id'], array_column($soal, 'soal_id'))) !== false) {
+					if ($value1['jwb'] === unserialize($soal[$key2]['soal_kunci'])) {
+						$nilai++;
+					}
 				}
 			}
-			//mengganti array jawaban
-			$jawaban[$key3]['jwb'] = $jawaban_reposisi;
 		}
-		// end of tipe 5
+
+		// //penghitungan nilai tipe 5
+		// if (($key3 = array_search(5, array_column($jawaban, 'tipe'))) !== false) {
+
+		// 	if (($key4 = array_search(5, array_column($soal, 'soal_tipe'))) !== false) {
+		// 		$kunci = unserialize($soal[$key4]['soal_kunci']);
+		// 		foreach ($kunci as $value) {
+		// 			if ($jawaban[$key3]['jwb'][$value['row']] == $value['column']) {
+		// 				$result++;
+		// 			}
+		// 			//membuat ulang struktur
+		// 			$jawaban_reposisi[] =
+		// 				array(
+		// 					'row' => $value['row'],
+		// 					'column' => $jawaban[$key3]['jwb'][$value['row']]
+		// 				);
+		// 		}
+		// 		if ($result == 5) { //jika result sama dengan jumlah kunci jawaban, maka jawaban benar
+		// 			$nilai++;
+		// 		}
+		// 	}
+		// 	//mengganti array jawaban
+		// 	$jawaban[$key3]['jwb'] = $jawaban_reposisi;
+		// }
+		// // end of tipe 5
+
+
+
+		// die;
 
 		$nilai_fix = ($nilai / count($soal)) * 100;
 		// end of penghitungan nilai
@@ -272,8 +341,12 @@ class Test extends CI_Controller
 			'log_essay' => $essay,
 			'nilai' => $nilai_bulat
 		);
-
-		$this->db->update('tbl_log_soal', $dt_update_siswa, $where);
+		// var_dump($nilai);
+		// var_dump($nilai_bulat);
+		// var_dump($essay);
+		// var_dump($dt_update_siswa);
+		die;
+		// $this->db->update('tbl_log_soal', $dt_update_siswa, $where);
 		redirect('siswa/dashboard/test', 'refresh');
 	}
 
