@@ -87,7 +87,15 @@ class Dashboard extends CI_Controller
 		$date_now = new DateTime();
 		$tgl = new DateTime($data['soal']['batas_waktu_tes']);
 		$diff = $tgl->diff($date_now);
+
 		$data['sisa_waktu'] = $diff->i;
+		$data['format_sisa_waktu'] = $diff->h . ' jam ' . $diff->i . ' menit';
+		$data['status_ujian'] = $diff->invert; // 0 artinya selesai, 1 artinya aktif
+
+		if ($diff->invert == 0) {
+			$this->db->update('tbl_log_soal', ['time_end' => $date_now->format('Y-m-d H:i:s'), 'nilai' => '0.00'], ['kd_modul' => $id]);
+		}
+
 		// $waktu = new Date($data['soal']['batas_waktu_tes']);
 		// $myDateTime = DateTime::createFromFormat('Y-m-d', $dateString);
 		$data['batas_waktu'] = $tgl->format('F d Y H:i:s');
