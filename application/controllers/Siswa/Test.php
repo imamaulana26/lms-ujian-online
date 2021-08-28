@@ -142,8 +142,7 @@ class Test extends CI_Controller
 		$data = array();
 		$id = input('id_modul');
 		$batas_waktu = input('waktu_tes');
-		// jumlah soal yg ditampilkan
-		$n_soal = 4;
+		$n_soal = 4; // jumlah soal yg ditampilkan tidak boleh melebihi jumlah bank soal
 
 		$dateTime = new DateTime();
 		$dateTime->modify("+{$batas_waktu} minutes");
@@ -217,9 +216,8 @@ class Test extends CI_Controller
 		$data['nm_soal'] = $log_soal['nm_soal'];
 		$data['soal_acak'] = $log_soal['soal_acak'];
 		$data['id_logsoal'] = $id_log['id_log'];
-		// var_dump($data['soal_acak']);
-		// die;
-
+		$data['kd_modul'] = $log_soal['id_modul'];
+		
 		$this->load->view($page, $data);
 	}
 
