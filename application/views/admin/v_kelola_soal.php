@@ -1,4 +1,13 @@
 <?php $this->load->view('admin/layouts/v_header'); ?>
+<style>
+	.select2-selection__choice {
+		background-color: #0069d9 !important;
+	}
+
+	.select2-selection__choice span {
+		color: white !important;
+	}
+</style>
 
 <body class="hold-transition sidebar-mini text-sm">
 	<div class="wrapper">
@@ -102,7 +111,7 @@
 									<div class="col-md-3">
 										<select class="form-control" name="jns_soal" id="jns_soal">
 											<option value="" disabled selected>-- Pilih --</option>
-											<?php $arr = array('Pilihan Ganda', 'True / False', 'Essay', 'Jawaban Singkat', 'Mencocokan Jawaban');
+											<?php $arr = array('Pilihan Ganda', 'True / False', 'Essay', 'Jawaban Singkat', 'Mencocokan Jawaban', 'Pilihan Ganda Kompleks');
 											foreach ($arr as $key => $val) : ?>
 												<option value="<?= $key ?>"><?= $val; ?></option>
 											<?php endforeach; ?>
@@ -116,30 +125,29 @@
 						<section class="pilihan-ganda">
 							<div class="card">
 								<div class="card-header">
-									Mengelola Jawaban <b>Pilihan Ganda</b>
+									<div class="row">
+										<div class="col-md-2">
+											<p class="col-form-label">Mengolah Jawaban <strong>Pilihan Ganda</strong></p>
+										</div>
+										<div class="col-md-2">
+											<select class="form-control" name="list_jawaban_pg" id="list_jawaban_pg">
+												<option value="" selected disabled>Pilih Type</option>
+												<option value="teks">Teks</option>
+												<option value="gambar">Gambar</option>
+												<option value="video">Video</option>
+												<option value="audio">Audio</option>
+											</select>
+										</div>
+									</div>
 								</div>
-								<div class="card-body">
+								<div class="card-body list-pilihan-ganda">
 									<?php
 									$n = range('a', 'd');
 									for ($i = 0; $i < count($n); $i++) { ?>
 										<div class="form-group row">
 											<label class="col-md-2 col-form-label">Jawaban <?= strtoupper($n[$i]) ?></label>
 											<div class="col-md-6">
-												<input type="text" class="form-control" name="pilihan_<?= $n[$i] ?>" id="pilihan_<?= $n[$i] ?>">
-											</div>
-										</div>
-										<div class="form-group row">
-											<label class="col-md-2 col-form-label">Lampiran <?= strtoupper($n[$i]) ?></label>
-											<div class="col-md-4">
-												<input type="url" class="form-control" name="lampiran_soal_<?= $i ?>" id="lampiran_soal_<?= $i ?>" placeholder="masukan URL dari Google Drive">
-											</div>
-											<div class="col-md-2">
-												<select class="form-control" name="kelas">
-													<option value="" selected disabled>Pilih Type</option>
-													<option value="gambar">Gambar</option>
-													<option value="video">Video</option>
-													<option value="audio">Audio</option>
-												</select>
+												<input type="text" class="form-control detail_jawaban_pg" name="detail_jawaban_<?= $n[$i] ?>" id="detail_jawaban_<?= $n[$i] ?>">
 											</div>
 										</div>
 									<?php } ?>
@@ -157,6 +165,51 @@
 								</div>
 							</div>
 						</section>
+						<!-- /.mengelola jawaban tipe soal pilihan ganda -->
+						<section class="pilihan-ganda-kompleks">
+							<div class="card">
+								<div class="card-header">
+									Mengelola Jawaban <b>Pilihan Ganda Kompleks</b>
+								</div>
+								<div class="card-body">
+									<?php
+									$n = range('a', 'd');
+									for ($i = 0; $i < count($n); $i++) { ?>
+										<div class="form-group row">
+											<label class="col-md-2 col-form-label">Jawaban <?= strtoupper($n[$i]) ?></label>
+											<div class="col-md-6">
+												<input type="text" class="form-control" name="pilihan_kompleks_<?= $n[$i] ?>" id="pilihan_kompleks <?= $n[$i] ?>">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-md-2 col-form-label">Lampiran <?= strtoupper($n[$i]) ?></label>
+											<div class="col-md-4">
+												<input type="url" class="form-control" name="lampiran_soal_kompleks_<?= $n[$i] ?>" id="lampiran_soal_kompleks<?= $n[$i] ?>" placeholder="masukan URL dari Google Drive">
+											</div>
+											<div class="col-md-2">
+												<select class="form-control" name="lampiran_tipe_kompleks_<?= $n[$i] ?>">
+													<option value="" selected disabled>Pilih Type</option>
+													<option value="gambar">Gambar</option>
+													<option value="video">Video</option>
+													<option value="audio">Audio</option>
+												</select>
+											</div>
+										</div>
+									<?php } ?>
+									<div class="form-group row">
+										<label class="col-sm-2 col-form-label">Kunci Jawaban</label>
+										<div class="col-md-4">
+											<select class="js-example-basic-multiple" id="kunci_pilgan_kompleks" name="kunci_pg_kompleks[]" multiple="multiple" style="width: 100% ;">
+												<?php for ($i = 0; $i < count($n); $i++) { ?>
+													<option value="<?= $n[$i] ?>">Jawaban <?= strtoupper($n[$i]) ?></option>
+												<?php } ?>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
+
 						<!-- /.mengelola jawaban tipe soal True/False -->
 						<section class="true-false">
 							<div class="card">
@@ -259,7 +312,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<?php $jns_soal = array(1 => 'Pilihan Ganda', 'True / False', 'Essay', 'Jawaban Singkat', 'Mencocokan Jawaban');
+									<?php $jns_soal = array(1 => 'Pilihan Ganda', 'True / False', 'Essay', 'Jawaban Singkat', 'Mencocokan Jawaban', 'Pilihan Ganda Kompleks');
 									foreach ($bank_soal as $key => $val) :
 										$soal_id = $val['soal_id'];
 									?>
@@ -309,10 +362,22 @@
 
 
 												<?php if ($val['soal_tipe'] == 5) : ?>
-													<?php foreach (unserialize($val['soal_kunci']) as $key => $val) : ?>
-														<label><?= $val['row'] . ' : ' . $val['column']; ?></label><br>
+													<?php foreach (unserialize($val['soal_kunci']) as $key2 => $val2) : ?>
+														<label><?= $val2['row'] . ' : ' . $val2['column']; ?></label><br>
 													<?php endforeach; ?>
 												<?php endif; ?>
+												<?php if ($val['soal_tipe'] == 6) : ?>
+													<?php foreach (unserialize($val['soal_kunci']) as $key3 => $val3) : ?>
+														<?php
+														if (($ky3 = array_search($val3, array_column(unserialize($val['soal_pg']), 'pilihan'))) !== false) {
+														?>
+															<label><?= unserialize($val['soal_pg'])[$ky3]['pilihan'] . '. ' . unserialize($val['soal_pg'])[$ky3]['ket']; ?></label><br>
+														<?php } ?>
+
+													<?php endforeach; ?>
+
+												<?php endif; ?>
+
 											</td>
 
 											<td class="text-center">
@@ -344,7 +409,7 @@
 
 <script>
 	$(document).ready(function() {
-		$(".pilihan-ganda, .true-false, .jawaban-singkat, .multi-choices, .submit-soal").css('display', 'none');
+		$(".pilihan-ganda, .true-false, .jawaban-singkat, .multi-choices, .submit-soal, .pilihan-ganda-kompleks").css('display', 'none');
 
 		$('#jns_lampiran').on('change', function() {
 			let val = $(this).val();
@@ -380,7 +445,7 @@
 				}
 			} else {
 				//triger cancel
-				$(".pilihan-ganda, .true-false, .jawaban-singkat, .multi-choices, .submit-soal").css('display', 'none');
+				$(".pilihan-ganda, .true-false, .jawaban-singkat, .multi-choices, .submit-soal , .pilihan-ganda-kompleks").css('display', 'none');
 				$('#kelas, #id_mapel, #id_ub').attr('disabled', false).css('cursor', 'auto');
 				$(this).addClass('btn-primary').removeClass('btn-warning').text('Create');
 				// let mapel = $("#id_mapel option:selected").text();
@@ -393,10 +458,23 @@
 
 		// trigger on jns_soal dropdown
 		$('#jns_soal').on('change', function() {
-			let arr = ['pilihan-ganda', 'true-false', 'essay', 'jawaban-singkat', 'multi-choices'];
+			let arr = ['pilihan-ganda', 'true-false', 'essay', 'jawaban-singkat', 'multi-choices', 'pilihan-ganda-kompleks'];
 			let val = $(this).val();
 
-			$(".pilihan-ganda, .true-false, .jawaban-singkat, .multi-choices").css('display', 'none');
+			$(".pilihan-ganda, .list-pilihan-ganda, .true-false, .jawaban-singkat, .multi-choices , .pilihan-ganda-kompleks").css('display', 'none');
+			if (arr[val] == 'pilihan-ganda') {
+				$('#list_jawaban_pg').on('change', function() {
+					if ($(this).val() != "") {
+						$('.list-pilihan-ganda').removeAttr('style');
+					}
+
+					if ($(this).val() != "teks") {
+						$('.detail_jawaban_pg').attr('placeholder', 'masukan URL dari Google Drive');
+					} else {
+						$('.detail_jawaban_pg').removeAttr('placeholder');
+					}
+				});
+			}
 			$("section." + arr[val]).removeAttr('style');
 			$('.submit-soal').css('display', 'block');
 		});
@@ -418,6 +496,9 @@
 
 		// load library ckeditor
 		CKEDITOR.replace('editorfr');
+
+		// load library select 2
+		$('#kunci_pilgan_kompleks').select2();
 	});
 </script>
 
@@ -550,5 +631,6 @@
 
 <?php endif; ?>
 <!-- end of flashdata -->
+
 
 </html>
