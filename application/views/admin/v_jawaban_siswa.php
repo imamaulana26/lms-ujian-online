@@ -1,6 +1,11 @@
 <?php $this->load->view('admin/layouts/v_header'); ?>
 
 <body class="hold-transition sidebar-mini text-sm">
+	<style>
+		body.swal2-shown>[aria-hidden="true"] {
+			filter: blur(5px);
+		}
+	</style>
 	<div class="wrapper">
 		<!-- Navbar -->
 		<?php $this->load->view('admin/layouts/v_navbar'); ?>
@@ -39,8 +44,8 @@
 									<div class="form-group row">
 										<label class="col-sm-2 col-form-label">Nilai Ujian</label>
 										<div class="col-md-10 d-flex">
-											<input type="text" readonly class="form-control-plaintext" value="<?= $jawaban[0]['nilai'] ?>">
-											<div class="btn btn-success col-md-2" onclick="edit('<?= $jawaban[0]['id_log'] ?>')">Update Nilai</div>
+											<input type="text" readonly class="form-control-plaintext" id="nilai_before" value="<?= $jawaban[0]['nilai'] ?>">
+											<div class="btn btn-success col-md-2" onclick="edit('<?= $jawaban[0]['id_log'] ?>')" id="update">Update Nilai</div>
 										</div>
 
 									</div>
@@ -168,53 +173,6 @@
 		</aside>
 		<!-- /.control-sidebar -->
 
-		<!-- modal -->
-		<!-- <form id="form-nilai" method="POST" action="<?= site_url('manage_soal/update_nilai') ?>"> -->
-		<form id="form-module" method="POST">
-			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Update Nilai</h5>
-							<input type="hidden" id="id_log" name="idlog_update">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div class="form-group row">
-								<label for="inputPassword3" class="col-sm-2 col-form-label">Nama Pelajaran</label>
-								<div class="col-sm-6">
-									<input type="text" id="nm_mapel" readonly class="form-control-plaintext">
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="inputPassword3" class="col-sm-2 col-form-label">Ujian Bulanan</label>
-								<div class="col-sm-6">
-									<input type="text" id="ub" readonly class="form-control-plaintext">
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="inputPassword3" class="col-sm-2 col-form-label">Nilai</label>
-								<div class="col-sm-6">
-									<input type="text" id="nilai" name="nilai_update">
-								</div>
-							</div>
-
-							<div class="form-group row">
-								<div class="col-sm-3 offset-2">
-									<span class="btn btn-primary" onclick="submit()">Submit Module</span>
-								</div>
-							</div>
-							<!-- <button type="submit">submit</button> -->
-						</div>
-					</div>
-				</div>
-
-			</div>
-		</form>
-		<!-- end of modal -->
-
 		<!-- Main Footer -->
 		<?php $this->load->view('admin/layouts/v_footer'); ?>
 	</div>
@@ -280,6 +238,58 @@
 			}
 		});
 	}
+
+	$('#update').on('click', function() {
+		var nilai = $('#nilai_before').val();
+		Swal.fire({
+			title: 'Update Nilai',
+			input: "number",
+			inputPlaceholder: 'Masukan Nilai Terbaru',
+			inputValue: nilai,
+			inputAttributes: {
+				max: 100,
+				step: 1,
+				pattern: "[0-9]{10}"
+			},
+			inputValidator: (value) => {
+				if (value > 100) {
+					return 'Nilai Tidak Boleh Lebih Dari 100'
+				}
+				if (value < 0) {
+					return 'Nilai Tidak Boleh Minus'
+				}
+				if (value == 0) {
+					return 'Nilai Tidak Boleh Kosong'
+				}
+			},
+			confirmButtonText: `Update`,
+			showLoaderOnConfirm: true,
+			preConfirm: (update) => {
+				$.ajax({
+					url: "<?= site_url('guru/manage_soal/update_nilai/') ?>",
+					type: "POST",
+					data: {
+						id_log: <?= $jawaban[0]['id_log'] ?>, // id_log
+						nilai: update //nilai yang di update
+					},
+					dataType: "JSON",
+					success: function(hasil) {
+						Swal.fire({
+							position: 'Center',
+							icon: 'success',
+							title: 'Murid Berhasil Di update',
+							showConfirmButton: false,
+							allowOutsideClick: false,
+							timer: 1500
+						}).then(function() {
+							window.location.reload();
+						})
+					}
+				});
+			}
+		})
+
+	});
 </script>
 
 </html>

@@ -43,13 +43,10 @@
 		background-color: #bbb;
 	}
 
-	/* #value-1:checked~.value-1,
-    #value-2:checked~.value-2,
-    #value-3:checked~.value-3,
-    #value-4:checked~.value-4 {
-        background: #9C27B0;
-        border-color: #9C27B0
-    } */
+	.box input[type="checkbox"]:checked+label {
+		background-color: #bbb;
+	}
+
 	#type4>tbody>tr>td>input {
 		display: inherit;
 	}
@@ -64,6 +61,10 @@
 
 
 	.box input[type="radio"] {
+		display: none
+	}
+
+	.box input[type="checkbox"] {
 		display: none
 	}
 
@@ -165,14 +166,31 @@
 												elseif ($value['soal_tipe'] == 2) : ?>
 													<input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
 													<input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
-													<div class="box">
-														<input type="radio" id="radiotrue" name="answer[<?= $value['soal_id'] ?>][jwb]" value="true" required>
-														<label for="radiotrue">True</label>
-													</div>
-													<div class="box">
-														<input type="radio" id="radiofalse" name="answer[<?= $value['soal_id'] ?>][jwb]" value="false" required>
-														<label for="radiofalse">False</label>
-													</div>
+													<table class="table table-bordered table-sm table-hover">
+														<thead>
+															<tr>
+																<th>Pernyataan</th>
+																<th>Benar</th>
+																<th>Salah</th>
+															</tr>
+														</thead>
+														<tbody>
+															<?php $dtjawab = unserialize($value['soal_kunci']);
+															?>
+															<?php foreach ($dtjawab as $key1 => $value1) {
+															?>
+																<tr>
+																	<td><?= $value1['pernyataan'] ?></td>
+																	<td class="text-center"><input type="radio" id="radiotrue" name="answer[<?= $value['soal_id'] ?>][jwb][<?= $key1 ?>]" value="true" required>
+																	</td>
+																	<td class="text-center"><input type="radio" id="radiofalse" name="answer[<?= $value['soal_id'] ?>][jwb][<?= $key1 ?>]" value="false" required>
+																	</td>
+																</tr>
+
+															<?php } ?>
+														</tbody>
+													</table>
+
 												<?php // Esay
 												elseif ($value['soal_tipe'] == 3) : ?>
 													<input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
@@ -180,6 +198,7 @@
 													<div class="box">
 														<textarea class="form-control" id="type3" rows="3" name="answer[<?= $value['soal_id'] ?>][jwb]" required></textarea>
 													</div>
+
 												<?php // Jawaban singkat
 												elseif ($value['soal_tipe'] == 4) : ?>
 													<input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
@@ -222,6 +241,20 @@
 															</tbody>
 														</table>
 													</div>
+												<?php // Pilgan Kompleks
+												elseif ($value['soal_tipe'] == 6) : ?>
+													<input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
+													<input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
+													<?php
+													$dtpgkompleks = unserialize($value['soal_pg']);
+													?>
+													<?php foreach ($dtpgkompleks as $key4 => $value4) {
+													?>
+														<div class="box">
+															<input name="answer[<?= $value['soal_id'] ?>][jwb][<?= $key4 ?>]" type="checkbox" id="<?= $value4['pilihan'] ?>" value="<?= $value4['pilihan'] ?>">
+															<label class="form-check-label" for="<?= $value4['pilihan'] ?>"><?= $value4['ket'] ?></label>
+														</div>
+													<?php } ?>
 												<?php endif; ?>
 											</div>
 										</div>
@@ -273,32 +306,6 @@
 				?>
 			</div>
 		</div>
-		<?php
-		// $datajawabanserialize = array(
-		//     "2" => "a",
-		//     "4" => "true",
-		//     "5" => "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reiciendis obcaecati nam quia incidunt nemo ullam eligendi debitis beatae suscipit sequi minus aut repudiandae magni non, at, praesentium quod nostrum quibusdam?"
-		// );
-
-		//nama file
-		// $namaFile = 'dumyjawaban.txt';
-		// //lokasi penyimpanan
-		// $pathFile = "assets/filesiswa/" . $_SESSION['username'] . "/";
-		// //membuat file
-		// $file = fopen($pathFile . $namaFile, 'w');
-		// // isi konten file
-		// $konten = serialize($datajawabanserialize);
-		// //menulis file
-		// fwrite($file, $konten);
-		// fclose($file);
-
-		// //membaca file
-		// $data = file_get_contents($pathFile . $namaFile);
-
-		// mengembalikan data serialize
-		// var_dump(unserialize($data));
-
-		?>
 	</div>
 </body>
 

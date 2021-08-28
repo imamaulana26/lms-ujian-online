@@ -38,9 +38,6 @@ class Kelola_soal extends CI_Controller
 
 	public function submit_soal()
 	{
-		// var_dump(
-		// 	$this->input->post()
-		// );
 		$dt_temp_lamp = array();
 		$dt_soal = array(
 			'soal_modul_id' => input('modul'),
@@ -62,9 +59,11 @@ class Kelola_soal extends CI_Controller
 		// soal 
 		if (input('jns_soal') == 1) {
 			//true false
+			$dt_tf = $this->input->post('truefalse');
+			$datainput = array_values($dt_tf);
 			$dt_jenis = array(
 				'soal_tipe' => '2',
-				'soal_kunci' => input('tf'),
+				'soal_kunci' => serialize($datainput),
 			);
 		} elseif (input('jns_soal') == 0) {
 			//soal pg
