@@ -58,12 +58,12 @@
 						</p>
 					</a>
 					<ul class="nav nav-treeview">
-						<li class="nav-item">
+						<!-- <li class="nav-item">
 							<a href="<?= site_url('dashboard/guru') ?>" class="nav-link" id="test">
 								<i class="far fa-circle nav-icon"></i>
 								<p>Buat Soal</p>
 							</a>
-						</li>
+						</li> -->
 						<li class="nav-item">
 							<a href="<?= site_url('management-soal/lihat-jawaban') ?>" class="nav-link" id="management-soal">
 								<i class="far fa-circle nav-icon"></i>
@@ -74,7 +74,7 @@
 				</li>
 
 				<li class="nav-item">
-					<a href="<?= site_url('manage-quis') ?>" class="nav-link">
+					<a href="<?= site_url('manage-quis') ?>" class="nav-link" id="manage-quis">
 						<i class="nav-icon fas fa-copy"></i>
 						<p>Manage Quis</p>
 					</a>

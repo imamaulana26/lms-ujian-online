@@ -169,7 +169,7 @@
 		// trigger on kelas dropdown
 		$('#kelas').on('change', function() {
 			$.ajax({
-				url: "<?= site_url('kelola_module/get_mapel') ?>",
+				url: "<?= site_url('guru/module_soal/get_mapel') ?>",
 				type: "POST",
 				data: {
 					id: $(this).val()
