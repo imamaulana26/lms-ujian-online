@@ -217,7 +217,7 @@ class Test extends CI_Controller
 		$data['soal_acak'] = $log_soal['soal_acak'];
 		$data['id_logsoal'] = $id_log['id_log'];
 		$data['kd_modul'] = $log_soal['id_modul'];
-		
+
 		$this->load->view($page, $data);
 	}
 
@@ -258,12 +258,6 @@ class Test extends CI_Controller
 					}
 				}
 			} elseif ($value1['tipe'] == 3) {
-				//soal tipe esay
-				// if (!empty($value1['jwb'])) {
-				// 	if (($key2 = array_search($value1['id'], array_column($soal, 'soal_id'))) !== false) {
-				// 		$essay = 1;
-				// 	}
-				// }
 				$essay = 1;
 			} elseif ($value1['tipe'] == 4) {
 				//soal tipe jawaban singkat
@@ -277,11 +271,7 @@ class Test extends CI_Controller
 			} elseif ($value1['tipe'] == 5) {
 				// soal tipe mencocokan jawaban
 				if (($key2 = array_search($value1['id'], array_column($soal, 'soal_id'))) !== false) {
-					echo 'data dari database =';
-					var_dump(unserialize($soal[$key2]['soal_kunci']));
-					echo 'data yang sudah di restruktur =';
 					$kncjawab = array_column(unserialize($soal[$key2]['soal_kunci']), 'column', 'row');
-					var_dump($kncjawab);
 					if ($kncjawab === $value1['jwb']) {
 						$nilai++;
 					}
@@ -295,33 +285,6 @@ class Test extends CI_Controller
 				}
 			}
 		}
-
-		// //penghitungan nilai tipe 5
-		// if (($key3 = array_search(5, array_column($jawaban, 'tipe'))) !== false) {
-
-		// 	if (($key4 = array_search(5, array_column($soal, 'soal_tipe'))) !== false) {
-		// 		$kunci = unserialize($soal[$key4]['soal_kunci']);
-		// 		foreach ($kunci as $value) {
-		// 			if ($jawaban[$key3]['jwb'][$value['row']] == $value['column']) {
-		// 				$result++;
-		// 			}
-		// 			//membuat ulang struktur
-		// 			$jawaban_reposisi[] =
-		// 				array(
-		// 					'row' => $value['row'],
-		// 					'column' => $jawaban[$key3]['jwb'][$value['row']]
-		// 				);
-		// 		}
-		// 		if ($result == 5) { //jika result sama dengan jumlah kunci jawaban, maka jawaban benar
-		// 			$nilai++;
-		// 		}
-		// 	}
-		// 	//mengganti array jawaban
-		// 	$jawaban[$key3]['jwb'] = $jawaban_reposisi;
-		// }
-		// // end of tipe 5
-
-
 
 		// die;
 
@@ -339,12 +302,13 @@ class Test extends CI_Controller
 			'log_essay' => $essay,
 			'nilai' => $nilai_bulat
 		);
-		// var_dump($nilai);
+		// var_dump($nilai_fix);
 		// var_dump($nilai_bulat);
+		// var_dump($where);
 		// var_dump($essay);
 		// var_dump($dt_update_siswa);
-		die;
-		// $this->db->update('tbl_log_soal', $dt_update_siswa, $where);
+		// die;
+		$this->db->update('tbl_log_soal', $dt_update_siswa, $where);
 		redirect('siswa/dashboard/test', 'refresh');
 	}
 

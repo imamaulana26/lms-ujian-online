@@ -27,7 +27,7 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Remove some buttons provided by the standard plugins, which are
 	// not needed in the Standard(s) toolbar.
-	config.extraPlugins = 'youtube , ckeditor_wiris,link';
+	config.extraPlugins = 'youtube , ckeditor_wiris,link,wordcount,notification';
 	// config.youtube_width = '320';
 	config.removeButtons = 'Underline,Subscript,Superscript,image,source';
 
