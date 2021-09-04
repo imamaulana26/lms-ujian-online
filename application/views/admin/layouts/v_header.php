@@ -6,6 +6,17 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 
+	<script>
+		window.MathJax = {
+			MathML: {
+				extensions: ["mml3.js", "content-mathml.js"]
+			}
+		};
+	</script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<!-- <script src="https://cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script> -->
+	<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(','\\)']]}});</script>
+
 	<title><?= $title; ?></title>
 
 	<!-- Font Awesome Icons -->
@@ -22,6 +33,11 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 	<!-- SELECT 2 -->
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+	<!-- lightbox -->
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css"> -->
+	<link rel="stylesheet" href="<?= base_url('assets/plugins/') . 'lightbox/ekko-lightbox.css' ?>">
+
+
 
 
 
@@ -54,10 +70,21 @@
 	<!-- CK editor JS -->
 	<script src="<?= base_url('assets/plugins/ckeditor/ckeditor.js') ?>"></script>
 	<!-- Ekko Lightbox -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.js" crossorigin="anonymous"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.js" crossorigin="anonymous"></script> -->
+	<script src="<?= base_url('assets/plugins/') . 'lightbox/ekko-lightbox.js' ?>"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/js/lightbox.min.js"></script> -->
+
 
 	<!-- Pages Script -->
 	<script>
+		//ekko lightbox
+		$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+			event.preventDefault();
+			$(this).ekkoLightbox();
+		});
+
+
+
 		$(document).ready(function() {
 			const url = '<?= $this->uri->segment(1); ?>';
 
@@ -72,11 +99,12 @@
 		});
 
 		// $(function() {
-		// 	$('[data-toggle="tooltip"]').tooltip()
+		// $('[data-toggle="tooltip"]').tooltip()
 		// })
 
 		function CheckNumeric() {
 			return event.keyCode >= 48 && event.keyCode <= 57;
 		}
 	</script>
+
 </head>

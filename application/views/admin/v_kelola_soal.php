@@ -80,8 +80,11 @@
 
 								<div class="form-group row">
 									<label class="col-sm-2 col-form-label">Soal Ujian</label>
+
 									<div class="col-md-10">
-										<textarea class="form-control" name="soal_ujian" id="editorfr"></textarea>
+										<textarea id="soal" name="soal_ujian" class="form-control editor"></textarea>
+
+										<!-- <textarea class="form-control" name="soal_ujian" id="editorfr"></textarea> -->
 										<!-- <textarea class="form-control" name="soal_ujian" id="editorfr" rows="3"></textarea> -->
 										<!-- <textarea name="komentar" id="editorfr" rows="10" cols="45" placeholder="Type Here"></textarea> -->
 									</div>
@@ -134,8 +137,8 @@
 												<option value="" selected disabled>Pilih Type</option>
 												<option value="teks">Teks</option>
 												<option value="gambar">Gambar</option>
-												<option value="video">Video</option>
-												<option value="audio">Audio</option>
+												<!-- <option value="video">Video</option>
+												<option value="audio">Audio</option> -->
 											</select>
 										</div>
 									</div>
@@ -146,8 +149,13 @@
 									for ($i = 0; $i < count($n); $i++) { ?>
 										<div class="form-group row">
 											<label class="col-md-2 col-form-label">Jawaban <?= strtoupper($n[$i]) ?></label>
-											<div class="col-md-6">
-												<input type="text" class="form-control detail_jawaban_pg" name="detail_jawaban_<?= $n[$i] ?>" id="detail_jawaban_<?= $n[$i] ?>">
+											<div class="col-md-6 jawaban_teks">
+												<textarea id="pg_jawaban<?= $n[$i] ?>" name="detail_jawaban_<?= $n[$i] ?>" class="form-control editor"></textarea>
+												<!-- <input type="text" class="form-control detail_jawaban_pg" name="detail_jawaban_<?= $n[$i] ?>" id="detail_jawaban_<?= $n[$i] ?>"> -->
+												<!-- <span class="btn btn-info" id="clickMe">test click</span> -->
+											</div>
+											<div class="col-md-6 jawaban_img">
+												<input type="text" class="form-control" name="detail_jawaban_img_<?= $n[$i] ?>" placeholder="masukan URL dari Google Drive">
 											</div>
 										</div>
 									<?php } ?>
@@ -295,6 +303,7 @@
 					</form>
 				</section>
 
+				<!-- List Bank Soal -->
 				<section class="section-bank-soal">
 					<div class="card">
 						<div class="card-header">
@@ -320,10 +329,11 @@
 										<tr>
 											<td><?= $key + 1 ?></td>
 											<td>
-												<?= $val['soal_detail'] ?><br>
+												<?= htmlspecialchars_decode($val['soal_detail']) ?><br>
 
 												<?php if (!empty($val['soal_lampiran'])) {
 													$sourcelink = $val['soal_lampiran'];
+
 													$unsersource = unserialize($sourcelink);
 													$dtlink = $unsersource['link'];
 													$exp = explode("/", $dtlink);
@@ -341,15 +351,31 @@
 											</td>
 											<td><?= $jns_soal[$val['soal_tipe']] ?></td>
 											<td>
-												<?php if ($val['soal_tipe'] == 1) : ?>
-													<?php foreach (unserialize($val['soal_pg']) as $pg) {
-														if ($pg['kunci_jawaban'] == $val['soal_kunci']) { ?>
-															<label><?= strtoupper($pg['kunci_jawaban']) . '. ' . $pg['jawaban']; ?></label>
+												<?php if ($val['soal_tipe'] == 1) :
+
+
+												?>
+													<?php foreach (json_decode($val['soal_pg']) as $pg) {
+														if ($pg->kunci_jawaban == $val['soal_kunci']) { ?>
+															<?php $jawaban = $pg->jawaban;
+															if ($pg->tipe != 'teks') {
+																$exp1 = explode("/", $pg->jawaban);
+																$link1 = "https://drive.google.com/thumbnail?id=" . $exp1[5];
+																$link2 = "https://drive.google.com/uc?export=view&id=" . $exp1[5];
+															?>
+
+																<label><?= strtoupper($pg->kunci_jawaban) . '. '; ?><a href="<?= $link2 ?>" data-toggle="lightbox">
+																		<img src="<?= $link1 ?>" class="img-fluid">
+																	</a></label>
+															<?php } else { ?>
+																<label><?= strtoupper($pg->kunci_jawaban) . '. ' . htmlspecialchars_decode($jawaban); ?></label>
 													<?php }
+														}
 													} ?>
 												<?php endif; ?>
 
 												<?php if ($val['soal_tipe'] == 2) : ?>
+													<!-- true false -->
 													<?php foreach (unserialize($val['soal_kunci']) as $key1 => $val1) : ?>
 														<label><?= $val1['pernyataan'] . ' : ' . $val1['jwb']; ?></label><br>
 													<?php endforeach; ?>
@@ -357,21 +383,24 @@
 												<?php endif; ?>
 
 												<?php if ($val['soal_tipe'] == 4) : ?>
+													<!-- jawaban singkat -->
 													<label><?= strtoupper($val['soal_kunci']); ?></label>
 												<?php endif; ?>
 
 
 												<?php if ($val['soal_tipe'] == 5) : ?>
+													<!-- mencocokan jawaban -->
 													<?php foreach (unserialize($val['soal_kunci']) as $key2 => $val2) : ?>
 														<label><?= $val2['row'] . ' : ' . $val2['column']; ?></label><br>
 													<?php endforeach; ?>
 												<?php endif; ?>
 												<?php if ($val['soal_tipe'] == 6) : ?>
-													<?php foreach (unserialize($val['soal_kunci']) as $key3 => $val3) : ?>
+													<!-- kompleks -->
+													<?php foreach (json_decode($val['soal_kunci']) as $key3 => $val3) : ?>
 														<?php
-														if (($ky3 = array_search($val3, array_column(unserialize($val['soal_pg']), 'pilihan'))) !== false) {
+														if (($ky3 = array_search($val3, array_column(json_decode($val['soal_pg']), 'pilihan'))) !== false) {
 														?>
-															<label><?= unserialize($val['soal_pg'])[$ky3]['pilihan'] . '. ' . unserialize($val['soal_pg'])[$ky3]['ket']; ?></label><br>
+															<label><?= json_decode($val['soal_pg'])[$ky3]->pilihan . '. ' . json_decode($val['soal_pg'])[$ky3]->ket; ?></label><br>
 														<?php } ?>
 
 													<?php endforeach; ?>
@@ -468,10 +497,14 @@
 						$('.list-pilihan-ganda').removeAttr('style');
 					}
 
-					if ($(this).val() != "teks") {
-						$('.detail_jawaban_pg').attr('placeholder', 'masukan URL dari Google Drive');
+					if ($(this).val() == "teks") {
+						$('.jawaban_teks').removeClass('d-none');
+						$('.jawaban_img').addClass('d-none');
+						// $('.detail_jawaban_pg').attr('placeholder', 'masukan URL dari Google Drive');
 					} else {
-						$('.detail_jawaban_pg').removeAttr('placeholder');
+						$('.jawaban_teks').addClass('d-none');
+						$('.jawaban_img').removeClass('d-none');
+						// $('.detail_jawaban_pg').removeAttr('placeholder');
 					}
 				});
 			}
@@ -479,26 +512,17 @@
 			$('.submit-soal').css('display', 'block');
 		});
 
-		// $(function() {
-		// 	$(".form-soal").submit(function() {
-		// 		$.ajax({
-		// 			url: $(this).attr("action"),
-		// 			data: $(this).serialize(),
-		// 			type: $(this).attr("method"),
-		// 			dataType: 'JSON',
-		// 			success: function(hasil) {
-		// 				console.log(hasil);
-		// 			}
-		// 		})
-		// 		return false;
-		// 	});
-		// });
-
-		// load library ckeditor
-		CKEDITOR.replace('editorfr');
 
 		// load library select 2
 		$('#kunci_pilgan_kompleks').select2();
+	});
+</script>
+
+<!-- ckeditor -->
+<script>
+	$(".editor").each(function() {
+		let id = $(this).attr('id');
+		CKEDITOR.replace(id);
 	});
 </script>
 
@@ -580,6 +604,8 @@
 	//end button add true / false
 
 
+
+
 	function hapus_soal(id) {
 		Swal.fire({
 			title: 'Hapus soal ini?',
@@ -594,7 +620,7 @@
 		}).then((result) => {
 			if (result.value) {
 				$.ajax({
-					url: "<?= site_url('kelola_soal/hapus_soal/') ?>" + id,
+					url: "<?= site_url('guru/kelola_soal/hapus_soal/') ?>" + id,
 					type: "POST",
 					dataType: "JSON",
 					success: function(res) {

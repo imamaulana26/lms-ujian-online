@@ -1,6 +1,10 @@
 <?php $this->load->view('admin/layouts/v_header'); ?>
 
 <style>
+	.shrinkToFit {
+		text-align: center !important;
+	}
+
 	.btn-nav {
 		width: 35px !important;
 		margin: 0.15rem;
@@ -85,6 +89,33 @@
 		left: auto;
 		padding: 0
 	}
+
+	input[type="radio"] {
+		appearance: none;
+		border: 1px solid #d3d3d3;
+		width: 30px;
+		height: 30px;
+		content: none;
+		outline: none;
+		margin: 0;
+	}
+
+	input[type="radio"]:checked {
+		appearance: none;
+		outline: none;
+		padding: 0;
+		content: none;
+		border: none;
+	}
+
+	input[type="radio"]:checked::before {
+		position: absolute;
+		color: green !important;
+		content: "\00A0\2713\00A0" !important;
+		border: 1px solid #d3d3d3;
+		font-weight: bolder;
+		font-size: 21px;
+	}
 </style>
 
 <body>
@@ -143,22 +174,44 @@
 													endif;
 												endif; ?>
 
-												<?= $value['soal_detail'] ?>
+												<?= htmlspecialchars_decode($value['soal_detail']) ?>
 											</div>
 
 											<div class="jawaban">
 												<input type="hidden" value="<?= $id_logsoal ?>" name="id_log">
 												<?php // Pilihan ganda
 												if ($value['soal_tipe'] == 1) :
-													$pg = unserialize($value['soal_pg']);
+													// die;
+													$pg = json_decode($value['soal_pg'], true);
 													shuffle($pg);
 													$n = range('a', 'd');
 													foreach ($pg as $key1 => $jwbn) :
 														$uid = $key1 + 1; ?>
-														<div class="box">
-															<input type="radio" id="radio<?= $value['soal_id'] . $uid ?>" name="answer[<?= $value['soal_id'] ?>][jwb]" value="<?= $n[$key1] ?>" required>
-															<label for="radio<?= $value['soal_id'] . $uid ?>"><?= $jwbn['jawaban'] ?></label>
-														</div>
+														<?php
+														$dtlink1 = $jwbn['jawaban'];
+														$exp1 = explode("/", $dtlink1);
+
+														if ($jwbn['tipe'] == 'teks') { ?>
+															<div class="box">
+																<input type="radio" id="radio<?= $value['soal_id'] . $uid ?>" name="answer[<?= $value['soal_id'] ?>][jwb]" value="<?= $n[$key1] ?>" required>
+																<label style="height: auto;" for="radio<?= $value['soal_id'] . $uid ?>"><?= htmlspecialchars_decode($jwbn['jawaban']) ?></label>
+															</div>
+														<?php } elseif ($jwbn['tipe'] == 'gambar') {
+															$link1 = "https://drive.google.com/thumbnail?id=" . $exp1[5];
+															$link2 = "https://drive.google.com/uc?export=view&id=" . $exp1[5];
+														?>
+															<div class="box lightbox-gallery">
+																<input type="radio" id="radio<?= $value['soal_id'] . $uid ?>" name="answer[<?= $value['soal_id'] ?>][jwb]" value="<?= $n[$key1] ?>" required>
+																<label for="radio<?= $value['soal_id'] . $uid ?>" style="height: 100%;">
+																	<a href="<?= $link2 ?>" data-toggle="lightbox">
+																		<img src="<?= $link1 ?>" class="img-fluid">
+																	</a>
+																</label>
+															</div>
+														<?php }
+														?>
+
+
 													<?php endforeach; ?>
 													<input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
 													<input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
@@ -194,7 +247,7 @@
 													<input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
 													<input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
 													<div class="box">
-														<textarea class="form-control" id="type3" rows="3" name="answer[<?= $value['soal_id'] ?>][jwb]" required></textarea>
+														<textarea class="editor form-control" id="type3" rows="3" name="answer[<?= $value['soal_id'] ?>][jwb]" required></textarea>
 													</div>
 
 												<?php // Jawaban singkat
@@ -244,7 +297,7 @@
 													<input type="hidden" value="<?= $value['soal_id']  ?>" name="answer[<?= $value['soal_id'] ?>][id]">
 													<input type="hidden" value="<?= $value['soal_tipe']  ?>" name="answer[<?= $value['soal_id'] ?>][tipe]">
 													<input type="radio" name="<?= $value['soal_id'] ?>" class="d-none" id="<?= $value['soal_id'] ?>" required>
-													<?php $dtpgkompleks = unserialize($value['soal_pg']);
+													<?php $dtpgkompleks = json_decode($value['soal_pg'], true);
 													foreach ($dtpgkompleks as $key4 => $value4) { ?>
 														<div class="box">
 															<input type="checkbox" name="answer[<?= $value['soal_id'] ?>][jwb][<?= $key4 ?>]" id="<?= $value4['pilihan'] . $value['soal_id'] ?>" onclick="document.getElementById('<?= $value['soal_id'] ?>').click();" value="<?= $value4['pilihan'] ?>">
@@ -412,6 +465,14 @@
 			clearInterval(x);
 		}
 	}, 1000);
+</script>
+
+<!-- ckeditor -->
+<script>
+	$(".editor").each(function() {
+		let id = $(this).attr('id');
+		CKEDITOR.replace(id);
+	});
 </script>
 
 </html>
