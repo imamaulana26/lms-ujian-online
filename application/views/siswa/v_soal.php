@@ -116,14 +116,18 @@
 		font-weight: bolder;
 		font-size: 21px;
 	}
+
+	label>p {
+		margin-bottom: 0;
+	}
 </style>
 
 <body>
 	<?php $this->load->view('siswa/layouts/navbar.php'); ?>
 
 	<div class="container-fluid mt-5">
-		<div class="row">
-			<div class="col-md-10 offset-1">
+		<div class="row justify-content-center">
+			<div class="col-md-10">
 				<div class="d-flex mb-2">
 					<div class="col-md-6">
 						Soal Nomor <span class="font-weight-bold" id="nomor"></span>
@@ -182,7 +186,7 @@
 														if ($jwbn['tipe'] == 'teks') { ?>
 															<div class="box">
 																<input type="radio" id="radio<?= $value['soal_id'] . $uid ?>" name="answer[<?= $value['soal_id'] ?>][jwb]" value="<?= $n[$key1] ?>" required>
-																<label style="height: auto;" for="radio<?= $value['soal_id'] . $uid ?>"><?= htmlspecialchars_decode($jwbn['jawaban']) ?></label>
+																<label style="height: auto; min-height: 53px;" for="radio<?= $value['soal_id'] . $uid ?>"><?= htmlspecialchars_decode($jwbn['jawaban']) ?></label>
 															</div>
 														<?php } elseif ($jwbn['tipe'] == 'gambar') {
 															$link1 = "https://drive.google.com/thumbnail?id=" . $exp1[5];
