@@ -3,22 +3,34 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Dashboard extends CI_Controller
 {
+	function __construct()
+	{
+		parent::__construct();
+
+		$this->load->model('M_ujian', 'm_ujian');
+	}
+
 	public function index()
 	{
+		$param = '?kelas=' . $_SESSION['kelas'];
+		$respon = $this->m_ujian->list_ujian($param);
+
 		$page = 'siswa/v_test';
 		$data['title'] = 'Dashboard Siswa';
-		$data['list_ujian'] = $this->db->select('a.id_modul, c.nm_mapel, a.modul_ub, a.waktu_pengerjaan, d.*')->from('tbl_modul a')
-			->join('tbl_pelajaran b', 'a.modul_pelajaran = b.id_pelajaran', 'left')
-			->join('tbl_mapel c', 'b.kd_mapel = c.kd_mapel', 'left')
-			->join('tbl_log_soal d', 'd.kd_modul = a.id_modul', 'left')
-			->where('b.id_kelas', $_SESSION['kelas'])
-			->get()->result_array();
+		$data['list_ujian'] = $respon['data'];
 
-		$data['list_quis'] = $this->db->select('*')->from('tbl_modul_program a')
-			->join('tbl_pelajaran b', 'a.pelajaran_program = b.id_pelajaran', 'left')
-			->join('tbl_mapel c', 'c.kd_mapel = b.kd_mapel', 'left')
-			->where('a.aktif', 1)->like('a.peserta_program', $_SESSION['username'])
-			->get()->result_array();
+		// $data['list_ujian'] = $this->db->select('a.id_modul, c.nm_mapel, a.modul_ub, a.waktu_pengerjaan, d.*')->from('tbl_modul a')
+		// 	->join('tbl_pelajaran b', 'a.modul_pelajaran = b.id_pelajaran', 'left')
+		// 	->join('tbl_mapel c', 'b.kd_mapel = c.kd_mapel', 'left')
+		// 	->join('tbl_log_soal d', 'd.kd_modul = a.id_modul', 'left')
+		// 	->where('b.id_kelas', $_SESSION['kelas'])
+		// 	->get()->result_array();
+
+		// $data['list_quis'] = $this->db->select('*')->from('tbl_modul_program a')
+		// 	->join('tbl_pelajaran b', 'a.pelajaran_program = b.id_pelajaran', 'left')
+		// 	->join('tbl_mapel c', 'c.kd_mapel = b.kd_mapel', 'left')
+		// 	->where('a.aktif', 1)->like('a.peserta_program', $_SESSION['username'])
+		// 	->get()->result_array();
 
 		$this->load->view($page, $data);
 	}

@@ -5,14 +5,6 @@ class Auth extends CI_Controller
 {
 	public function index()
 	{
-		$page = 'v_login';
-		$data['title'] = 'Login';
-
-		$this->load->view($page, $data);
-	}
-
-	public function login()
-	{
 		$user = input('username');
 		$pass = input('password');
 
@@ -29,6 +21,7 @@ class Auth extends CI_Controller
 				$sess['kelas'] = $kelas['siswa_kelas_id'];
 				$sess['online_class'] = $kelas['oc'];
 				$sess['komunitas_class'] = $kelas['kc'];
+
 				$this->session->set_userdata($sess);
 				redirect('siswa/dashboard');
 			} elseif ($dt_user['pengguna_level'] == 3) {
@@ -36,13 +29,13 @@ class Auth extends CI_Controller
 				$sess['username'] = $dt_user['pengguna_username'];
 
 				$this->session->set_userdata($sess);
-
 				redirect('guru/dashboard');
 			}
 		} else {
 			echo 'password salah';
 		}
 	}
+
 
 	public function logout()
 	{
