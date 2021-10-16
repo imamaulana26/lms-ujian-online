@@ -2,7 +2,6 @@
 
 <body>
 	<?php $this->load->view('siswa/layouts/navbar.php'); ?>
-
 	<div class="container mt-5">
 		<div class="card">
 			<div class="card-header">
@@ -18,11 +17,11 @@
 							</tr>
 							<tr>
 								<th class="pl-2">Mata Pelajaran</th>
-								<td class="pl-2"><?= $soal['nm_mapel']; ?></td>
+								<td class="pl-2"><?= $this->session->userdata('nama_mapel'); ?></td>
 							</tr>
 							<tr>
 								<th class="pl-2">Nama Pengajar</th>
-								<td class="pl-2"><?= $soal['nm_pengajar']; ?></td>
+								<td class="pl-2"><?= $this->session->userdata('nama_pengajar'); ?></td>
 							</tr>
 							<tr>
 								<th class="pl-2">Durasi Pengerjaan</th>

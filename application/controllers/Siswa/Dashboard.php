@@ -8,10 +8,15 @@ class Dashboard extends CI_Controller
 		parent::__construct();
 
 		$this->load->model('M_ujian', 'm_ujian');
+	
 	}
 
 	public function index()
 	{
+		unset(
+			$_SESSION['nama_mapel'],
+			$_SESSION['nama_pengajar']
+		);
 		$param = '?kelas=' . $_SESSION['kelas'];
 		$respon = $this->m_ujian->list_ujian($param);
 
@@ -87,13 +92,11 @@ class Dashboard extends CI_Controller
 		$page = 'siswa/v_detail_soal';
 		$data['title'] = 'Detail Soal';
 
-		$data['soal'] = $this->db->select('a.id_modul, c.nm_mapel, a.modul_ub, a.waktu_pengerjaan, e.batas_waktu_tes, e.time_start, e.time_end, e.nilai, d.nm_pengajar')
+		$data['soal'] = $this->db->select('a.id_modul, a.modul_ub, a.waktu_pengerjaan, e.batas_waktu_tes, e.time_start, e.time_end, e.nilai')
 			->from('tbl_modul a')
-			->join('tbl_pelajaran b', 'a.modul_pelajaran = b.id_pelajaran', 'left')
-			->join('tbl_mapel c', 'b.kd_mapel = c.kd_mapel', 'left')
-			->join('tbl_pengajar d', 'd.id_pengajar = b.kd_pengajar', 'left')
 			->join('tbl_log_soal e', 'e.kd_modul = a.id_modul', 'left')
 			->where(['a.id_modul' => $id])->get()->row_array();
+			// var_dump($data['soal']); die;
 
 		// hitung selisih waktu yang tersisa
 		$date_now = new DateTime();
@@ -113,4 +116,35 @@ class Dashboard extends CI_Controller
 		$data['batas_waktu'] = $tgl->format('F d Y H:i:s');
 		$this->load->view($page, $data);
 	}
+	// public function detail_soal($id)
+	// {
+	// 	$page = 'siswa/v_detail_soal';
+	// 	$data['title'] = 'Detail Soal';
+
+	// 	$data['soal'] = $this->db->select('a.id_modul, c.nm_mapel, a.modul_ub, a.waktu_pengerjaan, e.batas_waktu_tes, e.time_start, e.time_end, e.nilai, d.nm_pengajar')
+	// 		->from('tbl_modul a')
+	// 		->join('tbl_pelajaran b', 'a.modul_pelajaran = b.id_pelajaran', 'left')
+	// 		->join('tbl_mapel c', 'b.kd_mapel = c.kd_mapel', 'left')
+	// 		->join('tbl_pengajar d', 'd.id_pengajar = b.kd_pengajar', 'left')
+	// 		->join('tbl_log_soal e', 'e.kd_modul = a.id_modul', 'left')
+	// 		->where(['a.id_modul' => $id])->get()->row_array();
+
+	// 	// hitung selisih waktu yang tersisa
+	// 	$date_now = new DateTime();
+	// 	$tgl = new DateTime($data['soal']['batas_waktu_tes']);
+	// 	$diff = $tgl->diff($date_now);
+
+	// 	$data['sisa_waktu'] = $diff->i;
+	// 	$data['format_sisa_waktu'] = $diff->h . ' jam ' . $diff->i . ' menit';
+	// 	$data['status_ujian'] = $diff->invert; // 0 artinya selesai, 1 artinya aktif
+
+	// 	if ($diff->invert == 0) {
+	// 		$this->db->update('tbl_log_soal', ['time_end' => $date_now->format('Y-m-d H:i:s'), 'nilai' => '0.00'], ['kd_modul' => $id]);
+	// 	}
+
+	// 	// $waktu = new Date($data['soal']['batas_waktu_tes']);
+	// 	// $myDateTime = DateTime::createFromFormat('Y-m-d', $dateString);
+	// 	$data['batas_waktu'] = $tgl->format('F d Y H:i:s');
+	// 	$this->load->view($page, $data);
+	// }
 }

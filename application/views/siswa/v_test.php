@@ -2,7 +2,6 @@
 
 <body>
 	<?php $this->load->view('siswa/layouts/navbar.php'); ?>
-
 	<div class="container my-3">
 		<label>List Ujian Bulanan Siswa</label>
 		<table class="table table-bordered table-hover">
@@ -18,7 +17,15 @@
 					<tr>
 						<td class="text-center"><?= ($key + 1) ?></td>
 						<td><?= $val['nm_mapel']; ?></td>
-						<td class="text-center">Action</td>
+						<td class="text-center">
+							<form action="<?= site_url('siswa/list_ub/') ?>" method="post">
+								<input type="hidden" value="<?= $val['id_pelajaran']; ?>" name="id_pel">
+								<input type="hidden" value="<?= $val['nm_mapel']; ?>" name="nama_mapel">
+								<input type="hidden" value="<?= $val['nm_pengajar'] ?>" name="nama_pengajar">
+								<!-- <a type="submit" href="<?= site_url('list-ub/' . $val['id_pelajaran']) ?>" class="badge badge-primary">Lihat UB</a> -->
+								<button type="submit" class="badge badge-primary">Lihat UB</button>
+							</form>
+						</td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>

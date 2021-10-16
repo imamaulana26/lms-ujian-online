@@ -5,34 +5,31 @@ class Auth extends CI_Controller
 {
 	public function index()
 	{
-		$user = input('username');
-		$pass = input('password');
+		// $get_user = $this->db->get_where('tbl_pengguna', ['pengguna_username' => $user]);
 
-		$get_user = $this->db->get_where('tbl_pengguna', ['pengguna_username' => $user, 'pengguna_password' => md5($pass)]);
+		// if ($get_user->num_rows() > 0) {
+		if (isset($_SESSION['username'])) {
 
-		if ($get_user->num_rows() > 0) {
-
-			$dt_user = $get_user->row_array();
+			$dt_user = $_SESSION;
 
 			if ($dt_user['pengguna_level'] == 2) {
-				$sess['nm_user'] = $dt_user['pengguna_nama'];
-				$sess['username'] = $dt_user['pengguna_username'];
-				$kelas = $this->db->select('siswa_kelas_id,oc,kc')->from('tbl_siswa')->where('siswa_nis', $user)->get()->row_array();
-				$sess['kelas'] = $kelas['siswa_kelas_id'];
-				$sess['online_class'] = $kelas['oc'];
-				$sess['komunitas_class'] = $kelas['kc'];
+				$sess['nm_user'] = $dt_user['nama'];
+				$sess['username'] = $dt_user['username'];
+				$sess['kelas'] = $dt_user['kelas'];
+				$sess['online_class'] = $dt_user['oc'];
+				$sess['komunitas_class'] = $dt_user['kc'];
 
 				$this->session->set_userdata($sess);
 				redirect('siswa/dashboard');
 			} elseif ($dt_user['pengguna_level'] == 3) {
-				$sess['nm_user'] = $dt_user['pengguna_nama'];
-				$sess['username'] = $dt_user['pengguna_username'];
+				$sess['nm_user'] = $dt_user['nama'];
+				$sess['username'] = $dt_user['username'];
 
 				$this->session->set_userdata($sess);
 				redirect('guru/dashboard');
 			}
 		} else {
-			echo 'password salah';
+			redirect('http://localhost/bi-lms-merge');
 		}
 	}
 
