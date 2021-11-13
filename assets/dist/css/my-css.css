@@ -1,0 +1,221 @@
+@-webkit-keyframes placeHolderShimmer {
+	0% {
+		background-position: -468px 0;
+	}
+
+	100% {
+		background-position: 468px 0;
+	}
+}
+
+@keyframes placeHolderShimmer {
+	0% {
+		background-position: -468px 0;
+	}
+
+	100% {
+		background-position: 468px 0;
+	}
+}
+
+.preloader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	opacity: 0.5;
+	background-color: black;
+}
+
+.loading {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	font: 14px arial;
+	color: #fff;
+}
+
+.blok {
+	/* background-color: black; */
+	/* background-image: url("https://id-test-11.slatic.net/p/282765e277a52baaf56fb7c332efb7cd.png"); */
+	position: absolute;
+	width: 100vw;
+	height: 200%;
+	z-index: 1035;
+	overflow-y: hidden;
+	opacity: 0.5;
+	background-color: black;
+}
+
+.content-placeholder {
+	display: inline-block;
+	-webkit-animation-duration: 1s;
+	animation-duration: 1s;
+	-webkit-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+	-webkit-animation-iteration-count: infinite;
+	animation-iteration-count: infinite;
+	-webkit-animation-name: placeHolderShimmer;
+	animation-name: placeHolderShimmer;
+	-webkit-animation-timing-function: linear;
+	animation-timing-function: linear;
+	background: #f6f7f8;
+	background: -webkit-gradient(linear, left top, right top, color-stop(8%, #eeeeee), color-stop(18%, #dddddd), color-stop(33%, #eeeeee));
+	background: -webkit-linear-gradient(left, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+	background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+	-webkit-background-size: 800px 104px;
+	background-size: 800px 104px;
+	height: inherit;
+	position: relative;
+}
+
+.post_data {
+	padding: 24px;
+	border: 1px solid #f9f9f9;
+	border-radius: 5px;
+	margin-bottom: 24px;
+	box-shadow: 10px 10px 5px #eeeeee;
+}
+
+
+.cke_ltr .cke_button__anchor_icon {
+	display: none;
+}
+
+.cke_button__anchor {
+	padding: 0 !important;
+}
+
+.cke_button__image_icon {
+	display: none !important;
+
+}
+
+.cke_button__image {
+	padding: 0 !important;
+}
+
+.jumbotron {
+	background-color: white;
+}
+
+.cke_button__source {
+	display: none !important;
+}
+
+/* text over image background */
+.card-img-caption {
+	position: relative;
+	text-align: center;
+	color: white;
+}
+
+.card-img-top {
+	border-top-left-radius: calc(0.25rem - 1px);
+	border-top-right-radius: calc(0.25rem - 1px);
+}
+
+.card-img-caption .card-text {
+	position: absolute;
+	text-align: left;
+	top: 8px;
+	left: 10px;
+}
+
+.card-img-caption p {
+	position: absolute;
+	margin-top: 70px;
+	top: 8px;
+	left: 10px;
+}
+
+.card-img-caption span {
+	position: absolute;
+	margin-top: 70px;
+	top: 10px;
+	right: 4%;
+	text-align: right;
+}
+/* .content-wrapper {
+	min-height: auto !important;
+} */
+
+/* disabled link */
+a.disabled {
+	color: gray;
+	pointer-events: none;
+}
+
+/* glider button */
+.glider-prev,
+.glider-next {
+	top: -1px;
+}
+
+/* glider menu */
+.glider-contain {
+	width: 80%;
+}
+
+a.glider-slide {
+	color: gray;
+}
+
+a.glider-slide:hover {
+	color: #007bff;
+}
+
+a.nav-link.glider-slide {
+	text-align: center;
+}
+/* a.nav-link{
+	line-height: 1;
+} */
+
+/* box shadow */
+.card.mapel:hover {
+	-webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.2);
+	box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.2);
+}
+
+/* icon dropdown */
+#dropdownSubMenu1.dropdown-toggle::after {
+	display: none !important;
+}
+
+/* round */
+.round.active {
+	background-color: #007bff;
+	text-align: center;
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	color: white;
+	font-weight: bold;
+}
+
+.round {
+	background-color: lightgrey;
+	text-align: center;
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	color: black;
+	font-weight: bold;
+}
+
+.badge-notify {
+	background: red;
+	position: absolute;
+	top: 0px;
+	right: 5px;
+	font-size: 10px;
+	/* height: 15px;
+	width: 15px;
+	border-radius: 50%; */
+	display: inline-block;
+}

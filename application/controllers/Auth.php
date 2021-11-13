@@ -8,6 +8,8 @@ class Auth extends CI_Controller
 		// $get_user = $this->db->get_where('tbl_pengguna', ['pengguna_username' => $user]);
 
 		// if ($get_user->num_rows() > 0) {
+		// var_dump($_SESSION);
+		// die;
 		if (isset($_SESSION['username'])) {
 
 			$dt_user = $_SESSION;
