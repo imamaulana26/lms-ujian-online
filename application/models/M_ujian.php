@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_ujian extends CI_Model
 {
-	private $url_api = 'http://localhost/lms-rest-server/api/ujian';
+	private $url_api = 'http://lms-api.anakpanah.online/api/ujian';
 
 	private function http_request($url, $param = null)
 	{
@@ -24,7 +24,7 @@ class M_ujian extends CI_Model
 	public function list_ujian($kelas)
 	{
 		$request = $this->http_request($this->url_api, $kelas);
-		
+
 		return $request;
 	}
 }
