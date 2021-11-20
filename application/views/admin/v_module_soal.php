@@ -58,10 +58,10 @@
 											<?php foreach ($list_module as $key => $li) : ?>
 												<tr>
 													<td><?= ($key + 1) ?></td>
-													<td><?= $li['kelas_nama'] ?></td>
-													<td><?= $li['nm_mapel']; ?></td>
+													<td><?= $li['kelas'] ?></td>
+													<td><?= $li['mapel']; ?></td>
 													<td><?= 'UB ' . $li['modul_ub']; ?></td>
-													<td><?= $li['waktu_pengerjaan'] . ' menit'; ?></td>
+													<td><?= $li['waktu'] . ' menit'; ?></td>
 													<td><?= $li['bank_soal'] . ' soal'; ?></td>
 													<td class="text-center">
 														<span class="text-success mx-1" onclick="edit('<?= $li['id_modul'] ?>')" data-toggle="tooltip" data-placement="top" title="Ubah Module" style="cursor: pointer;">
