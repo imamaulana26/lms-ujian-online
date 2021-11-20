@@ -3,6 +3,26 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Module_soal extends CI_Controller
 {
+	private $url = 'http://localhost/lms-rest-server/api/ujian';
+
+	public function http_request($url, $param)
+	{
+		// persiapan curl
+		$ch = curl_init();
+
+		// set url
+		curl_setopt($ch, CURLOPT_URL, $url . $param);
+
+		// return the transfer as a string
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+		$output = curl_exec($ch);
+
+		curl_close($ch);
+
+		return json_decode($output, true);
+	}
+
 	public function index()
 	{
 		$page = 'admin/v_module_soal';
@@ -12,20 +32,32 @@ class Module_soal extends CI_Controller
 			'<li class="breadcrumb-item active">Module Soal</li>'
 		);
 
-		$sql = "SELECT a.id_modul, e.kelas_nama, d.nm_mapel, a.modul_ub, a.waktu_pengerjaan, COUNT(b.soal_modul_id) as bank_soal FROM tbl_modul a
-		LEFT JOIN tbl_soal b
-		ON a.id_modul = b.soal_modul_id
-		LEFT JOIN tbl_pelajaran c
-		ON a.modul_pelajaran = c.id_pelajaran
-		LEFT JOIN tbl_mapel d
-		ON c.kd_mapel = d.kd_mapel
-		LEFT JOIN tbl_kelas e
-		ON c.id_kelas = e.kelas_id
-		GROUP BY a.id_modul";
-		$data['list_module'] = $this->db->query($sql)->result_array();
+		$param = '/modul?pengajar=' . $_SESSION['idPengajar'];
+		$respon_api = $this->http_request($this->url, $param);
 
-		$data['dtkelas'] = $this->db->select('kelas_id,kelas_nama')->from('tbl_kelas')->where('kelas_id <', '16')
-			->get()->result_array();
+		$column = array_column($respon_api['data'], 'id_pelajaran');
+		$list = $this->db->select('*')->from('tbl_modul')->where_in('modul_pelajaran', $column)->get()->result_array();
+
+		$arr_find = array();
+		foreach ($list as $li) {
+			$soal = $this->db->select('count(*) as bank_soal')->from('tbl_soal')->where(['soal_modul_id' => $li['id_modul']])->get()->row_array();
+			$row = array();
+			foreach ($respon_api['data'] as $val) {
+				if ($li['modul_pelajaran'] == $val['id_pelajaran']) {
+					$row['id_modul'] = $li['id_modul'];
+					$row['modul_pelajaran'] = $li['modul_pelajaran'];
+					$row['kelas'] = $val['kelas_nama'];
+					$row['mapel'] = $val['nm_mapel'];
+					$row['modul_ub'] = $li['modul_ub'];
+					$row['waktu'] = $li['waktu_pengerjaan'];
+					$row['bank_soal'] = $soal['bank_soal'];
+
+					$arr_find[] = $row;
+				}
+			}
+		}
+
+		$data['list_module'] = $arr_find;
 
 		$this->load->view($page, $data);
 	}
