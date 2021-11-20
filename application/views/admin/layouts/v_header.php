@@ -19,6 +19,8 @@
 
 	<title><?= $title; ?></title>
 
+	<!-- Glider -->
+	<link rel="stylesheet" type="text/css" href="<?= base_url('assets/dist/css/glider/glider.min.css') ?>">
 	<!-- Font Awesome Icons -->
 	<link rel="stylesheet" href="<?= base_url('assets/plugins/') . 'fontawesome-free/css/all.min.css' ?>">
 	<!-- IonIcons -->
@@ -36,6 +38,9 @@
 	<!-- lightbox -->
 	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css"> -->
 	<link rel="stylesheet" href="<?= base_url('assets/plugins/') . 'lightbox/ekko-lightbox.css' ?>">
+	<!-- My CSS -->
+	<link rel="stylesheet" href="<?= base_url('assets/dist/css/my-css.css') ?>">
+
 
 
 
@@ -62,7 +67,8 @@
 
 	<!-- DataTables -->
 	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
-
+	<!-- Glider -->
+	<script src="<?= base_url('assets/dist/css/glider/glider.min.js') ?>"></script>
 	<!-- Sweetalert2 -->
 	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<!-- select 2 -->
@@ -73,6 +79,8 @@
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.js" crossorigin="anonymous"></script> -->
 	<script src="<?= base_url('assets/plugins/') . 'lightbox/ekko-lightbox.js' ?>"></script>
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/js/lightbox.min.js"></script> -->
+	<!-- myjs -->
+	<script src="<?= base_url('assets/dist/js/my-js.js') ?>"></script>
 
 
 	<!-- Pages Script -->
@@ -106,5 +114,129 @@
 			return event.keyCode >= 48 && event.keyCode <= 57;
 		}
 	</script>
+
+	<style>
+		blockquote {
+
+			background: #f9f9f9;
+
+			border-left: .2em solid #007bff;
+
+			border-radius: 5px;
+
+			margin: 0px 0px 10px 0px;
+
+			padding: .5em .7rem;
+
+		}
+
+
+
+		@media screen and (max-width: 574px) {
+
+			.media-nav {
+
+				margin-left: 0 !important;
+
+			}
+
+
+
+			.media-form {
+
+				width: 80%;
+
+			}
+
+			.media-form-left {
+
+				left: unset !important;
+
+			}
+
+
+
+			.media-footer {
+
+				float: unset !important;
+
+				display: unset !important;
+
+			}
+
+
+
+			.media-align-center {
+
+				text-align: center !important;
+
+			}
+
+
+
+			.media-logo-show {
+
+				display: unset !important;
+
+				margin-right: 10px;
+
+				margin-top: 5px;
+
+			}
+
+
+
+			.media-logo-none {
+
+				display: none;
+
+			}
+
+
+
+			.media-display {
+
+				position: fixed;
+
+			}
+
+
+
+			.media-header {
+
+				margin-top: 15%;
+
+			}
+
+
+
+			.media-float {
+
+				float: left;
+
+			}
+
+
+
+			.media-img-width {
+
+				width: 30% !important;
+
+			}
+
+
+
+			.media-line {
+
+				position: relative;
+
+				right: 5%;
+
+				width: 110%;
+
+			}
+
+		}
+	</style>
 
 </head>

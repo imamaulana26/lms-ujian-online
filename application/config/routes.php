@@ -62,4 +62,6 @@ $route['module-soal/soal/(:num)'] = 'guru/module_soal/soal/$1';
 $route['manage-quis/peserta/(:num)/(:any)'] = 'guru/manage_quis/peserta/$1/$2';
 $route['manage-quis/soal/(:num)'] = 'guru/manage_quis/soal/$1';
 
+$route['list-ub/'] = 'siswa/list_ub/modul_id/';
+
 $route['management-soal/lihat-jawaban'] = 'guru/manage_soal/index';
